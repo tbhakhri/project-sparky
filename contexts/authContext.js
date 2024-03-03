@@ -1,4 +1,6 @@
-import { createContext } from 'react'
+"use client"
+
+import { createContext, useState, useEffect } from 'react'
 
 const AuthContext = createContext({
     user: null,
@@ -47,3 +49,5 @@ export const AuthContextProvider = ({ children }) => {
         </AuthContext.Provider>
     )
 }
+
+export default AuthContext

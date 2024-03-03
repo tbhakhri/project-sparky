@@ -1,14 +1,10 @@
 import { AuthContextProvider } from "../../contexts/authContext";
-import styles from "./page.module.css";
-import { redirect } from 'next/navigation'
+import Home from "./Home/home";
 
-export default function Home() {
-
+export default function App() {
   return (
     <AuthContextProvider>
-      <main className={styles.main}>
-        
-      </main>
+      <Home />
     </AuthContextProvider>
   )
 }
