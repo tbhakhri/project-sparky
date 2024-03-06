@@ -11,7 +11,7 @@ const AuthContext = createContext({
 })
 
 export const AuthContextProvider = ({ children }) => {
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState(1) // TODO: REPLACE WITH NULL ONCE AUTH CONTEXT IS PROPERLY IMPLEMENTED
     const [authReady, setAuthReady] = useState(false)
 
     const login = async (email, password) => {
