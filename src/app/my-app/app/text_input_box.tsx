@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 
 
 export default function TextBox() {
-    const [text, setText] = React.useState('test?');
+    const [text, setText] = React.useState('');
     const handleInputChange = (e) => {
         setText(e.target.value);
       };
