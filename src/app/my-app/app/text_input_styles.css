@@ -24,8 +24,33 @@
     /* margin-top: 7px;
     margin-left: 7px;
     padding: 7px; */
+    
         
 } 
+
+input {
+    border: none;
+    fill: #909090; 
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+input[type="text"] {
+    height: auto; /* Adjust the height to fit two lines */
+    line-height: 1em; /* Set line height to half of the input height */
+    white-space: normal; /* Allow text wrapping */
+    padding: 0;
+    width: 100%; /* Ensure the input spans the full width */
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: none; 
+    /* for the onlick part */
+}
 
 .text_container_text {
     color: #909090;
@@ -34,6 +59,9 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    background-color: #e8e8e8;
+    vertical-align: top;
+    
 }
 
 .icon {

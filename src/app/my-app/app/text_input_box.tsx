@@ -1,19 +1,32 @@
+'use client';
+
 import './text_input_styles.css'
 import Image from '@/node_modules/next/image';
 import cameraIcon from "/public/icons/camera.svg"
 import imageIcon from "/public/icons/image.svg"
 import microphoneIcon from "/public/icons/microphone.svg"
-
+import React, { useState } from 'react';
 
 
 export default function TextBox() {
+    const [text, setText] = React.useState('test?');
+    const handleInputChange = (e) => {
+        setText(e.target.value);
+      };
     return (
     
     <div className="main_container">
         <div className="text_container">
-            <div className="text_container_text">
+            <input
+            type="text"
+            className="text_container_text"
+            value={text}
+            onChange={handleInputChange}
+            placeholder="Start typing..."
+            />
+            {/* <div className="text_container_text">
                 Start typing...
-            </div>
+            </div> */}
         </div>
         <div className="icon_container">
             <div className="tokens_remaining">
