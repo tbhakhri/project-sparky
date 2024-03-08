@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "../page.module.css";
 
 const DropdownSettingsMenu = ({ onParameterChange }) => {
   const defaultK = 0;
@@ -34,62 +35,53 @@ const DropdownSettingsMenu = ({ onParameterChange }) => {
   };
 
   return (
-    <div style={styles.container}>
-    
-      <div style={styles.sliderContainer}>
-        <label htmlFor="topK-slider">Top K: {topK.toFixed(1)}</label>
+    <div className={styles.container}>
+      <div className={styles.sliderContainer}>
+        <label htmlFor="topK-slider">Top K:</label>
         <input
           id="topK-slider"
           type="range"
+          className={styles.slider}
           min={minTopK}
           max={maxTopK}
           step={0.5}
           value={topK}
           onChange={handleTopKChange}
         />
+        <label className="valueLabel">{topK.toFixed(1)}</label>
       </div>
 
-      <div style={styles.sliderContainer}>
-        <label htmlFor="topP-slider">Top P: {topP.toFixed(1)}</label>
+      <div className={styles.sliderContainer}>
+        <label htmlFor="topP-slider">Top P: </label>
         <input
           id="topP-slider"
           type="range"
+          className={styles.slider}
           min={minTopP}
           max={maxTopP}
           step={0.5}
           value={topP}
           onChange={handleTopPChange}
         />
+        <label className="valueLabel">{topP.toFixed(1)}</label>
       </div>
 
-      <div style={styles.sliderContainer}>
-        <label htmlFor="temperature-slider">
-          Temperature: {temperature.toFixed(1)}
-        </label>
+      <div className={styles.sliderContainer}>
+        <label htmlFor="temperature-slider">Temperature: </label>
         <input
           id="temperature-slider"
           type="range"
+          className={styles.slider}
           min={minTemp}
           max={maxTemp}
           step={0.5}
           value={temperature}
           onChange={handleTemperatureChange}
         />
+        <label className="valueLabel">{temperature.toFixed(1)}</label>
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: "20px",
-    backgroundColor: "#fff",
-    borderRadius: "5px",
-    boxShadow: "0px 2px 4px rgba(0,0,0,0.25)",
-  },
-  sliderContainer: {
-    margin: "10px 0",
-  },
 };
 
 export default DropdownSettingsMenu;
