@@ -42,20 +42,34 @@ export default function TextBox() {
         }
     };
 
-    const openCameraWindow = () => {
-        cameraWindow = window.open('', 'cameraWindow', 'width=640,height=480'); // Open a new window
-        cameraWindow.document.body.style.backgroundColor = 'black'; // Set background color of the new window to black
-        cameraWindow.document.title = 'Camera'; // Set window title
-        cameraWindow.document.body.appendChild(videoRef.current); // Append the video element to the new window
+    const openCameraWindow = (mediaStream) => {
+        cameraWindow = window.open('', 'cameraWindow', 'width=640,height=480');
+        if (cameraWindow) {
+            cameraWindow.document.title = 'Camera';
+            cameraWindow.document.body.style.backgroundColor = 'black';
+    
+            // Create a new video element in the new window
+            const videoElement = cameraWindow.document.createElement('video');
+            videoElement.autoplay = true;
+            videoElement.style.maxWidth = '100%';
+            videoElement.style.height = 'auto';
+    
+            // Set the media stream to the new video element
+            videoElement.srcObject = mediaStream;
+            videoElement.onloadedmetadata = () => { videoElement.play(); };
+    
+            // Append the new video element to the new window's body
+            cameraWindow.document.body.appendChild(videoElement);
+        }
     };
 
     const handleCameraCapture = async () => {
         try {
             const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-            if (videoRef.current) {
-                videoRef.current.srcObject = mediaStream;
-                openCameraWindow(); // Open the new window when the camera is accessed
-            }
+            
+            console.log(mediaStream);
+            
+            openCameraWindow(mediaStream); // Pass the media stream directly
         } catch (error) {
             console.error('Error accessing camera:', error);
         }
