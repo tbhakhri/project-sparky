@@ -35,8 +35,9 @@ const DropdownSettingsMenu = ({ onParameterChange }) => {
 
   return (
     <div style={styles.container}>
+    
       <div style={styles.sliderContainer}>
-        <label htmlFor="topK-slider">Top K: {topK}</label>
+        <label htmlFor="topK-slider">Top K: {topK.toFixed(1)}</label>
         <input
           id="topK-slider"
           type="range"

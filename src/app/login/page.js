@@ -1,13 +1,11 @@
 "use client";
 
-import DropdownSettingsMenu from "../DropdownSettingsMenu";
-
-export default function Login() {
-  const handleParameterChange = (parameters) => {};
+export default function () {
   return (
     <div>
       <p>LOGIN</p>
-      <DropdownSettingsMenu onParameterChange={handleParameterChange} />
     </div>
   );
 }
+
+
