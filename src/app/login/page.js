@@ -1,7 +1,11 @@
+"use client";
+
 export default function Login() {
-    return (
-      <div>
-        <p>LOGIN</p>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <p>LOGIN</p>
+    </div>
+  );
+}
+
+
