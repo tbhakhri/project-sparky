@@ -1,9 +1,6 @@
 "use client";
 
-
-import DropdownSettingsMenu from "./DropdownSettingsMenu";
-import FigmaDropdown from "./FigmaDropdown";
-import DropdownFigma from "./FigmaDropdown";
+import DropdownSettingsMenu from "./CompareRerun";
 
 export default function Dropdown() {
   const handleParameterChange = (parameters) => {};

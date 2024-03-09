@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from 'next/image';
-import compareIcon from "../../../public/compare.svg";
 
 const CompareButton = () => {
     return (
         <button style={styles.buttonContainer}>
             <Image
-                src={compareIcon}
+                src="/compare.svg"
                 alt="Compare Icon"
             />
         </button>

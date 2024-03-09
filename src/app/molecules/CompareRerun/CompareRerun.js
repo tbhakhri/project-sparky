@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import styles from "../page.module.css";
+import styles from "@/page.module.css";
 import Image from 'next/image';
-import compare_icon from "../../../public/compare.svg";
-import rerun_icon from "../../../public/rerun.svg";
 
-const DropdownSettingsMenu = ({ onParameterChange }) => {
+export default function CompareRerun({ onParameterChange }) {
   const defaultK = 50;
   const defaultP = 1.0;
   const defaultTemp = 0.7;
@@ -40,16 +38,18 @@ const DropdownSettingsMenu = ({ onParameterChange }) => {
   return (
     <div className={styles.container}>
       <div className={styles.buttonsContainer}>
-        <button className={styles.buttonContainer}>
+        <button className={styles.iconButton} style={{ width: "40%" }}>
           <Image
-            src={compare_icon}
+            src="/compare.svg"
             alt="Compare Icon"
+            width = {10} height = {10}
           /> Compare
         </button>
-        <button className={styles.buttonContainer}>
+        <button className={styles.iconButton} style={{ width: "40%" }}>
           <Image
-            src={rerun_icon}
+            src="/rerun.svg"
             alt="Rerun Icon"
+            width = {10} height = {10}
           /> Rerun
         </button>`
       </div>
@@ -111,5 +111,3 @@ const DropdownSettingsMenu = ({ onParameterChange }) => {
     </div>
   );
 };
-
-export default DropdownSettingsMenu;
