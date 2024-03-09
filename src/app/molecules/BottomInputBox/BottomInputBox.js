@@ -1,14 +1,11 @@
 'use client';
 
-import './text_input_styles.css'
-import Image from '@/node_modules/next/image';
-import cameraIcon from "/public/icons/camera.svg"
-import imageIcon from "/public/icons/image.svg"
-import microphoneIcon from "/public/icons/microphone.svg"
+import './BottomInputBox.css'
+import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
 
 
-export default function TextBox() {
+export default function BottomInputBox() {
     const [text, setText] = React.useState('');
     const [uploadedImages, setUploadedImages] = useState([]);
     const [tokenCount, setTokenCount] = useState(0);
@@ -120,7 +117,7 @@ export default function TextBox() {
         <div className="image_preview_container">
                 {uploadedImages.map((imageSrc, index) => (
                     <div key={index} className="image_preview" style={{ width: '50%', margin: '0 auto' }}>
-                        <img src={imageSrc} alt={`Uploaded image ${index + 1}`} />
+                        <Image src={imageSrc} alt={`Uploaded image ${index + 1}`} />
                     </div>
                 ))}
         </div>        
@@ -129,10 +126,10 @@ export default function TextBox() {
                 {tokenCount}/12888 
             </div>
             <div className="bottom_icon_positioning">
-                <Image src={cameraIcon} alt="camera" className="icon" onClick={handleCameraCapture} />
+                <Image src="/camera.svg" alt="camera" className="icon" onClick={handleCameraCapture} width={10} height={10}/>
                 {/* <video ref={videoRef} autoPlay muted style={{ display: 'none' }} /> */}
                 {/* <label htmlFor="cameraInput">
-                            <Image src={cameraIcon} alt="camera" className="icon" />
+                            <Image   src={cameraIcon} alt="camera" className="icon" />
                         </label>
                         <input
                             type="file"
@@ -145,7 +142,7 @@ export default function TextBox() {
             </div>
             <div className="bottom_icon_positioning">               
                 <label htmlFor="imageInput">
-                            <Image src={imageIcon} alt="upload image" className="icon" />
+                            <Image src="/imageLibrary.svg" alt="upload image" className="icon" width={10} height={10}/>
                         </label>
                         <input
                             type="file"
@@ -157,9 +154,10 @@ export default function TextBox() {
             </div>
             <div className="bottom_icon_positioning">
                 <Image 
-                    src={microphoneIcon} 
+                    src="/microphone.svg" 
                     alt="microphone"
                     className="icon"
+                    width={10} height={10}
                 />
             </div>
         </div>    

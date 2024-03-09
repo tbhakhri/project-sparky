@@ -43,6 +43,7 @@ export default function CompareRerun({ onParameterChange }) {
             src="/compare.svg"
             alt="Compare Icon"
             width = {10} height = {10}
+            style={{ marginRight: "10px" }}
           /> Compare
         </button>
         <button className={styles.iconButton} style={{ width: "40%" }}>
@@ -50,8 +51,9 @@ export default function CompareRerun({ onParameterChange }) {
             src="/rerun.svg"
             alt="Rerun Icon"
             width = {10} height = {10}
+            style={{ marginRight: "10px" }}
           /> Rerun
-        </button>`
+        </button>
       </div>
       <div className={styles.sliderContainer}>
         <label htmlFor="topK-slider">Top K:</label>

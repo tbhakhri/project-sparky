@@ -235,7 +235,7 @@
   appearance: none;
   height: 8px;
   background: #1a3059;
-  border-radius: 5px;
+  border: none;
   outline: none;
   opacity: 1;
   -webkit-transition: 0.2s;
