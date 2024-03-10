@@ -1,6 +1,8 @@
 "use client"
 
 import { createContext, useState, useEffect } from 'react'
+import {auth,provider} from "./config";
+import {signInWithPopup} from "firebase/auth";
 
 const AuthContext = createContext({
     user: null,
@@ -11,12 +13,12 @@ const AuthContext = createContext({
 })
 
 export const AuthContextProvider = ({ children }) => {
-    const [user, setUser] = useState(1) // TODO: REPLACE WITH NULL ONCE AUTH CONTEXT IS PROPERLY IMPLEMENTED
+    const [user, setUser] = useState(null) // TODO: REPLACE WITH NULL ONCE AUTH CONTEXT IS PROPERLY IMPLEMENTED
     const [authReady, setAuthReady] = useState(false)
 
-    const login = async (email, password) => {
+    const login = async () => {
         try {
-        //   await auth.signInWithEmailAndPassword(email, password)
+          await signInWithPopup(auth,provider)
         } catch (error) {
           console.error("Login failed:", error)
         }
@@ -27,13 +29,13 @@ export const AuthContextProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        // const unsubscribe = auth.onAuthStateChanged((user) => {
-        //   setUser(user)
-        //   setAuthReady(true) // Set authReady to true once we get the initial user value
-        // });
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+          setUser(user)
+          setAuthReady(true)
+        });
     
-        // // Cleanup subscription on unmount
-        // return () => unsubscribe()
+        // Cleanup subscription on unmount
+        return () => unsubscribe()
       }, [])
 
     const context = {
