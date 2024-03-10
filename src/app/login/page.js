@@ -4,15 +4,27 @@ import { useContext } from 'react';
 import AuthContext from '../../../contexts/authContext';
 import GoogleSignInButton from './logo';
 import './page.css';
+import { redirect } from 'next/navigation'
 
 export default function Login() {
 
-  const { login } = useContext(AuthContext);
+  const { user, login, authReady } = useContext(AuthContext);
 
   return (
-    <div>
-      <GoogleSignInButton onClick={() => login()} />
+    <>
+    {
+      authReady ? <div>
+      {
+        user === null ? 
+        <GoogleSignInButton onClick={() => login()} />
+        :
+        redirect('/')
+      }
+      </div> : <div>
+        Loading...
     </div>
+    }
+    </>
   );
 }
 

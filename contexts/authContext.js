@@ -13,19 +13,19 @@ const AuthContext = createContext({
 })
 
 export const AuthContextProvider = ({ children }) => {
-    const [user, setUser] = useState(null) // TODO: REPLACE WITH NULL ONCE AUTH CONTEXT IS PROPERLY IMPLEMENTED
+    const [user, setUser] = useState(null)
     const [authReady, setAuthReady] = useState(false)
 
     const login = async () => {
         try {
-          await signInWithPopup(auth,provider)
+          await signInWithPopup(auth, provider)
         } catch (error) {
           console.error("Login failed:", error)
         }
       };
     
     const logout = async () => {
-    // await auth.signOut()
+    await auth.signOut()
     };
 
     useEffect(() => {
