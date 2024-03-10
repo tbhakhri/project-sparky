@@ -114,7 +114,7 @@ input:focus {
     max-height: 100px;
     flex: 1; /* Ensure the text_container_text takes up the entire width */
     /* resize: none; */
-
+    border: none;
     
    
 }
