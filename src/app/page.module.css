@@ -1,10 +1,26 @@
 .main {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 6rem;
   min-height: 100vh;
+}
+
+.mobileContainer {
+  height: 100vh;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .mobileContainer {
+    height: 80vh;
+    width: 40%;
+    max-width: 430px;
+    border: 2px solid black;
+    border-radius: 20px;
+    z-index: 1000;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 .description {
