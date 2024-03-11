@@ -5,6 +5,7 @@
   min-height: 100vh;
 }
 
+/* Outer Mobile Container */
 .mobileContainer {
   height: 100vh;
   width: 100%;
@@ -21,6 +22,17 @@
     padding: 0;
     margin: 0;
   }
+}
+
+/* Outer Page Container */
+.pageContainer {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .description {
