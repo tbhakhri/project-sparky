@@ -2,8 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans&display=swap');
 
 .main_container {
-    margin-top: 100px;
-    margin-left: 100px;
     display: flex;
     flex-direction: column;
     width: 264px;
