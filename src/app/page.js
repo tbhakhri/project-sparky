@@ -7,6 +7,10 @@ import { redirect } from "next/navigation";
 import CompareRerun from "@/molecules/CompareRerun/CompareRerun";
 import PutRunSettings from "@/molecules/PutRunSettings/PutRunSettings";
 import BottomInputBox from "@/molecules/BottomInputBox/BottomInputBox";
+import TopBar from "@/molecules/TopBar/TopBar";
+import MainContent from "@/molecules/MainContent/MainContent";
+import BottomBar from "@/molecules/BottomBar/BottomBar";
+
 
 export default function App() {
   const { user, logout, authReady } = useContext(AuthContext)
@@ -51,19 +55,26 @@ export default function App() {
   }
 
   return (
+
     <div className={styles.pageContainer}>
       {
         authReady ? <>
         {user === null ? redirect('/login') : (
           <>
             <>
-              MAIN PAGE
-              <CompareRerun onParameterChange={() => {}}></CompareRerun>
-              <BottomInputBox />
-              <PutRunSettings />
+              <TopBar />
+              {/* TODO: MOVE THIS INTO THE TOP BAR MAYBE */}
+              {/* <button onClick={() => logout()}>Logout</button> */}
+              <MainContent />
+
+              <BottomBar />
+              {/* <CompareRerun onParameterChange={() => {}}></CompareRerun> */}
+              {/* <BottomInputBox />
+              <PutRunSettings /> */}
+              
+
             </>
-            {/* TODO: MOVE THIS INTO THE TOP BAR MAYBE */}
-            <button onClick={() => logout()}>Logout</button>
+
           </>
           /*
           Idea is that instead of:
