@@ -117,7 +117,7 @@ export default function BottomInputBox() {
         <div className="image_preview_container">
                 {uploadedImages.map((imageSrc, index) => (
                     <div key={index} className="image_preview" style={{ width: '50%', margin: '0 auto' }}>
-                        <Image src={imageSrc} alt={`Uploaded image ${index + 1}`} />
+                        <Image src={imageSrc} alt={`Uploaded image ${index + 1}`} width={100} height={100}/>
                     </div>
                 ))}
         </div>        

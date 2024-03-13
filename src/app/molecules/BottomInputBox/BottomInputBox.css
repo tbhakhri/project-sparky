@@ -186,6 +186,7 @@ input:focus {
 .selected_image {
     max-width: 50px; /* Example, adjust as needed */
     height: auto;
+    width: 50%;
 }
 
 .image_preview_container {
