@@ -263,6 +263,7 @@
   -webkit-appearance: none;
   appearance: none;
   height: 8px;
+  width: 50%;
   background: #1a3059;
   border: none;
   outline: none;
@@ -273,25 +274,28 @@
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 20px;
-  width: 20px;
-  border-radius: 10px;
+  height: 15px;
+  width: 15px;
+  border-radius: 15px;
   background: #1a3059;
 }
 
 /* Container (for CompareRerun and BottomSettingsMenu */
 .container {
-  padding: 20px;
+  padding: 15px;
   border: 0.5px solid black;
   /* width: 400px; I'm thinking we can specify this in styles for each container */ 
   border-radius: 5px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  background: white;
 }
 
 .sliderContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: black;
+  font-size: 0.7rem;
 }
 
 .spacing {
@@ -301,7 +305,7 @@
 .buttonsContainer {
   display: flex;
   justify-content: space-around;
-  padding-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .buttonContainer {
@@ -315,6 +319,7 @@
 
 .values {
   background-color: rgba(217, 217, 217, 1);
+  color: black;
   border-radius: 5px;
   padding: 0.4rem 0.6rem 0.4rem 0.6rem;
 }
@@ -330,6 +335,21 @@
 /* Icon Buttons */
 
 .iconButton {
+  flex-shrink: 0;
+  border-radius: 20px;
+  background-color: #1A3059;
+  border: none;
+  color: white;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 0.6rem;
+  cursor: pointer;
+}
+
+.putruniconButton {
   flex-shrink: 0;
   border-radius: 20px;
   background-color: #1A3059;

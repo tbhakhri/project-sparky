@@ -11,7 +11,6 @@ import TopBar from "@/molecules/TopBar/TopBar";
 import MainContent from "@/molecules/MainContent/MainContent";
 import BottomBar from "@/molecules/BottomBar/BottomBar";
 
-
 export default function App() {
   const { user, logout, authReady } = useContext(AuthContext)
   
@@ -31,6 +30,8 @@ export default function App() {
   
   const tokenCount = calculateTokenCount(promptMetadata.requestChain)
   const maxTokenCount = calculateMaxTokenCount(curModelSettings.modelName)
+
+  const handleParameterChange = (parameters) => {};
 
   function generateUUID() {
     const buffer = crypto.getRandomValues(new Uint8Array(4))
@@ -66,7 +67,7 @@ export default function App() {
               {/* TODO: MOVE THIS INTO THE TOP BAR MAYBE */}
               {/* <button onClick={() => logout()}>Logout</button> */}
               <MainContent />
-
+              <CompareRerun onParameterChange={handleParameterChange} />
               <BottomBar />
               {/* <CompareRerun onParameterChange={() => {}}></CompareRerun> */}
               {/* <BottomInputBox />
