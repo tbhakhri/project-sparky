@@ -65,14 +65,8 @@ export default function App() {
               <TopBar />
               {/* TODO: MOVE THIS INTO THE TOP BAR MAYBE */}
               {/* <button onClick={() => logout()}>Logout</button> */}
-              <MainContent />
-
+              <MainContent requestChain={promptMetadata.requestChain} responses={promptMetadata.responses}/>
               <BottomBar />
-              {/* <CompareRerun onParameterChange={() => {}}></CompareRerun> */}
-              {/* <BottomInputBox />
-              <PutRunSettings /> */}
-              
-
             </>
 
           </>

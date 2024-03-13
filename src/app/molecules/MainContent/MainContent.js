@@ -1,9 +1,19 @@
 import "./MainContent.css"
 
-export default function MainContent() {
+export default function MainContent({ requestChain, responses }) {
     return (
         <div className="mainContentContainer">
-            MAIN CONTENT
+            {
+                requestChain.length === 0 ? (
+                    <>
+                    DEFAULT SCREEN
+                    </>
+                ) : (
+                    <>
+                    DISPLAY ALL THE REQUESTS AND RESPONSES AND STUFF
+                    </>
+                )
+            }
         </div>
     )
 }
