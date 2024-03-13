@@ -13,10 +13,10 @@
 
 @media screen and (min-width: 768px) {
   .mobileContainer {
-    height: 80vh;
+    height: 80%;
     width: 40%;
     max-width: 430px;
-    border: 4px solid black;
+    border: 2px solid black;
     box-shadow: 10px 10px 5px 2px rgba(0, 0, 0, 0.15);
     z-index: 1001;
     padding: 0;

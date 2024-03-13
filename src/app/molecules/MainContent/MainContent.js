@@ -1,4 +1,5 @@
-import "./MainContent.css"
+import "./MainContent.css";
+import DefaultScreen from "../DefaultScreen/DefaultScreen.js"
 
 export default function MainContent({ requestChain, responses }) {
     return (
@@ -6,7 +7,10 @@ export default function MainContent({ requestChain, responses }) {
             {
                 requestChain.length === 0 ? (
                     <>
-                    DEFAULT SCREEN
+                  
+                    <div className ="defaultScreenContainer">
+                        <DefaultScreen/>   
+                    </div>
                     </>
                 ) : (
                     <>

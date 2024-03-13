@@ -1,0 +1,34 @@
+.ideaBoxContainer {
+    display: flex;
+    flex-wrap: wrap;
+    /* Center items horizontally */
+    position: relative; 
+    width: 100%;
+    bottom: 0;
+    margin-top: 60%;
+    
+    /* padding: 10px; */
+    /* padding-right: 10px; */
+    
+}
+
+.ideaBoxItem {
+    flex: 1 0 50%;
+    box-sizing: border-box; /* Include padding and border in the total width */
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+    
+   
+  }
+
+.introText {
+    color: #FFFFFF;
+    font-size: 15px;
+    font-family: Kumbh Sans;
+    align-text: center;
+    align-items: center;
+    margin-top: 200px;
+    padding-left: 100px;
+    padding-right: 10px;
+}
