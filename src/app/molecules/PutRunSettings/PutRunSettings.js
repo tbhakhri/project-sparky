@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import styles from "@/page.module.css";
 import "./PutRunSettings.css";
 import Image from "next/image";
-import Dropdown from "../Dropdown/Dropdown";
+import CompareRerun from "../CompareRerun/CompareRerun";
 
 export default function PutRunSettings() {
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showCompareRerun, setShowCompareRerun] = useState(false);
 
-  const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
+  const toggleCompareRerun = () => {
+    setShowCompareRerun(!showCompareRerun);
+  };
+
+  const handleParameterChange = (parameters) => {
+    console.log("Parameters changed:", parameters);
   };
 
   return (
@@ -24,7 +28,10 @@ export default function PutRunSettings() {
           />
           <span>Put</span>
         </button>
-        <button className="bottombarSettingsButton" onClick={toggleDropdown}>
+        <button
+          className="bottombarSettingsButton"
+          onClick={toggleCompareRerun}
+        >
           <Image
             src="/setting-lines.svg"
             alt="Config Params"
@@ -34,7 +41,9 @@ export default function PutRunSettings() {
         </button>
       </div>
 
-      {showDropdown && <Dropdown />}
+      {showCompareRerun && (
+        <CompareRerun onParameterChange={handleParameterChange} />
+      )}
 
       <button className={styles.iconButton} style={{ width: "100%" }}>
         <Image
