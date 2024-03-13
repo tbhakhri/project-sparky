@@ -14,6 +14,16 @@ import BottomBar from "@/molecules/BottomBar/BottomBar";
 export default function App() {
   const { user, logout, authReady } = useContext(AuthContext);
 
+  const [showCompareRerun, setShowCompareRerun] = useState(false);
+
+  const toggleCompareRerun = () => {
+    setShowCompareRerun(!showCompareRerun);
+  };
+
+  const handleParameterChange = (parameters) => {
+    console.log("Parameters changed:", parameters);
+  };
+
   const [promptMetadata, setPromptMetadata] = useState(() => ({
     id: generateUUID(),
     name: "My Prompt",
@@ -66,7 +76,13 @@ export default function App() {
                 {/* <button onClick={() => logout()}>Logout</button> */}
                 <MainContent />
 
-                <BottomBar />
+                {showCompareRerun && (
+                  <CompareRerun onParameterChange={handleParameterChange} />
+                )}
+                <BottomBar
+                  showCompareRerun={showCompareRerun}
+                  toggleCompareRerun={toggleCompareRerun}
+                />
                 {/* <CompareRerun onParameterChange={() => {}}></CompareRerun> */}
                 {/* <BottomInputBox />
               <PutRunSettings /> */}

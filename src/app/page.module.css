@@ -281,9 +281,6 @@
 
 /* Container (for CompareRerun and BottomSettingsMenu */
 .container {
-  position: absolute;
-  bottom: 200px;
-  right: 500px;
   z-index: 100;
   padding: 20px;
   border: 0.5px solid black;

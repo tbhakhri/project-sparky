@@ -4,17 +4,10 @@ import "./PutRunSettings.css";
 import Image from "next/image";
 import CompareRerun from "../CompareRerun/CompareRerun";
 
-export default function PutRunSettings() {
-  const [showCompareRerun, setShowCompareRerun] = useState(false);
-
-  const toggleCompareRerun = () => {
-    setShowCompareRerun(!showCompareRerun);
-  };
-
-  const handleParameterChange = (parameters) => {
-    console.log("Parameters changed:", parameters);
-  };
-
+export default function PutRunSettings({
+  showCompareRerun,
+  toggleCompareRerun,
+}) {
   return (
     <div className="bottombarButtonsContainer">
       <div className="bottombarButtonsTop">
@@ -40,10 +33,6 @@ export default function PutRunSettings() {
           />
         </button>
       </div>
-
-      {showCompareRerun && (
-        <CompareRerun onParameterChange={handleParameterChange} />
-      )}
 
       <button className={styles.iconButton} style={{ width: "100%" }}>
         <Image
