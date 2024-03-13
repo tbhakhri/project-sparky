@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './CompareRerun.css'
 import styles from "@/page.module.css";
 import Image from "next/image";
 
@@ -34,6 +35,7 @@ export default function CompareRerun({ onParameterChange }) {
     setTemperature(value);
     onParameterChange({ topK, topP, temperature: value });
   };
+
 
   return (
     <div className="compareRerunContainer">

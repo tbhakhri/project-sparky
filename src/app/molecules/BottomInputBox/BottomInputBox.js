@@ -1,6 +1,6 @@
 'use client';
 
-import './BottomInputBox.css'
+import './BottomInputBox.css';
 import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
 
