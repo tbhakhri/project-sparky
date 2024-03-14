@@ -19,7 +19,7 @@ export default function PutRunSettings({
     <div className="bottombarButtonsContainer">
       <div className="bottombarButtonsTop">
         <button
-          className={styles.iconButton}
+          className={styles.putruniconButton}
           onClick={handleInputChange}
           style={{ width: "65%" }}
         >
@@ -45,7 +45,7 @@ export default function PutRunSettings({
         </button>
       </div>
 
-      <button className={styles.iconButton} style={{ width: "100%" }}>
+      <button className={styles.putruniconButton} style={{ width: "100%" }}>
         <Image
           src="/run.svg"
           alt="Run"

@@ -1,3 +1,4 @@
+import ChatBubble from "../ChatBubble/ChatBubble";
 import "./MainContent.css";
 import { useData } from "@/molecules/DataContext/DataContext";
 
@@ -6,9 +7,8 @@ export default function MainContent() {
 
   return (
     <div className="mainContentContainer">
-      MAIN CONTENT
       {data.texts.map((text, index) => (
-        <p key={index}>{text}</p>
+        <ChatBubble key={index} text={text} />
       ))}
     </div>
   );
