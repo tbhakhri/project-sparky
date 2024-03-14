@@ -1,0 +1,36 @@
+
+.bubble-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1rem;
+}
+
+.model-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 1rem;
+}
+
+.chatBubble {
+    background-color: #D9D9D9;
+    color: black;
+    padding: 0.5rem 0.5rem;
+    border-radius: 0.75rem;
+    font-size: 0.65rem;
+    max-width: 18rem;
+    text-align: right;
+    margin-bottom: 0.5rem;
+}
+
+.modelBubble {
+    background-color: #1A2F59;
+    color: white;
+    padding: 0.5rem 0.5rem;
+    border-radius: 0.75rem;
+    font-size: 0.65rem;
+    max-width: 18rem;
+    text-align: left;
+    margin-bottom: 0.5rem;
+}

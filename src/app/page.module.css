@@ -262,8 +262,8 @@
 .slider {
   -webkit-appearance: none;
   appearance: none;
-  height: 8px;
-  width: 50%;
+  height: 0.3rem;
+  width: 40%;
   background: #1a3059;
   border: none;
   outline: none;
@@ -274,8 +274,8 @@
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 15px;
-  width: 15px;
+  height: 10px;
+  width: 10px;
   border-radius: 15px;
   background: #1a3059;
 }
@@ -283,7 +283,9 @@
 /* Container (for CompareRerun and BottomSettingsMenu */
 .container {
   z-index: 100px;
-  padding: 15px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-left: 50%;
   border: 0.5px solid black;
   /* width: 400px; I'm thinking we can specify this in styles for each container */
   
@@ -292,17 +294,12 @@
   background: white;
 }
 
-.compareRerunContainer {
-  
-  position: relative;
-}
-
 .sliderContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: black;
-  font-size: 0.7rem;
+  font-size: 0.5rem;
 }
 
 .spacing {
@@ -312,8 +309,8 @@
 .buttonsContainer {
   display: flex;
   justify-content: space-around;
-  padding-bottom: 0.5rem;
-}
+  padding-bottom: 0.3rem;
+} 
 
 .buttonContainer {
   background: #1a3059;
@@ -328,20 +325,15 @@
   background-color: rgba(217, 217, 217, 1);
   color: black;
   border-radius: 5px;
-  padding: 0.4rem 0.6rem 0.4rem 0.6rem;
+  width: 2rem;
+  padding: 0.2rem 0.4rem 0.2rem 0.4rem;
+  text-align: right;
 }
 
-.valueLabel {
-  min-width: 30px; /* Ensure enough room for the number */
-  text-align: right; /* Text-align to the right in the given space */
-  color: #333; /* Example color */
-  font-size: 16px; /* Example font size */
-  margin-left: 8px; /* To give some spacing from the slider */
-}
 
 /* Icon Buttons */
 
-.iconButton {
+.putruniconButton {
   flex-shrink: 0;
   border-radius: 20px;
   background-color: #1a3059;
@@ -356,18 +348,18 @@
   cursor: pointer;
 }
 
-.putruniconButton {
+.comparererunIconButton {
   flex-shrink: 0;
   border-radius: 20px;
   background-color: #1a3059;
   border: none;
   color: white;
-  padding: 5px 0px;
+  padding: 4px 0px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   text-decoration: none;
-  font-size: 0.4rem;
+  font-size: 0.5rem;
   cursor: pointer;
 }
 

@@ -10,6 +10,8 @@ import BottomInputBox from "@/molecules/BottomInputBox/BottomInputBox";
 import TopBar from "@/molecules/TopBar/TopBar";
 import MainContent from "@/molecules/MainContent/MainContent";
 import BottomBar from "@/molecules/BottomBar/BottomBar";
+import ChatBubble from "@/molecules/ChatBubble/ChatBubble";
+import ModelBubble from "@/molecules/ChatBubble/ModelBubble";
 
 export default function App() {
   const { user, logout, authReady } = useContext(AuthContext);
@@ -75,6 +77,8 @@ export default function App() {
                 {/* TODO: MOVE THIS INTO THE TOP BAR MAYBE */}
                 {/* <button onClick={() => logout()}>Logout</button> */}
                 <MainContent />
+                <ChatBubble />
+                <ModelBubble />
 
                 {showCompareRerun && (
                   <CompareRerun onParameterChange={handleParameterChange} />

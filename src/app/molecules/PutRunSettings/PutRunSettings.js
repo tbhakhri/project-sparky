@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "@/page.module.css";
 import "./PutRunSettings.css";
 import Image from "next/image";
-import CompareRerun from "../CompareRerun/CompareRerun";
 
 export default function PutRunSettings({
   showCompareRerun,
@@ -11,7 +10,7 @@ export default function PutRunSettings({
   return (
     <div className="bottombarButtonsContainer">
       <div className="bottombarButtonsTop">
-        <button className={styles.iconButton} style={{ width: "65%" }}>
+        <button className={styles.putruniconButton} style={{ width: "65%" }}>
           <Image
             src="/put.svg"
             alt="Put"
@@ -34,7 +33,7 @@ export default function PutRunSettings({
         </button>
       </div>
 
-      <button className={styles.iconButton} style={{ width: "100%" }}>
+      <button className={styles.putruniconButton} style={{ width: "100%" }}>
         <Image
           src="/run.svg"
           alt="Run"
