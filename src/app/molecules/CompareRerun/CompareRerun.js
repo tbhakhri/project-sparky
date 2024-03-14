@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import styles from "@/page.module.css";
 import Image from "next/image";
-import { Kumbh_Sans } from 'next/font/google'
- 
-const kumbh_sans = Kumbh_Sans({ subsets: ['latin'] })
+import { Kumbh_Sans } from "next/font/google";
 
+const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] });
 
 export default function CompareRerun({ onParameterChange }) {
   const defaultK = 50;
@@ -39,14 +38,16 @@ export default function CompareRerun({ onParameterChange }) {
     onParameterChange({ topK, topP, temperature: value });
   };
 
-
   return (
     <div className="compareRerunContainer">
       <div className={styles.container} style={{ width: "85%" }}>
         <div className={styles.buttonsContainer}>
-          <button className={styles.comparererunIconButton} style={{ width: "40%" }}>
+          <button
+            className={styles.comparererunIconButton}
+            style={{ width: "40%" }}
+          >
             <Image
-              src="/compare.svg"
+              src="compare.svg"
               alt="Compare Icon"
               width={10}
               height={10}
@@ -54,7 +55,10 @@ export default function CompareRerun({ onParameterChange }) {
             />{" "}
             <div className={kumbh_sans.className}>Compare</div>
           </button>
-          <button className={styles.comparererunIconButton} style={{ width: "40%" }}>
+          <button
+            className={styles.comparererunIconButton}
+            style={{ width: "40%" }}
+          >
             <Image
               src="/rerun.svg"
               alt="Rerun Icon"
