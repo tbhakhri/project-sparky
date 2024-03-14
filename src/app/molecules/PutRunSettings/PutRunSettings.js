@@ -2,16 +2,27 @@ import React, { useState } from "react";
 import styles from "@/page.module.css";
 import "./PutRunSettings.css";
 import Image from "next/image";
-import CompareRerun from "../CompareRerun/CompareRerun";
+import { useData } from "@/molecules/DataContext/DataContext";
 
 export default function PutRunSettings({
   showCompareRerun,
   toggleCompareRerun,
 }) {
+  const { addText, clearCurrText } = useData();
+
+  const handleInputChange = (e) => {
+    addText();
+    clearCurrText();
+  };
+
   return (
     <div className="bottombarButtonsContainer">
       <div className="bottombarButtonsTop">
-        <button className={styles.iconButton} style={{ width: "65%" }}>
+        <button
+          className={styles.iconButton}
+          onClick={handleInputChange}
+          style={{ width: "65%" }}
+        >
           <Image
             src="/put.svg"
             alt="Put"

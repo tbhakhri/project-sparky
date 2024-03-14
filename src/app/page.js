@@ -5,11 +5,10 @@ import styles from "@/page.module.css";
 import { useContext, useState } from "react";
 import { redirect } from "next/navigation";
 import CompareRerun from "@/molecules/CompareRerun/CompareRerun";
-import PutRunSettings from "@/molecules/PutRunSettings/PutRunSettings";
-import BottomInputBox from "@/molecules/BottomInputBox/BottomInputBox";
 import TopBar from "@/molecules/TopBar/TopBar";
 import MainContent from "@/molecules/MainContent/MainContent";
 import BottomBar from "@/molecules/BottomBar/BottomBar";
+import { DataProvider } from "@/molecules/DataContext/DataContext";
 
 export default function App() {
   const { user, logout, authReady } = useContext(AuthContext);
@@ -71,21 +70,23 @@ export default function App() {
           ) : (
             <>
               <>
-                <TopBar />
-                {/* TODO: MOVE THIS INTO THE TOP BAR MAYBE */}
-                {/* <button onClick={() => logout()}>Logout</button> */}
-                <MainContent />
+                <DataProvider>
+                  <TopBar />
+                  {/* TODO: MOVE THIS INTO THE TOP BAR MAYBE */}
+                  {/* <button onClick={() => logout()}>Logout</button> */}
+                  <MainContent />
 
-                {showCompareRerun && (
-                  <CompareRerun onParameterChange={handleParameterChange} />
-                )}
-                <BottomBar
-                  showCompareRerun={showCompareRerun}
-                  toggleCompareRerun={toggleCompareRerun}
-                />
-                {/* <CompareRerun onParameterChange={() => {}}></CompareRerun> */}
-                {/* <BottomInputBox />
+                  {showCompareRerun && (
+                    <CompareRerun onParameterChange={handleParameterChange} />
+                  )}
+                  <BottomBar
+                    showCompareRerun={showCompareRerun}
+                    toggleCompareRerun={toggleCompareRerun}
+                  />
+                  {/* <CompareRerun onParameterChange={() => {}}></CompareRerun> */}
+                  {/* <BottomInputBox />
               <PutRunSettings /> */}
+                </DataProvider>
               </>
             </>
             /*
