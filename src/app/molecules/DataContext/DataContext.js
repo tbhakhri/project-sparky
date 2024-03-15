@@ -15,6 +15,14 @@ export const DataProvider = ({ children }) => {
     }));
   };
 
+  const isEmpty = () => {
+    if (data.currText != "") {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const clearCurrText = () => {
     updateData({ currText: "" });
   };
@@ -24,7 +32,9 @@ export const DataProvider = ({ children }) => {
   };
 
   return (
-    <DataContext.Provider value={{ data, addText, clearCurrText, updateData }}>
+    <DataContext.Provider
+      value={{ data, addText, clearCurrText, updateData, isEmpty }}
+    >
       {children}
     </DataContext.Provider>
   );

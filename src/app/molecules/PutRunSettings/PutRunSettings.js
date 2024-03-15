@@ -2,17 +2,19 @@ import React, { useState } from "react";
 import styles from "@/page.module.css";
 import "./PutRunSettings.css";
 import Image from "next/image";
-import { useData } from "@/molecules/DataContext/DataContext";
+import { data, useData } from "@/molecules/DataContext/DataContext";
 
 export default function PutRunSettings({
   showCompareRerun,
   toggleCompareRerun,
 }) {
-  const { addText, clearCurrText } = useData();
+  const { isEmpty, addText, clearCurrText } = useData();
 
   const handleInputChange = (e) => {
-    addText();
-    clearCurrText();
+    if (!isEmpty()) {
+      addText();
+      clearCurrText();
+    }
   };
 
   return (
