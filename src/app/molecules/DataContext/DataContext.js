@@ -15,7 +15,7 @@ export const DataProvider = ({ children }) => {
   const [data, setData] = useState({
     chatBubbles: [],
     currText: "",
-    uploadedImages: [],
+    currImages: [],
   });
 
   const addUserText = () => {
@@ -42,24 +42,47 @@ export const DataProvider = ({ children }) => {
     }));
   };
 
-  const addImage = (imageURL) => {
-    console.log("addImage!!");
+  const addImage = (src) => {
     setData((prevData) => ({
       ...prevData,
-      chatBubbles: [...prevData.chatBubbles, new chatBubble("image", imageURL)],
+      currImages: [...prevData.currImages, src],
     }));
   };
 
-  const isEmpty = () => {
-    if (data.currText != "") {
-      return false;
-    } else {
+  const addImages = () => {
+    for (let i = 0, len = data.currImages.length; i < len; i++) {
+      setData((prevData) => ({
+        ...prevData,
+        chatBubbles: [
+          ...prevData.chatBubbles,
+          new chatBubble("image", data.currImages[i]),
+        ],
+      }));
+    }
+  };
+
+  const textEmpty = () => {
+    if (data.currText == "") {
       return true;
+    } else {
+      return false;
+    }
+  };
+
+  const imageEmpty = () => {
+    if (data.currImages.length == 0) {
+      return true;
+    } else {
+      return false;
     }
   };
 
   const clearCurrText = () => {
     updateData({ currText: "" });
+  };
+
+  const clearCurrImages = () => {
+    updateData({ currImages: [] });
   };
 
   const updateData = (newData) => {
@@ -74,8 +97,11 @@ export const DataProvider = ({ children }) => {
         addResponseText,
         clearCurrText,
         updateData,
-        isEmpty,
+        imageEmpty,
+        textEmpty,
         addImage,
+        addImages,
+        clearCurrImages,
       }}
     >
       {children}

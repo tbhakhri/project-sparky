@@ -8,21 +8,41 @@ export default function PutRunSettings({
   showCompareRerun,
   toggleCompareRerun,
 }) {
-  const { isEmpty, addUserText, addResponseText, clearCurrText } = useData();
+  const {
+    textEmpty,
+    imageEmpty,
+    addUserText,
+    addResponseText,
+    addImages,
+    clearCurrText,
+    clearCurrImages,
+  } = useData();
 
-  const handleInputChange = (e) => {
-    if (!isEmpty()) {
+  const handlePutButton = (e) => {
+    if (!textEmpty()) {
       addUserText();
       clearCurrText();
+    }
+    if (!imageEmpty()) {
+      addImages();
+      clearCurrImages();
     }
   };
 
   const handleRunButton = (e) => {
-    if (!isEmpty()) {
+    if (!textEmpty()) {
       addUserText();
       clearCurrText();
     }
-    addResponseText();
+    if (!imageEmpty()) {
+      addImages();
+      clearCurrImages();
+    }
+    if (!imageEmpty() || !textEmpty()) {
+      console.log(!imageEmpty());
+      console.log(!textEmpty());
+      addResponseText();
+    }
   };
 
   return (
@@ -30,7 +50,7 @@ export default function PutRunSettings({
       <div className="bottombarButtonsTop">
         <button
           className={styles.putruniconButton}
-          onClick={handleInputChange}
+          onClick={handlePutButton}
           style={{ width: "65%" }}
         >
           <Image

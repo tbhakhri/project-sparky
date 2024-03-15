@@ -6,8 +6,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useData } from "@/molecules/DataContext/DataContext";
 
 export default function BottomInputBox() {
-  const [text, setText] = React.useState("");
-  const [uploadedImages, setUploadedImages] = useState([]);
+  const [text, setText] = useState("");
   const [tokenCount, setTokenCount] = useState(0);
   const videoRef = useRef(null);
   const { data, updateData, addImage } = useData();
@@ -22,7 +21,7 @@ export default function BottomInputBox() {
     if (mainContainer) {
       mainContainer.style.height = `auto`;
     }
-  }, [uploadedImages, text]);
+  }, [data.currImages, text]);
 
   const handleInputChange = (e) => {
     setText(e.target.value);
@@ -30,7 +29,7 @@ export default function BottomInputBox() {
   };
 
   useEffect(() => {
-    setTokenCount(text.length + 100 * uploadedImages.length);
+    setTokenCount(text.length + 100 * data.currImages.length);
     // Update the display/UI accordingly
   }, [text]);
 
@@ -42,7 +41,6 @@ export default function BottomInputBox() {
       const fileArray = Array.from(files).map((file) =>
         URL.createObjectURL(file)
       );
-      setUploadedImages((prevImages) => [...prevImages, ...fileArray]);
       addImage(fileArray[fileArray.length - 1]);
     }
   };
@@ -128,7 +126,7 @@ export default function BottomInputBox() {
             />
         </div> */}
       <div className="image_preview_container">
-        {uploadedImages.map((imageSrc, index) => (
+        {data.currImages.map((imageSrc, index) => (
           <div
             key={index}
             className="image_preview"

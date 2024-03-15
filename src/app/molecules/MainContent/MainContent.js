@@ -14,11 +14,7 @@ export default function MainContent() {
       case "response":
         return <ModelBubble />;
       case "image":
-        return (
-          <div style={{ width: "100%", height: "100%", position: "relative" }}>
-            <Image src={item.text} />
-          </div>
-        );
+        return <Image src={item.text} height={100} width={100} />;
       default:
         return null; // Or a default component if you have one
     }
