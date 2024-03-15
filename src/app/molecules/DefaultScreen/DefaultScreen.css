@@ -1,34 +1,31 @@
-.ideaBoxContainer {
-    display: flex;
-    flex-wrap: wrap;
-    /* Center items horizontally */
-    position: relative; 
+.defaultScreenContainer {
     width: 100%;
-    bottom: 0;
-    margin-top: 60%;
-    
-    /* padding: 10px; */
-    /* padding-right: 10px; */
-    
-}
-
-.ideaBoxItem {
-    flex: 1 0 50%;
-    box-sizing: border-box; /* Include padding and border in the total width */
+    height: 100%;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3px;
-    
-   
-  }
+}
 
 .introText {
     color: #FFFFFF;
     font-size: 15px;
     font-family: Kumbh Sans;
-    align-text: center;
     align-items: center;
-    margin-top: 200px;
-    padding-left: 100px;
-    padding-right: 10px;
+    /* shifts the text upwards; may need to adjust this padding-bottom */
+    padding-bottom: 40%; 
+}
+
+.ideaBoxContainer {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    bottom: 0;
+}
+
+.ideaBoxItem {
+    flex: 1 0 50%;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
 }

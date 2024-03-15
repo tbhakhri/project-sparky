@@ -13,7 +13,7 @@
 
 @media screen and (min-width: 768px) {
   .mobileContainer {
-    height: 80%;
+    height: 80vh;
     width: 40%;
     max-width: 430px;
     border: 2px solid black;
