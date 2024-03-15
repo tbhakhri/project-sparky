@@ -12,7 +12,11 @@ export const DataProvider = ({ children }) => {
     }
   }
 
-  const [data, setData] = useState({ chatBubbles: [], currText: "" });
+  const [data, setData] = useState({
+    chatBubbles: [],
+    currText: "",
+    uploadedImages: [],
+  });
 
   const addUserText = () => {
     setData((prevData) => ({
@@ -35,6 +39,14 @@ export const DataProvider = ({ children }) => {
           "This is a DUMMY RESPONSE to the user's message!!"
         ),
       ],
+    }));
+  };
+
+  const addImage = (imageURL) => {
+    console.log("addImage!!");
+    setData((prevData) => ({
+      ...prevData,
+      chatBubbles: [...prevData.chatBubbles, new chatBubble("image", imageURL)],
     }));
   };
 
@@ -63,6 +75,7 @@ export const DataProvider = ({ children }) => {
         clearCurrText,
         updateData,
         isEmpty,
+        addImage,
       }}
     >
       {children}

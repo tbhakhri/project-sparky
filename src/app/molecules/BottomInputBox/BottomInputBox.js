@@ -10,7 +10,7 @@ export default function BottomInputBox() {
   const [uploadedImages, setUploadedImages] = useState([]);
   const [tokenCount, setTokenCount] = useState(0);
   const videoRef = useRef(null);
-  const { data, updateData } = useData();
+  const { data, updateData, addImage } = useData();
 
   useEffect(() => {
     setText(data.currText);
@@ -43,7 +43,7 @@ export default function BottomInputBox() {
         URL.createObjectURL(file)
       );
       setUploadedImages((prevImages) => [...prevImages, ...fileArray]);
-      updateData({ uploadedImages: e.target.files });
+      addImage(fileArray[fileArray.length - 1]);
     }
   };
 
