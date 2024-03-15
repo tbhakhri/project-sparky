@@ -16,6 +16,7 @@ export const DataProvider = ({ children }) => {
     chatBubbles: [],
     currText: "",
     currImages: [],
+    readyToGenerate: false,
   });
 
   const addUserText = () => {
@@ -26,6 +27,11 @@ export const DataProvider = ({ children }) => {
         new chatBubble("user", prevData.currText),
       ],
       currText: "",
+    }));
+
+    setData((prevData) => ({
+      ...prevData,
+      readyToGenerate: true,
     }));
   };
 
@@ -39,6 +45,11 @@ export const DataProvider = ({ children }) => {
           "This is a DUMMY RESPONSE to the user's message!!"
         ),
       ],
+    }));
+
+    setData((prevData) => ({
+      ...prevData,
+      readyToGenerate: false,
     }));
   };
 
@@ -59,6 +70,11 @@ export const DataProvider = ({ children }) => {
         ],
       }));
     }
+
+    setData((prevData) => ({
+      ...prevData,
+      readyToGenerate: true,
+    }));
   };
 
   const textEmpty = () => {
@@ -89,6 +105,10 @@ export const DataProvider = ({ children }) => {
     setData((prev) => ({ ...prev, ...newData }));
   };
 
+  const readyToGenerate = () => {
+    return data.readyToGenerate;
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -102,6 +122,7 @@ export const DataProvider = ({ children }) => {
         addImage,
         addImages,
         clearCurrImages,
+        readyToGenerate,
       }}
     >
       {children}

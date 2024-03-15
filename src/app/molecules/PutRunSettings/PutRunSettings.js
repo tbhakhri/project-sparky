@@ -16,6 +16,7 @@ export default function PutRunSettings({
     addImages,
     clearCurrText,
     clearCurrImages,
+    readyToGenerate,
   } = useData();
 
   const handlePutButton = (e) => {
@@ -38,9 +39,7 @@ export default function PutRunSettings({
       addImages();
       clearCurrImages();
     }
-    if (!imageEmpty() || !textEmpty()) {
-      console.log(!imageEmpty());
-      console.log(!textEmpty());
+    if (readyToGenerate()) {
       addResponseText();
     }
   };
