@@ -10,7 +10,7 @@ import BottomBar from "@/molecules/BottomBar/BottomBar";
 
 
 export default function App() {
-  const { user, logout, authReady } = useContext(AuthContext)
+  const { user, authReady } = useContext(AuthContext)
   
   const [promptMetadata, setPromptMetadata] = useState(() => ({
     id: generateUUID(),

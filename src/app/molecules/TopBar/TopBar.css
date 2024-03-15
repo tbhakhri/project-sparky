@@ -9,6 +9,14 @@
     left: 20px;
 }
 
+.logoutButton {
+    position: absolute;
+    border: none; 
+    background-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+    left: 50px;
+}
+
 .topBarContainer {
     position: relative;
     flex-grow: 0;
