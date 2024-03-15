@@ -23,7 +23,6 @@ export const DataProvider = ({ children }) => {
   const [modelIndex, setModelIndex] = useState(0);
 
   const addUserText = () => {
-    console.log(userIndex);
     setData((prevData) => ({
       ...prevData,
       chatBubbles: [
@@ -73,9 +72,10 @@ export const DataProvider = ({ children }) => {
         ...prevData,
         chatBubbles: [
           ...prevData.chatBubbles,
-          new chatBubble("image", data.currImages[i]),
+          new chatBubble("image", data.currImages[i], userIndex),
         ],
       }));
+      setUserIndex(userIndex + 1);
     }
 
     setData((prevData) => ({
