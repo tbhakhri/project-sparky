@@ -8,10 +8,13 @@ export default function MainContent() {
 
   return (
     <div className="mainContentContainer">
-      {data.texts.map((text, index) => (
-        <ChatBubble key={index} text={text} />
-      ))}
-      <ModelBubble/>
+      {data.chatBubbles.map((chatBubble, index) =>
+        chatBubble.type == "user" ? (
+          <ChatBubble key={index} text={chatBubble.text} />
+        ) : (
+          <ModelBubble />
+        )
+      )}
     </div>
   );
 }

@@ -5,13 +5,36 @@ const DataContext = createContext();
 export const useData = () => useContext(DataContext);
 
 export const DataProvider = ({ children }) => {
-  const [data, setData] = useState({ texts: [], currText: "" });
+  class chatBubble {
+    constructor(type, text) {
+      this.type = type;
+      this.text = text;
+    }
+  }
 
-  const addText = () => {
+  const [data, setData] = useState({ chatBubbles: [], currText: "" });
+
+  const addUserText = () => {
     setData((prevData) => ({
       ...prevData,
-      texts: [...prevData.texts, prevData.currText],
+      chatBubbles: [
+        ...prevData.chatBubbles,
+        new chatBubble("user", prevData.currText),
+      ],
       currText: "",
+    }));
+  };
+
+  const addResponseText = () => {
+    setData((prevData) => ({
+      ...prevData,
+      chatBubbles: [
+        ...prevData.chatBubbles,
+        new chatBubble(
+          "response",
+          "This is a DUMMY RESPONSE to the user's message!!"
+        ),
+      ],
     }));
   };
 
@@ -33,7 +56,14 @@ export const DataProvider = ({ children }) => {
 
   return (
     <DataContext.Provider
-      value={{ data, addText, clearCurrText, updateData, isEmpty }}
+      value={{
+        data,
+        addUserText,
+        addResponseText,
+        clearCurrText,
+        updateData,
+        isEmpty,
+      }}
     >
       {children}
     </DataContext.Provider>

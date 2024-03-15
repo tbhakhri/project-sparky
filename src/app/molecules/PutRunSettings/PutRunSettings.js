@@ -8,13 +8,17 @@ export default function PutRunSettings({
   showCompareRerun,
   toggleCompareRerun,
 }) {
-  const { isEmpty, addText, clearCurrText } = useData();
+  const { isEmpty, addUserText, addResponseText, clearCurrText } = useData();
 
   const handleInputChange = (e) => {
     if (!isEmpty()) {
-      addText();
+      addUserText();
       clearCurrText();
     }
+  };
+
+  const handleRunButton = (e) => {
+    addResponseText();
   };
 
   return (
@@ -47,7 +51,11 @@ export default function PutRunSettings({
         </button>
       </div>
 
-      <button className={styles.putruniconButton} style={{ width: "100%" }}>
+      <button
+        className={styles.putruniconButton}
+        onClick={handleRunButton}
+        style={{ width: "100%" }}
+      >
         <Image
           src="/run.svg"
           alt="Run"
