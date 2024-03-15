@@ -26,7 +26,7 @@ export default function MainContent() {
         chatBubble.type == "user" ? (
           <ChatBubble text={chatBubble.text} />
         ) : (
-          <ModelBubble />
+          <ModelBubble index={chatBubble.index} />
         )
       )} */}
       {data.chatBubbles.map(renderBubble)}
