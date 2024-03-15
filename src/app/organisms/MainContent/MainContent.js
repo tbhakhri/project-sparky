@@ -1,7 +1,7 @@
-import ChatBubble from "../ChatBubble/ChatBubble";
-import ModelBubble from "../ChatBubble/ModelBubble";
-import ImageBubble from "../ChatBubble/ImageBubble";
 import "./MainContent.css";
+import ChatBubble from "@/molecules/ChatBubble/ChatBubble";
+import ModelBubble from "@/molecules/ChatBubble/ModelBubble";
+import ImageBubble from "@/molecules/ChatBubble/ImageBubble";
 import { useData } from "@/molecules/DataContext/DataContext";
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen";
 

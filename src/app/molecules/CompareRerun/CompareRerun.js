@@ -6,15 +6,15 @@ import { Kumbh_Sans } from "next/font/google";
 const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] });
 
 export default function CompareRerun({ onParameterChange }) {
-  const defaultK = 50;
+  const defaultK = 1;
   const defaultP = 1.0;
-  const defaultTemp = 0.7;
+  const defaultTemp = 0.9;
   const minTopK = 1;
   const minTopP = 0.0;
   const minTemp = 0.0;
   const maxTopK = 100;
   const maxTopP = 1.0;
-  const maxTemp = 2.0;
+  const maxTemp = 1.0;
 
   const [topK, setTopK] = useState(defaultK);
   const [topP, setTopP] = useState(defaultP);
@@ -82,7 +82,7 @@ export default function CompareRerun({ onParameterChange }) {
             onChange={handleTopKChange}
           />
           <div className={styles.values}>
-            <label className="valueLabel">{topK.toFixed(1)}</label>
+            <label className="valueLabel">{topK.toFixed(0)}</label>
           </div>
         </div>
 

@@ -4,21 +4,20 @@ import AuthContext from "../../contexts/authContext";
 import styles from "@/page.module.css";
 import { useContext, useState } from "react";
 import { redirect } from "next/navigation";
-import CompareRerun from "@/molecules/CompareRerun/CompareRerun";
-import TopBar from "@/molecules/TopBar/TopBar";
-import MainContent from "@/molecules/MainContent/MainContent";
-import BottomBar from "@/molecules/BottomBar/BottomBar";
+// import CompareRerun from "@/molecules/CompareRerun/CompareRerun";
+import TopBar from "@/organisms/TopBar/TopBar";
+import MainContent from "@/organisms/MainContent/MainContent";
+import BottomBar from "@/organisms/BottomBar/BottomBar";
 import { DataProvider } from "@/molecules/DataContext/DataContext";
-import ChatBubble from "@/molecules/ChatBubble/ChatBubble";
-import ModelBubble from "@/molecules/ChatBubble/ModelBubble";
+import ParamsMenu from "@/molecules/ParamsMenu/ParamsMenu";
 
 export default function App() {
   const { user, authReady } = useContext(AuthContext)
   
-  const [showCompareRerun, setShowCompareRerun] = useState(false);
+  const [showParamsMenu, setShowParamsMenu] = useState(false);
 
-  const toggleCompareRerun = () => {
-    setShowCompareRerun(!showCompareRerun);
+  const toggleParamsMenu = () => {
+    setShowParamsMenu(!showParamsMenu);
   };
 
   const handleParameterChange = (parameters) => {
@@ -75,12 +74,12 @@ export default function App() {
                 <DataProvider>
                   <TopBar />
                   <MainContent />
-                  {showCompareRerun && (
-                    <CompareRerun onParameterChange={handleParameterChange} />
+                  {showParamsMenu && (
+                    <ParamsMenu onParameterChange={handleParameterChange} />
+                    // <CompareRerun onParameterChange={handleParameterChange} />
                   )}
                   <BottomBar
-                    showCompareRerun={showCompareRerun}
-                    toggleCompareRerun={toggleCompareRerun}
+                    toggleParamsMenu={toggleParamsMenu}
                   />
 
                 </DataProvider>
