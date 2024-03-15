@@ -21,7 +21,7 @@
     left: 50%; /* Center the image horizontally */
     transform: translateX(-50%); /* Align center of the image with the center of the box */
     width: 100%; /* Adjust width as necessary, can be less than 100% if the image is too wide */
-    z-index: 1;
+    z-index: 0;
     margin-top: 13px;
 }
 

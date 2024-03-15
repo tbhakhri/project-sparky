@@ -39,7 +39,7 @@ export default function CompareRerun({ onParameterChange }) {
   };
 
   return (
-    <div className="compareRerunContainer">
+    <div className="compareRerunContainer" style={{position: 'absolute', bottom: '80px'}}>
       <div className={styles.container} style={{ width: "85%" }}>
         <div className={styles.buttonsContainer}>
           <button

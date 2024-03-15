@@ -22,6 +22,8 @@ export const DataProvider = ({ children }) => {
   const [userIndex, setUserIndex] = useState(0);
   const [modelIndex, setModelIndex] = useState(0);
 
+  console.log(data.chatBubbles);
+
   const addUserText = () => {
     setData((prevData) => ({
       ...prevData,
@@ -36,7 +38,7 @@ export const DataProvider = ({ children }) => {
       ...prevData,
       readyToGenerate: true,
     }));
-    setUserIndex(userIndex + 1);
+    setUserIndex((prev) => prev + 1);
   };
 
   const addResponseText = () => {
@@ -83,7 +85,7 @@ export const DataProvider = ({ children }) => {
           new chatBubble("image", data.currImages[i], userIndex),
         ],
       }));
-      setUserIndex(userIndex + 1);
+      setUserIndex((prev) => prev + 1);
     }
 
     setData((prevData) => ({

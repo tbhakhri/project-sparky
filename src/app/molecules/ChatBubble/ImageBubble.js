@@ -8,9 +8,9 @@ export default function ImageBubble({ imageURL, index }) {
   return (
     <div className="bubble-container">
       <div style={{ width: "100px", position: "relative" }}>
-        <div className={kumbh_sans.className}>
+        {/* <div className={kumbh_sans.className}>
           {index == 0 && <p className="userText">User</p>}
-        </div>
+        </div> */}
         <Image
           src={imageURL}
           alt="added image"

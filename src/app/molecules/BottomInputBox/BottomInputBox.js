@@ -278,7 +278,7 @@ export default function BottomInputBox() {
                 {tokenCount}/12888 
             </div>
             <div className="bottom_icon_positioning">
-                <Image src="/camera.svg" alt="camera" className="icon" onClick={handleCameraCapture} width={10} height={10}/>
+                <Image src="/camera.svg" alt="camera" className="icon" width={10} height={10}/>
                 {/* <video ref={videoRef} autoPlay muted style={{ display: 'none' }} /> */}
                 {/* <label htmlFor="cameraInput">
                             <Image   src={cameraIcon} alt="camera" className="icon" />
