@@ -1,5 +1,6 @@
 import ChatBubble from "../ChatBubble/ChatBubble";
 import ModelBubble from "../ChatBubble/ModelBubble";
+import ImageBubble from "../ChatBubble/ImageBubble";
 import "./MainContent.css";
 import { useData } from "@/molecules/DataContext/DataContext";
 import Image from "next/image";
@@ -14,11 +15,7 @@ export default function MainContent() {
       case "response":
         return <ModelBubble />;
       case "image":
-        return (
-          <div style={{ width: "100%", height: "100%", position: "relative" }}>
-            <Image src={item.text} />
-          </div>
-        );
+        return <ImageBubble imageURL={item.text}/>;
       default:
         return null; // Or a default component if you have one
     }
