@@ -10,9 +10,9 @@ export default function MainContent() {
     <div className="mainContentContainer">
       {data.chatBubbles.map((chatBubble, index) =>
         chatBubble.type == "user" ? (
-          <ChatBubble key={index} text={chatBubble.text} />
+          <ChatBubble text={chatBubble.text} index={chatBubble.index} />
         ) : (
-          <ModelBubble />
+          <ModelBubble index={chatBubble.index} />
         )
       )}
     </div>
