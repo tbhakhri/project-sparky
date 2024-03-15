@@ -10,9 +10,9 @@ export default function MainContent() {
   const renderBubble = (item) => {
     switch (item.type) {
       case "user":
-        return <ChatBubble text={item.text} />;
+        return <ChatBubble text={item.text} index={item.index} />;
       case "response":
-        return <ModelBubble />;
+        return <ModelBubble index={item.index} />;
       case "image":
         return <Image src={item.text} height={100} width={100} />;
       default:
@@ -24,7 +24,7 @@ export default function MainContent() {
     <div className="mainContentContainer">
       {/* {data.chatBubbles.map((chatBubble, index) =>
         chatBubble.type == "user" ? (
-          <ChatBubble text={chatBubble.text} />
+          <ChatBubble text={chatBubble.text} index={chatBubble.index} />
         ) : (
           <ModelBubble index={chatBubble.index} />
         )

@@ -6,9 +6,10 @@ export const useData = () => useContext(DataContext);
 
 export const DataProvider = ({ children }) => {
   class chatBubble {
-    constructor(type, text) {
+    constructor(type, text, index) {
       this.type = type;
       this.text = text;
+      this.index = index;
     }
   }
 
@@ -18,13 +19,16 @@ export const DataProvider = ({ children }) => {
     currImages: [],
     readyToGenerate: false,
   });
+  const [userIndex, setUserIndex] = useState(0);
+  const [modelIndex, setModelIndex] = useState(0);
 
   const addUserText = () => {
+    console.log(userIndex);
     setData((prevData) => ({
       ...prevData,
       chatBubbles: [
         ...prevData.chatBubbles,
-        new chatBubble("user", prevData.currText),
+        new chatBubble("user", prevData.currText, userIndex),
       ],
       currText: "",
     }));
@@ -33,6 +37,7 @@ export const DataProvider = ({ children }) => {
       ...prevData,
       readyToGenerate: true,
     }));
+    setUserIndex(userIndex + 1);
   };
 
   const addResponseText = () => {
@@ -42,7 +47,8 @@ export const DataProvider = ({ children }) => {
         ...prevData.chatBubbles,
         new chatBubble(
           "response",
-          "This is a DUMMY RESPONSE to the user's message!!"
+          "This is a DUMMY RESPONSE to the user's message!!",
+          modelIndex
         ),
       ],
     }));
@@ -51,6 +57,7 @@ export const DataProvider = ({ children }) => {
       ...prevData,
       readyToGenerate: false,
     }));
+    setModelIndex(modelIndex + 1);
   };
 
   const addImage = (src) => {
