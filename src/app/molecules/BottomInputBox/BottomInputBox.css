@@ -55,7 +55,7 @@ textarea[type="text"] {
     box-sizing: border-box;
     vertical-align: top;
     height: auto;
-    color: red;
+    color: purple;
 }
 
 
@@ -111,7 +111,7 @@ input:focus {
     margin-bottom: 5px;
     max-height: 100px;
     flex: 1; /* Ensure the text_container_text takes up the entire width */
-    /* resize: none; */
+    resize: none;
     border: none;
     
    
@@ -140,7 +140,7 @@ input:focus {
     margin-left: 7px;
     margin-top: -10px;
     margin-right: 8px;
-    border: 1px solid red;
+    border: 1px solid green;
 
 }
 
@@ -189,30 +189,8 @@ input:focus {
     width: 50%;
 }
 
-.image_preview_container {
-    display: flex;
-    flex-wrap: wrap; /* Allows items to wrap to the next line */
-    gap: 0px; /* Adjust the space between images */
-    justify-content: flex-start; /* Aligns items to the start of the container */
-}
 
-.image_preview {
-    flex: 0 0 45%; /* Do not grow, do not shrink, start at 50% width of the parent container */
-    display: flex;
-    justify-content: center; /* Center the image within the .image_preview */
-}
 
-.image_preview img {
-    width: 100%; /* Make the image fill the container */
-    max-width: 100%; /* Ensure the image is not larger than the container */
-    height: auto; /* Maintain aspect ratio */
-    padding: 3px;
-    /* border: 1px solid rgb(208, 208, 208); */
-    box-shadow: 0px 0px 2px rgba(166, 166, 166, 0.5);
-    border-radius: 4px;
-    margin-bottom: 10px;
-    margin-top: 5px;
-}
 
 .temp_text_container {
     display: flex;
@@ -225,4 +203,50 @@ input:focus {
     min-height: 25px;
     max-height: 100px;
     /* Additional styles for the div elements if needed */
+}
+
+
+.image_preview_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.image_preview {
+    position: relative; /* This is necessary for absolute positioning of the delete button */
+    margin: 5px; /* Adjust margin as needed */
+    overflow: hidden; /* Ensures the image doesn't overflow its container */
+    width:  50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+}
+
+.delete_image_button {
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    top: 2px;
+    right: 2px;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* Make sure the button is above other elements */
+}
+
+.delete_image_button img {
+    margin: 0;
+}
+
+.image_preview_img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /* box-shadow: 0px 0px 2px rgba(166, 166, 166, 0.5); */
+    padding: 2px;
+    border-radius: 4px;
 }
