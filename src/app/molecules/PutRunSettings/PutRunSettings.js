@@ -18,6 +18,10 @@ export default function PutRunSettings({
   };
 
   const handleRunButton = (e) => {
+    if (!isEmpty()) {
+      addUserText();
+      clearCurrText();
+    }
     addResponseText();
   };
 
