@@ -3,7 +3,7 @@
 import "./BottomInputBox.css"
 import Image from "next/image"
 import React, { useState, useRef, useEffect } from "react"
-import { useData } from "@/molecules/DataContext/DataContext"
+import { useData } from "%/DataContext"
 
 export default function BottomInputBox() {
   //   const [isCameraOpen, setIsCameraOpen] = useState(false);

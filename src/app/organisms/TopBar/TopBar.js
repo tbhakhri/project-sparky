@@ -1,4 +1,4 @@
-import AuthContext from "../../../../contexts/authContext"
+import AuthContext from "%/authContext"
 import { useContext } from "react"
 import Image from "next/image"
 import "./TopBar.css"

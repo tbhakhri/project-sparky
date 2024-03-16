@@ -2,7 +2,7 @@ import BottomInputBox from "../../molecules/BottomInputBox/BottomInputBox"
 import "./BottomBar.css"
 import styles from "@/page.module.css"
 import Image from "next/image"
-import { useData } from "@/molecules/DataContext/DataContext"
+import { useData } from "%/DataContext"
 
 export default function BottomBar() {
   const {

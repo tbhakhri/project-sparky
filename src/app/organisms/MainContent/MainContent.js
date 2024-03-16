@@ -2,7 +2,7 @@ import "./MainContent.css"
 import ChatBubble from "@/molecules/ChatBubble/ChatBubble"
 import ModelBubble from "@/molecules/ChatBubble/ModelBubble"
 import ImageBubble from "@/molecules/ChatBubble/ImageBubble"
-import { useData } from "@/molecules/DataContext/DataContext"
+import { useData } from "%/DataContext"
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 
 export default function MainContent() {

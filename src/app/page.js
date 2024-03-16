@@ -1,13 +1,13 @@
 "use client"
 
-import AuthContext from "../../contexts/authContext"
+import AuthContext from "%/authContext"
 import styles from "@/page.module.css"
 import { useContext, useState } from "react"
 import { redirect } from "next/navigation"
 import TopBar from "@/organisms/TopBar/TopBar"
 import MainContent from "@/organisms/MainContent/MainContent"
 import BottomBar from "@/organisms/BottomBar/BottomBar"
-import { DataProvider } from "@/molecules/DataContext/DataContext"
+import { DataProvider } from "%/DataContext"
 
 export default function App() {
   const { user, authReady } = useContext(AuthContext)

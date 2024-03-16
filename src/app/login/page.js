@@ -1,7 +1,7 @@
 "use client"
 
 import { useContext } from "react"
-import AuthContext from "../../../contexts/authContext"
+import AuthContext from "%/authContext"
 import GoogleSignInButton from "./logo"
 import "./page.css"
 import styles from "@/page.module.css"
