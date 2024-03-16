@@ -22,8 +22,6 @@ export const DataProvider = ({ children }) => {
   const [userIndex, setUserIndex] = useState(0)
   const [modelIndex, setModelIndex] = useState(0)
 
-  console.log(data.chatBubbles)
-
   const addUserText = () => {
     setData((prevData) => ({
       ...prevData,
