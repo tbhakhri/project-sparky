@@ -1,15 +1,15 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext } from "react"
 
-const DataContext = createContext();
+const DataContext = createContext()
 
-export const useData = () => useContext(DataContext);
+export const useData = () => useContext(DataContext)
 
 export const DataProvider = ({ children }) => {
   class chatBubble {
     constructor(type, text, index) {
-      this.type = type;
-      this.text = text;
-      this.index = index;
+      this.type = type
+      this.text = text
+      this.index = index
     }
   }
 
@@ -17,29 +17,29 @@ export const DataProvider = ({ children }) => {
     chatBubbles: [],
     currText: "",
     currImages: [],
-    readyToGenerate: false,
-  });
-  const [userIndex, setUserIndex] = useState(0);
-  const [modelIndex, setModelIndex] = useState(0);
+    readyToGenerate: false
+  })
+  const [userIndex, setUserIndex] = useState(0)
+  const [modelIndex, setModelIndex] = useState(0)
 
-  console.log(data.chatBubbles);
+  console.log(data.chatBubbles)
 
   const addUserText = () => {
     setData((prevData) => ({
       ...prevData,
       chatBubbles: [
         ...prevData.chatBubbles,
-        new chatBubble("user", prevData.currText, userIndex),
+        new chatBubble("user", prevData.currText, userIndex)
       ],
-      currText: "",
-    }));
+      currText: ""
+    }))
 
     setData((prevData) => ({
       ...prevData,
-      readyToGenerate: true,
-    }));
-    setUserIndex((prev) => prev + 1);
-  };
+      readyToGenerate: true
+    }))
+    setUserIndex((prev) => prev + 1)
+  }
 
   const addResponseText = () => {
     setData((prevData) => ({
@@ -50,30 +50,32 @@ export const DataProvider = ({ children }) => {
           "response",
           "This is a DUMMY RESPONSE to the user's message!!",
           modelIndex
-        ),
-      ],
-    }));
+        )
+      ]
+    }))
 
     setData((prevData) => ({
       ...prevData,
-      readyToGenerate: false,
-    }));
-    setModelIndex(modelIndex + 1);
-  };
+      readyToGenerate: false
+    }))
+    setModelIndex(modelIndex + 1)
+  }
 
   const addImage = (src) => {
     setData((prevData) => ({
       ...prevData,
-      currImages: [...prevData.currImages, src],
-    }));
-  };
+      currImages: [...prevData.currImages, src]
+    }))
+  }
 
   const deleteImage = (index) => {
     setData((prevData) => ({
       ...prevData,
-      currImages: prevData.currImages.filter((_, currIndex) => currIndex !== index),
-    }));
-  };
+      currImages: prevData.currImages.filter(
+        (_, currIndex) => currIndex !== index
+      )
+    }))
+  }
 
   // change to pushImages maybe?
   const addImages = () => {
@@ -82,49 +84,49 @@ export const DataProvider = ({ children }) => {
         ...prevData,
         chatBubbles: [
           ...prevData.chatBubbles,
-          new chatBubble("image", data.currImages[i], userIndex),
-        ],
-      }));
-      setUserIndex((prev) => prev + 1);
+          new chatBubble("image", data.currImages[i], userIndex)
+        ]
+      }))
+      setUserIndex((prev) => prev + 1)
     }
 
     setData((prevData) => ({
       ...prevData,
-      readyToGenerate: true,
-    }));
-  };
+      readyToGenerate: true
+    }))
+  }
 
   const textEmpty = () => {
     if (data.currText == "") {
-      return true;
+      return true
     } else {
-      return false;
+      return false
     }
-  };
+  }
 
   const imageEmpty = () => {
     if (data.currImages.length == 0) {
-      return true;
+      return true
     } else {
-      return false;
+      return false
     }
-  };
+  }
 
   const clearCurrText = () => {
-    updateData({ currText: "" });
-  };
+    updateData({ currText: "" })
+  }
 
   const clearCurrImages = () => {
-    updateData({ currImages: [] });
-  };
+    updateData({ currImages: [] })
+  }
 
   const updateData = (newData) => {
-    setData((prev) => ({ ...prev, ...newData }));
-  };
+    setData((prev) => ({ ...prev, ...newData }))
+  }
 
   const readyToGenerate = () => {
-    return data.readyToGenerate;
-  };
+    return data.readyToGenerate
+  }
 
   return (
     <DataContext.Provider
@@ -140,10 +142,10 @@ export const DataProvider = ({ children }) => {
         deleteImage,
         addImages,
         clearCurrImages,
-        readyToGenerate,
+        readyToGenerate
       }}
     >
       {children}
     </DataContext.Provider>
-  );
-};
+  )
+}

@@ -1,8 +1,8 @@
-import { Kumbh_Sans } from "next/font/google";
-import "./ChatBubble.css";
-import Image from "next/image";
+import { Kumbh_Sans } from "next/font/google"
+import "./ChatBubble.css"
+import Image from "next/image"
 
-const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] });
+const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
 export default function ImageBubble({ imageURL, index }) {
   return (
@@ -20,5 +20,5 @@ export default function ImageBubble({ imageURL, index }) {
         />
       </div>
     </div>
-  );
+  )
 }

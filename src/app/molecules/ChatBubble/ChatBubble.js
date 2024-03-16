@@ -1,7 +1,7 @@
-import { Kumbh_Sans } from "next/font/google";
-import "./ChatBubble.css";
+import { Kumbh_Sans } from "next/font/google"
+import "./ChatBubble.css"
 
-const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] });
+const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
 export default function ChatBubble({ text, index }) {
   return (
@@ -11,5 +11,5 @@ export default function ChatBubble({ text, index }) {
         <p className="chatBubble">{text}</p>
       </div>
     </div>
-  );
+  )
 }

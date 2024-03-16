@@ -35,5 +35,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# linting
+.prettierrc
+
+# vscode workspace settings
+.vscode
+
 # history
 .history

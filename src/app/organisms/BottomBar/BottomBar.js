@@ -1,11 +1,10 @@
-import BottomInputBox from "../../molecules/BottomInputBox/BottomInputBox";
-import "./BottomBar.css";
-import styles from "@/page.module.css";
-import Image from "next/image";
-import { useData } from "@/molecules/DataContext/DataContext";
+import BottomInputBox from "../../molecules/BottomInputBox/BottomInputBox"
+import "./BottomBar.css"
+import styles from "@/page.module.css"
+import Image from "next/image"
+import { useData } from "@/molecules/DataContext/DataContext"
 
-export default function BottomBar({ toggleParamsMenu }) {
-
+export default function BottomBar() {
   const {
     textEmpty,
     imageEmpty,
@@ -14,86 +13,73 @@ export default function BottomBar({ toggleParamsMenu }) {
     addImages,
     clearCurrText,
     clearCurrImages,
-    readyToGenerate,
-  } = useData();
+    readyToGenerate
+  } = useData()
 
   const handlePutButton = (e) => {
     if (!textEmpty()) {
-      addUserText();
-      clearCurrText();
+      addUserText()
+      clearCurrText()
     }
     if (!imageEmpty()) {
-      addImages();
-      clearCurrImages();
+      addImages()
+      clearCurrImages()
     }
-  };
+  }
 
   const handleRunButton = (e) => {
     if (!textEmpty()) {
-      addUserText();
-      clearCurrText();
+      addUserText()
+      clearCurrText()
     }
     if (!imageEmpty()) {
-      addImages();
-      clearCurrImages();
+      addImages()
+      clearCurrImages()
     }
     if (readyToGenerate()) {
-      addResponseText();
+      addResponseText()
     }
-  };
-  
+  }
+
   return (
     <div className="bottom_bar_container">
       <div className="text_box_container">
         <BottomInputBox />
       </div>
 
-      <div className="put_run_container">
-        <div className="bottombarButtonsContainer">
-          <div className="bottombarButtonsTop">
-            <button
-              className={styles.putruniconButton}
-              onClick={handlePutButton}
-              style={{ width: "65%" }}
-            >
-              <Image
-                src="/put.svg"
-                alt="Put"
-                width={10}
-                height={10}
-                style={{ marginRight: "5px" }}
-              />
-              <span>Put</span>
-            </button>
-            <button
-              className="bottombarSettingsButton"
-              onClick={toggleParamsMenu}
-            >
-              <Image
-                src="/setting-lines.svg"
-                alt="Config Params"
-                width={15}
-                height={15}
-              />
-            </button>
-          </div>
-
+      <div className="bottombarButtonsContainer">
+        <div className="bottombarButtonsTop">
           <button
             className={styles.putruniconButton}
-            onClick={handleRunButton}
-            style={{ width: "100%" }}
+            onClick={handlePutButton}
+            style={{ width: "65%" }}
           >
             <Image
-              src="/run.svg"
-              alt="Run"
+              src="/put.svg"
+              alt="Put"
               width={10}
               height={10}
-              style={{ marginRight: "7px" }}
+              style={{ marginRight: "5px" }}
             />
-            <span>Run</span>
+            <span>Put</span>
           </button>
         </div>
+
+        <button
+          className={styles.putruniconButton}
+          onClick={handleRunButton}
+          style={{ width: "100%" }}
+        >
+          <Image
+            src="/run.svg"
+            alt="Run"
+            width={10}
+            height={10}
+            style={{ marginRight: "7px" }}
+          />
+          <span>Run</span>
+        </button>
       </div>
     </div>
-  );
+  )
 }

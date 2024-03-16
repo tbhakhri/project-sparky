@@ -1,168 +1,160 @@
-@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans&display=swap");
 
 .main_container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    /* height: 66px; */
-    min-height: 100%px;
-    background-color: #e8e8e8;
-    /* border: 2px solid red; */
-    border-radius: 10px;
-    padding: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* height: 66px; */
+  min-height: 100%px;
+  background-color: #e8e8e8;
+  /* border: 2px solid red; */
+  border-radius: 10px;
+  padding: 5px;
 }
 
-
 .text_containerold {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    /* border: 1px solid blue; */
-    flex: 2;
-    /* padding: 2.5px; */
-    margin-left: 2px;
-    /* margin-top: 7px;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  /* border: 1px solid blue; */
+  flex: 2;
+  /* padding: 2.5px; */
+  margin-left: 2px;
+  /* margin-top: 7px;
     margin-left: 7px;
     padding: 7px; */
-} 
+}
 
 .text_container {
-    flex: 2;
-    display: flex;
+  flex: 2;
+  display: flex;
 }
 
 input {
-    border: none;
-    fill: #909090; 
-    width: 100%;
-    height: 100%;
-    padding: 1px;
-    font-size: 16px;
-    border-radius: 4px;
-    resize: vertical;
-    box-sizing: border-box;
-    border: 2px solid green;
-    
+  border: none;
+  fill: #909090;
+  width: 100%;
+  height: 100%;
+  padding: 1px;
+  font-size: 16px;
+  border-radius: 4px;
+  resize: vertical;
+  box-sizing: border-box;
+  border: 2px solid green;
 }
 
 textarea[type="text"] {
-    white-space: pre-wrap; /* Allow text wrapping */
-    padding: 8px;
-    font-size: 10px;
-    border-radius: 4px;
-    width: 100%;
-    box-sizing: border-box;
-    vertical-align: top;
-    height: auto;
-    color: purple;
+  white-space: pre-wrap; /* Allow text wrapping */
+  padding: 8px;
+  font-size: 10px;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  vertical-align: top;
+  height: auto;
+  color: purple;
 }
 
-
-
 input[type="text"] {
-    white-space: pre-wrap; /* Allow text wrapping */
-    padding: 8px;
-    font-size: 10px;
-    border-radius: 4px;
-    width: 100%;
-    box-sizing: border-box;
-    vertical-align: top;
-    height: auto;
+  white-space: pre-wrap; /* Allow text wrapping */
+  padding: 8px;
+  font-size: 10px;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  vertical-align: top;
+  height: auto;
 }
 
 inputt[type="text"] {
-     /* Set a fixed height for two lines */
-     /* Set line height to half of the input height */
-     
-    white-space: normal; /* Allow text wrapping */
-    padding: 2.5px;
-    width: 100%; 
-    height: 100%; /* Ensure the input spans the full width */
-    box-sizing: border-box;
-    vertical-align: top;
-    height: 2em; /* Set a fixed height for two lines */
-  line-height: 1em; 
-  overflow-wrap: break-word;  
-    word-wrap: break-word; 
-    word-break: break-word;
+  /* Set a fixed height for two lines */
+  /* Set line height to half of the input height */
+
+  white-space: normal; /* Allow text wrapping */
+  padding: 2.5px;
+  width: 100%;
+  height: 100%; /* Ensure the input spans the full width */
+  box-sizing: border-box;
+  vertical-align: top;
+  height: 2em; /* Set a fixed height for two lines */
+  line-height: 1em;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 input:focus {
-    outline: none; 
-    /* for the onlick part */
+  outline: none;
+  /* for the onlick part */
 }
 
 .text_container_text {
-    color: #5c5c5c;
-    font-family: Kumbh Sans;
-    height: 25px;
-    min-height: 25px;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    background-color: #e8e8e8;
-    vertical-align: top;
-    margin-left: 8px;
-    margin-right: 8px;
-    word-wrap: break-word; 
-    margin-top: 5px;
-    margin-bottom: 5px;
-    max-height: 100px;
-    flex: 1; /* Ensure the text_container_text takes up the entire width */
-    resize: none;
-    border: none;
-    
-   
+  color: #5c5c5c;
+  font-family: Kumbh Sans;
+  height: 25px;
+  min-height: 25px;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background-color: #e8e8e8;
+  vertical-align: top;
+  margin-left: 8px;
+  margin-right: 8px;
+  word-wrap: break-word;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  max-height: 100px;
+  flex: 1; /* Ensure the text_container_text takes up the entire width */
+  resize: none;
+  border: none;
 }
 
 .text_container_text:focus {
-    outline: none; /* Removes the default focus outline */
-    /* Optional: add other styles for focus state if needed */
+  outline: none; /* Removes the default focus outline */
+  /* Optional: add other styles for focus state if needed */
 }
 
 .text_container input[type="text"] {
-    border: none;
-    color: #909090; /* Text color */
-    font-family: Kumbh Sans;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    background-color: #e8e8e8;
-    padding: 1px;
-    width: 100%; /* Ensure the input field takes up the entire width of its container */
-    min-height: 400%; /* Ensure the input field takes up the entire height of its container */
-    border-radius: 4px;
-    resize: vertical;
-    box-sizing: border-box;
-    margin-left: 7px;
-    margin-top: -10px;
-    margin-right: 8px;
-    border: 1px solid green;
-
+  border: none;
+  color: #909090; /* Text color */
+  font-family: Kumbh Sans;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background-color: #e8e8e8;
+  padding: 1px;
+  width: 100%; /* Ensure the input field takes up the entire width of its container */
+  min-height: 400%; /* Ensure the input field takes up the entire height of its container */
+  border-radius: 4px;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-left: 7px;
+  margin-top: -10px;
+  margin-right: 8px;
+  border: 1px solid green;
 }
 
 .text_container input[type="text"]::placeholder {
-    color: #c1c1c1;
-    
+  color: #c1c1c1;
 }
 
 .icon {
-    width: 14px;
-    height: 14px;
-    display: inline-block;
-    background-size: cover;
-    fill: rgb(216, 216, 216);
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  background-size: cover;
+  fill: rgb(216, 216, 216);
 }
 
 .icon_container {
-    display: flex; /* this bottom icon container is in itself a flexbox oriented horizontally */
-    flex: 0.25;
-    justify-content: flex-end;
-    align-items: flex-end;
-    /* border: 1px solid purple; */
+  display: flex; /* this bottom icon container is in itself a flexbox oriented horizontally */
+  flex: 0.25;
+  justify-content: flex-end;
+  align-items: flex-end;
+  /* border: 1px solid purple; */
 }
 
 /* "0/12888" text takes up 6/9 of the width, while each icon takes up 1/9 of the width */
@@ -170,7 +162,7 @@ input:focus {
   flex: 1;
   text-align: center;
   padding: 0px;
-   /* border: 1px solid #ccc;  */
+  /* border: 1px solid #ccc;  */
 }
 
 .tokens_remaining {
@@ -184,67 +176,63 @@ input:focus {
 }
 
 .selected_image {
-    max-width: 50px; /* Example, adjust as needed */
-    height: auto;
-    width: 50%;
+  max-width: 50px; /* Example, adjust as needed */
+  height: auto;
+  width: 50%;
 }
 
-
-
-
 .temp_text_container {
-    display: flex;
-    min-height: 20px;
-    max-height: 100px;
-    overflow-y: auto; 
+  display: flex;
+  min-height: 20px;
+  max-height: 100px;
+  overflow-y: auto;
 }
 
 .temp_text_container > div {
-    min-height: 25px;
-    max-height: 100px;
-    /* Additional styles for the div elements if needed */
+  min-height: 25px;
+  max-height: 100px;
+  /* Additional styles for the div elements if needed */
 }
 
-
 .image_preview_container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .image_preview {
-    position: relative;
-    margin: 4px;
-    overflow: hidden; /* Ensures the image doesn't overflow its container */
-    width:  50px;
-    height: 50px;
-    border: 1px solid #d9d9d9;
-    border-radius: 5px;
+  position: relative;
+  margin: 4px;
+  overflow: hidden; /* Ensures the image doesn't overflow its container */
+  width: 50px;
+  height: 50px;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
 }
 
 .delete_image_button {
-    position: absolute;
-    height: 10px;
-    width: 10px;
-    top: 2px;
-    right: 2px;
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  top: 2px;
+  right: 2px;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
 
 .delete_image_button img {
-    margin: 0;
+  margin: 0;
 }
 
 .image_preview_img {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    padding: 2px;
-    border-radius: 4px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  border-radius: 4px;
 }

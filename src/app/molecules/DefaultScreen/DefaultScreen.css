@@ -1,31 +1,31 @@
 .defaultScreenContainer {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .introText {
-    color: #FFFFFF;
-    font-size: 15px;
-    font-family: Kumbh Sans;
-    align-items: center;
-    /* shifts the text upwards; may need to adjust this padding-bottom */
-    padding-bottom: 40%; 
+  color: #ffffff;
+  font-size: 15px;
+  font-family: Kumbh Sans;
+  align-items: center;
+  /* shifts the text upwards; may need to adjust this padding-bottom */
+  padding-bottom: 40%;
 }
 
 .ideaBoxContainer {
-    position: absolute;
-    display: flex;
-    flex-wrap: wrap;
-    bottom: 0;
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  bottom: 0;
 }
 
 .ideaBoxItem {
-    flex: 1 0 50%;
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: center;
-    padding: 3px;
+  flex: 1 0 50%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
 }
