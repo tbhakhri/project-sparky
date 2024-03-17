@@ -5,37 +5,21 @@ import { useData } from "%/DataContext"
 import { useState, useEffect } from "react"
 
 export default function BottomBar({ tokenCount }) {
-  const {
-    textEmpty,
-    imageEmpty,
-    addUserText,
-    addResponseText,
-    addImages,
-    clearCurrText,
-    clearCurrImages,
-    readyToGenerate
-  } = useData()
+  const { pushUserText, pushImages, addResponseText, readyToGenerate } =
+    useData()
 
-  const handlePutButton = (e) => {
-    if (!textEmpty()) {
-      addUserText()
-      clearCurrText()
+  const executePut = (_) => {
+    if (!isTextEmpty()) {
+      pushUserText(text)
     }
-    if (!imageEmpty()) {
-      addImages()
-      clearCurrImages()
+    if (!isImagesEmpty()) {
+      pushImages(images)
     }
+    clearInputs()
   }
 
-  const handleRunButton = (e) => {
-    if (!textEmpty()) {
-      addUserText()
-      clearCurrText()
-    }
-    if (!imageEmpty()) {
-      addImages()
-      clearCurrImages()
-    }
+  const executeRun = (_) => {
+    executePut()
     if (readyToGenerate()) {
       addResponseText()
     }
@@ -43,12 +27,14 @@ export default function BottomBar({ tokenCount }) {
 
   /* BOTTOMINPUTBAR STATE */
   const [text, setText] = useState("")
-  // const [tokenCount, setTokenCount] = useState(0)
-  const { data, updateData, addImage, deleteImage } = useData()
+  const [images, setImages] = useState([])
 
-  useEffect(() => {
-    setText(data.currText)
-  }, [data.currText])
+  const isTextEmpty = () => {
+    return text.length === 0
+  }
+  const isImagesEmpty = () => {
+    return images.length === 0
+  }
 
   useEffect(() => {
     // Automatically adjust main_container based on the number of uploaded images
@@ -56,25 +42,31 @@ export default function BottomBar({ tokenCount }) {
     if (mainContainer) {
       mainContainer.style.height = `auto`
     }
-  }, [data.currImages, text])
+  }, [images, text])
+
+  const clearInputs = () => {
+    setText("")
+    document.querySelector(".text_container_text").value = ""
+    setImages([])
+  }
 
   const handleInputChange = (e) => {
     setText(e.target.value)
-    updateData({ currText: e.target.value })
   }
 
-  const handleDeleteImage = (index) => {
-    deleteImage(index)
-  }
-
+  //TODO: this implementation may be buggy, need to look into it
   const handleImageSelect = (e) => {
     const files = e.target.files
     if (files) {
       const fileArray = Array.from(files).map((file) =>
         URL.createObjectURL(file)
       )
-      addImage(fileArray[fileArray.length - 1])
+      setImages((prev) => [...prev, fileArray[fileArray.length - 1]])
     }
+  }
+
+  const handleDeleteImage = (index) => {
+    setImages((prev) => prev.filter((_, currIndex) => currIndex !== index))
   }
 
   return (
@@ -83,13 +75,12 @@ export default function BottomBar({ tokenCount }) {
         <div className="text_put_container">
           <textarea
             className="text_container_text"
-            value={text}
-            onChange={handleInputChange}
+            onBlur={handleInputChange}
             placeholder="Start typing..."
           />
           <button
             className={styles.putruniconButton}
-            onClick={handlePutButton}
+            onClick={executePut}
             style={{ flex: "0.2" }}
           >
             <Image
@@ -103,7 +94,7 @@ export default function BottomBar({ tokenCount }) {
           </button>
         </div>
         <div className="image_preview_container">
-          {data.currImages.map((imageSrc, index) => (
+          {images.map((imageSrc, index) => (
             <div key={index} className="image_preview">
               <Image
                 className="image_preview_img"
@@ -172,7 +163,7 @@ export default function BottomBar({ tokenCount }) {
       <div className="runButtonContainer">
         <button
           className={styles.putruniconButton}
-          onClick={handleRunButton}
+          onClick={executeRun}
           style={{ width: "100%" }}
         >
           <Image

@@ -9,16 +9,15 @@ export default function MainContent() {
   const { data } = useData()
 
   const renderBubble = (item) => {
-    console.log(item.index)
     switch (item.type) {
       case "user":
-        return <ChatBubble text={item.text} index={item.index} />
+        return <ChatBubble text={item.text} />
       case "response":
-        return <ModelBubble index={item.index} />
+        return <ModelBubble />
       case "image":
-        return <ImageBubble imageURL={item.text} index={item.index} />
+        return <ImageBubble imageURL={item.text} />
       default:
-        return null // Or a default component if you have one
+        return null
     }
   }
 

@@ -4,7 +4,7 @@ import Image from "next/image"
 
 const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
-export default function ImageBubble({ imageURL, index }) {
+export default function ImageBubble({ imageURL }) {
   return (
     <div className="bubble-container">
       <div style={{ width: "100px", position: "relative" }}>

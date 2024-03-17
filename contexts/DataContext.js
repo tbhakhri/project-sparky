@@ -6,37 +6,38 @@ export const useData = () => useContext(DataContext)
 
 export const DataProvider = ({ children }) => {
   class chatBubble {
-    constructor(type, text, index) {
+    constructor(type, text) {
       this.type = type
       this.text = text
-      this.index = index
     }
   }
 
   const [data, setData] = useState({
     chatBubbles: [],
-    currText: "",
-    currImages: [],
     readyToGenerate: false
   })
-  const [userIndex, setUserIndex] = useState(0)
-  const [modelIndex, setModelIndex] = useState(0)
 
-  const addUserText = () => {
+  const pushUserText = (text) => {
     setData((prevData) => ({
       ...prevData,
-      chatBubbles: [
-        ...prevData.chatBubbles,
-        new chatBubble("user", prevData.currText, userIndex)
-      ],
-      currText: ""
+      chatBubbles: [...prevData.chatBubbles, new chatBubble("user", text)]
     }))
 
-    setData((prevData) => ({
-      ...prevData,
-      readyToGenerate: true
-    }))
-    setUserIndex((prev) => prev + 1)
+    setReadyToGenerate(true)
+  }
+
+  const pushImages = (images) => {
+    for (let i = 0, len = images.length; i < len; i++) {
+      setData((prevData) => ({
+        ...prevData,
+        chatBubbles: [
+          ...prevData.chatBubbles,
+          new chatBubble("image", images[i])
+        ]
+      }))
+    }
+
+    setReadyToGenerate(true)
   }
 
   const addResponseText = () => {
@@ -46,76 +47,12 @@ export const DataProvider = ({ children }) => {
         ...prevData.chatBubbles,
         new chatBubble(
           "response",
-          "This is a DUMMY RESPONSE to the user's message!!",
-          modelIndex
+          "This is a DUMMY RESPONSE to the user's message!!"
         )
       ]
     }))
 
-    setData((prevData) => ({
-      ...prevData,
-      readyToGenerate: false
-    }))
-    setModelIndex(modelIndex + 1)
-  }
-
-  const addImage = (src) => {
-    setData((prevData) => ({
-      ...prevData,
-      currImages: [...prevData.currImages, src]
-    }))
-  }
-
-  const deleteImage = (index) => {
-    setData((prevData) => ({
-      ...prevData,
-      currImages: prevData.currImages.filter(
-        (_, currIndex) => currIndex !== index
-      )
-    }))
-  }
-
-  // change to pushImages maybe?
-  const addImages = () => {
-    for (let i = 0, len = data.currImages.length; i < len; i++) {
-      setData((prevData) => ({
-        ...prevData,
-        chatBubbles: [
-          ...prevData.chatBubbles,
-          new chatBubble("image", data.currImages[i], userIndex)
-        ]
-      }))
-      setUserIndex((prev) => prev + 1)
-    }
-
-    setData((prevData) => ({
-      ...prevData,
-      readyToGenerate: true
-    }))
-  }
-
-  const textEmpty = () => {
-    if (data.currText == "") {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  const imageEmpty = () => {
-    if (data.currImages.length == 0) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  const clearCurrText = () => {
-    updateData({ currText: "" })
-  }
-
-  const clearCurrImages = () => {
-    updateData({ currImages: [] })
+    setReadyToGenerate(false)
   }
 
   const updateData = (newData) => {
@@ -125,21 +62,21 @@ export const DataProvider = ({ children }) => {
   const readyToGenerate = () => {
     return data.readyToGenerate
   }
+  const setReadyToGenerate = (bool) => {
+    setData((prevData) => ({
+      ...prevData,
+      readyToGenerate: bool
+    }))
+  }
 
   return (
     <DataContext.Provider
       value={{
         data,
-        addUserText,
+        pushUserText,
+        pushImages,
         addResponseText,
-        clearCurrText,
         updateData,
-        imageEmpty,
-        textEmpty,
-        addImage,
-        deleteImage,
-        addImages,
-        clearCurrImages,
         readyToGenerate
       }}
     >
