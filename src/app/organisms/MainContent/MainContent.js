@@ -30,7 +30,16 @@ export default function MainContent() {
           </div>
         </>
       ) : (
-        <>{data.chatBubbles.map(renderBubble)}</>
+        <>
+          <p className="userText">User</p>
+          {data.chatBubbles.map(renderBubble)}
+          {data.responses.length > 0 && (
+            <>
+              <p className="modelText">Model</p>
+              <ModelBubble />
+            </>
+          )}
+        </>
       )}
     </div>
   )

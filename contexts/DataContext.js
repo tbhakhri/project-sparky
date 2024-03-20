@@ -14,6 +14,7 @@ export const DataProvider = ({ children }) => {
 
   const [data, setData] = useState({
     chatBubbles: [],
+    responses: [],
     readyToGenerate: false
   })
 
@@ -40,19 +41,18 @@ export const DataProvider = ({ children }) => {
     setReadyToGenerate(true)
   }
 
-  const addResponseText = () => {
+  //TODO: CHANGE ONCE BACKEND IS IMPLEMENTED
+  const addResponse = () => {
     setData((prevData) => ({
       ...prevData,
-      chatBubbles: [
-        ...prevData.chatBubbles,
+      responses: [
+        ...prevData.responses,
         new chatBubble(
-          "response",
+          "text",
           "This is a DUMMY RESPONSE to the user's message!!"
         )
       ]
     }))
-
-    setReadyToGenerate(false)
   }
 
   const updateData = (newData) => {
@@ -75,7 +75,7 @@ export const DataProvider = ({ children }) => {
         data,
         pushUserText,
         pushImages,
-        addResponseText,
+        addResponse,
         updateData,
         readyToGenerate
       }}

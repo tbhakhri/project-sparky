@@ -5,8 +5,7 @@ import { useData } from "%/DataContext"
 import { useState, useEffect } from "react"
 
 export default function BottomBar({ tokenCount }) {
-  const { pushUserText, pushImages, addResponseText, readyToGenerate } =
-    useData()
+  const { pushUserText, pushImages, addResponse, readyToGenerate } = useData()
 
   const executePut = (_) => {
     if (!isTextEmpty()) {
@@ -21,7 +20,7 @@ export default function BottomBar({ tokenCount }) {
   const executeRun = (_) => {
     executePut()
     if (readyToGenerate()) {
-      addResponseText()
+      addResponse()
     }
   }
 
