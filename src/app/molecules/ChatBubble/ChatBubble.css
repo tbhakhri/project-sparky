@@ -42,6 +42,14 @@
   text-align: left;
 }
 
+.editDeleteButton {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  --svg-fill-color: #ffffff;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
 .userText {
   color: white;
   text-align: right;
