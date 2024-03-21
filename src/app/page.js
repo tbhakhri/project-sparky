@@ -9,12 +9,17 @@ import TopBar from "@/molecules/TopBar/TopBar";
 import MainContent from "@/molecules/MainContent/MainContent";
 import BottomBar from "@/molecules/BottomBar/BottomBar";
 import { DataProvider } from "@/molecules/DataContext/DataContext";
-import ChatBubble from "@/molecules/ChatBubble/ChatBubble";
-import ModelBubble from "@/molecules/ChatBubble/ModelBubble";
+import SideBar from "@/molecules/SideBar/SideBar";
 
 export default function App() {
-  const { user, authReady } = useContext(AuthContext)
-  
+  const { user, authReady } = useContext(AuthContext);
+
+  const [isSidebar, setIsSidebar] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebar(!isSidebar);
+  };
+
   const [showCompareRerun, setShowCompareRerun] = useState(false);
 
   const toggleCompareRerun = () => {
@@ -32,6 +37,7 @@ export default function App() {
     requestChain: [],
     responses: [],
   }));
+
   const [curModelSettings, setCurModelSettings] = useState({
     modelName: "Gemini 1.0 Pro Vision",
     temperature: 0.4,
@@ -73,7 +79,8 @@ export default function App() {
             <>
               <>
                 <DataProvider>
-                  <TopBar />
+                  {isSidebar && <SideBar toggleSidebar={toggleSidebar} />}
+                  <TopBar toggleSidebar={toggleSidebar} />
                   <MainContent />
                   {showCompareRerun && (
                     <CompareRerun onParameterChange={handleParameterChange} />
@@ -82,7 +89,6 @@ export default function App() {
                     showCompareRerun={showCompareRerun}
                     toggleCompareRerun={toggleCompareRerun}
                   />
-
                 </DataProvider>
               </>
             </>
