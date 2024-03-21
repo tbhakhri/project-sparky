@@ -63,13 +63,7 @@
   cursor: pointer;
 }
 
-.userText {
-  color: white;
-  text-align: right;
-  font-size: 0.65rem;
-  padding-right: 0.25rem;
-  margin-bottom: 0.25rem;
-}
+
 
 .modelText {
   color: #a5bcf6;

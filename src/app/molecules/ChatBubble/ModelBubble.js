@@ -51,8 +51,8 @@ export default function ModelBubble() {
 
       <p className="modelBubble">{data.responses[curIndex].text}</p>
       {/* TODO: RENAME EDITDELETEBUTTON */}
-      <button className="regenerateButton" onClick={handleRegenerate}>
-        <Image src="/regenerate.svg" alt="Regenerate" width={12} height={12} />
+      <button className="regenerateButton" onClick={handleRegenerate} style={{marginTop: "0.1rem"}}>
+        <Image src="/regenerate.svg" alt="Regenerate" width={10} height={10} />
       </button>
     </div>
   )

@@ -6,7 +6,7 @@ export const useData = () => useContext(DataContext)
 
 export const DataProvider = ({ children }) => {
   class chatBubble {
-    constructor(type, text) {
+    constructor(type, text, index) {
       this.type = type
       this.text = text
     }
@@ -18,12 +18,12 @@ export const DataProvider = ({ children }) => {
     readyToGenerate: false
   })
 
+
   const pushUserText = (text) => {
     setData((prevData) => ({
       ...prevData,
       chatBubbles: [...prevData.chatBubbles, new chatBubble("user", text)]
     }))
-
     setReadyToGenerate(true)
   }
 
@@ -39,6 +39,13 @@ export const DataProvider = ({ children }) => {
     }
 
     setReadyToGenerate(true)
+  }
+
+  const deleteIndex = (index) => {
+    setData((prevData) => ({
+      ...prevData,
+      chatBubbles: [...prevData.chatBubbles.slice(0, index), ...prevData.chatBubbles.slice(index + 1)]
+    }))
   }
 
   //TODO: CHANGE ONCE BACKEND IS IMPLEMENTED
@@ -75,6 +82,7 @@ export const DataProvider = ({ children }) => {
         data,
         pushUserText,
         pushImages,
+        deleteIndex,
         addResponse,
         updateData,
         readyToGenerate

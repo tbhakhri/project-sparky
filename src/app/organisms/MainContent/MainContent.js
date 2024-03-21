@@ -8,10 +8,10 @@ import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 export default function MainContent() {
   const { data } = useData()
 
-  const renderBubble = (item) => {
+  const renderBubble = (item, index) => {
     switch (item.type) {
       case "user":
-        return <ChatBubble text={item.text} />
+        return <ChatBubble text={item.text} index={index}/>
       case "response":
         return <ModelBubble />
       case "image":
@@ -32,7 +32,7 @@ export default function MainContent() {
       ) : (
         <>
           <p className="userText">User</p>
-          {data.chatBubbles.map(renderBubble)}
+          {data.chatBubbles.map((item, index) => renderBubble(item, index))}
           {data.responses.length > 0 && <ModelBubble />}
         </>
       )}
