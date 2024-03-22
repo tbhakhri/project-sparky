@@ -11,11 +11,11 @@ export default function MainContent() {
   const renderBubble = (item, index) => {
     switch (item.type) {
       case "user":
-        return <ChatBubble text={item.text} index={index}/>
+        return <ChatBubble text={item.text} index={index} />
       case "response":
         return <ModelBubble />
       case "image":
-        return <ImageBubble imageURL={item.text} />
+        return <ImageBubble imageURL={item.text} index={index} />
       default:
         return null
     }
