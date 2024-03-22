@@ -1,7 +1,19 @@
 import "./SideBar.css";
 import Image from "next/image";
+import React, { createContext, useState, useContext } from "react";
+
+// import DataProvider from './DataContext/DataContext.js';
+import { useData, addPrompt } from "@/molecules/DataContext/DataContext";
+
+
 
 export default function SideBar({ toggleSidebar }) {
+
+ 
+
+  const { data } = useData(); // Assuming you want to access the entire state to get chatBubbles
+  const { chatBubbles } = data;
+
   return (
     <div className="sideBarContainer">
       {/* <button className="historyButton" onClick={toggleSidebar}>
@@ -29,9 +41,9 @@ export default function SideBar({ toggleSidebar }) {
         </div>
       </div>
       <div className="newPromptButtonContainer">
-        <button className="newPromptButton" onclick={toggleSidebar}>
-          New Prompt 
-        </button>
+      <button className="newPromptButton" onClick={() => { addPrompt; toggleSidebar(); }}>
+        New Prompt
+      </button>
       </div>
       <div className="currentPromptContainer">
         <div className="promptHeaderText">
@@ -39,11 +51,22 @@ export default function SideBar({ toggleSidebar }) {
         </div>
         <div className="promptItem"> Insert prompt here</div>
       </div>
-
       <div className="pastPromptContainer">
       <div className="promptHeaderText">
           Past Prompts
         </div>
+        {
+  chatBubbles.map((bubble, index) => (
+    <div key={index} className="promptItem">
+      <textarea
+        className="promptTextArea"
+        defaultValue={bubble.text}
+        // onBlur={(e) => updateBubbleText(index, e.target.value)}
+        rows="1" // Adjust based on your needs
+      ></textarea>
+    </div>
+  ))
+}
         <div className="promptItem"> Insert prompt here</div>
         <div className="promptItem"> Insert prompt here</div>
         <div className="promptItem"> Insert prompt here</div>

@@ -24,6 +24,7 @@ export default function App() {
 
   const toggleCompareRerun = () => {
     setShowCompareRerun(!showCompareRerun);
+    // console.log("hello")
   };
 
   const handleParameterChange = (parameters) => {
@@ -70,6 +71,7 @@ export default function App() {
   }
 
   return (
+    
     <div className={styles.pageContainer}>
       {authReady ? (
         <>
@@ -85,6 +87,7 @@ export default function App() {
                   {showCompareRerun && (
                     <CompareRerun onParameterChange={handleParameterChange} />
                   )}
+                 
                   <BottomBar
                     showCompareRerun={showCompareRerun}
                     toggleCompareRerun={toggleCompareRerun}

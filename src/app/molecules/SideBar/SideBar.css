@@ -66,6 +66,7 @@
   border: none;
   width: 35%;
   height: 100%;
+  cursor: pointer;
 }
 
 .currentPromptContainer {
@@ -107,8 +108,31 @@
   font-family: 'Kumbh Sans', sans-serif;
   font-size: 14px;
   font-weight: 100 !important; 
+  height: 3%;
 
 }  
+
+.promptTextArea{
+  color: white;
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 100 !important; 
+  resize: none;
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  height: auto; /* Set a fixed height for one line */
+  overflow: hidden;
+  padding: none;
+  margin: none;
+}
+
+.promptTextArea:focus {
+  outline: none; /* Remove the default focus outline */
+  border-color: transparent; /* Highlight border on focus, change the color as needed */
+  background-color: transparent; /* Change background to white on focus */
+}
+
 
 .icon {
   width: 10px;
