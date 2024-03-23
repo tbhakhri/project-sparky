@@ -1,11 +1,11 @@
 import "./BottomBar.css"
 import styles from "@/page.module.css"
 import Image from "next/image"
-import { useData } from "%/DataContext"
 import { useState, useEffect } from "react"
+import { useData } from "%/DataContext"
 
 export default function BottomBar({ tokenCount }) {
-  const { pushUserText, pushImages, addResponse, readyToGenerate } = useData()
+  const { pushUserText, pushImages, addResponse } = useData()
 
   const executePut = (_) => {
     if (!isTextEmpty()) {
@@ -19,9 +19,7 @@ export default function BottomBar({ tokenCount }) {
 
   const executeRun = (_) => {
     executePut()
-    if (readyToGenerate()) {
-      addResponse()
-    }
+    addResponse()
   }
 
   /* BOTTOMINPUTBAR STATE */

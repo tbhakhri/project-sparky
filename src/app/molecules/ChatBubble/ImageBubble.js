@@ -1,14 +1,12 @@
-import { Kumbh_Sans } from "next/font/google"
 import "./ChatBubble.css"
 import Image from "next/image"
 import { useData } from "%/DataContext"
 
-const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
-
 export default function ImageBubble({ imageURL, index }) {
-  const { deleteIndex } = useData()
+  const { deleteRequest } = useData()
+
   const handleDelete = (e) => {
-    deleteIndex(index)
+    deleteRequest(index)
   }
 
   return (

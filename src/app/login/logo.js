@@ -1,6 +1,3 @@
-import React from "react"
-// import '../index.css';
-
 function GoogleSignInButton(props) {
   return (
     <button className="gsi-material-button" onClick={props.onClick}>

@@ -6,9 +6,10 @@ import { useData } from "%/DataContext"
 const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
 export default function ChatBubble({ text, index }) {
-  const { deleteIndex } = useData()
+  const { deleteRequest } = useData()
+
   const handleDelete = (e) => {
-    deleteIndex(index)
+    deleteRequest(index)
   }
 
   return (

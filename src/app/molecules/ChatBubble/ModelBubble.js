@@ -1,13 +1,16 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import Image from "next/image"
 import "./ChatBubble.css"
 import { useData } from "%/DataContext"
 import Arrow from "@/molecules/Arrow/Arrow"
+
 export default function ModelBubble() {
   const { data, addResponse } = useData()
 
   const [curIndex, setCurIndex] = useState(0)
-  const numResponses = data.responses.length
+  const responses = data.variants[data.currentVariant].responses
+  console.log("RESPONSES", responses)
+  const numResponses = responses.length
 
   //TODO: CHANGE WHEN BACKEND IS IMPLEMENTED
   const handleRegenerate = (e) => {
@@ -49,9 +52,12 @@ export default function ModelBubble() {
         )}
       </div>
 
-      <p className="modelBubble">{data.responses[curIndex].text}</p>
-      {/* TODO: RENAME EDITDELETEBUTTON */}
-      <button className="regenerateButton" onClick={handleRegenerate} style={{marginTop: "0.1rem"}}>
+      <p className="modelBubble">{responses[curIndex].text}</p>
+      <button
+        className="regenerateButton"
+        onClick={handleRegenerate}
+        style={{ marginTop: "0.1rem" }}
+      >
         <Image src="/regenerate.svg" alt="Regenerate" width={10} height={10} />
       </button>
     </div>

@@ -1,3 +1,5 @@
+import React from "react"
+
 import "./MainContent.css"
 import ChatBubble from "@/molecules/ChatBubble/ChatBubble"
 import ModelBubble from "@/molecules/ChatBubble/ModelBubble"
@@ -23,7 +25,8 @@ export default function MainContent() {
 
   return (
     <div className="mainContentContainer">
-      {data.chatBubbles.length === 0 ? (
+      {data.variants.length === 1 &&
+      data.variants[0].chatBubbles.length === 0 ? (
         <>
           <div className="defaultScreenContainer">
             <DefaultScreen />
@@ -31,9 +34,15 @@ export default function MainContent() {
         </>
       ) : (
         <>
-          <p className="userText">User</p>
-          {data.chatBubbles.map((item, index) => renderBubble(item, index))}
-          {data.responses.length > 0 && <ModelBubble />}
+          {data.variants.map((variant, variantIndex) => (
+            <React.Fragment key={variantIndex}>
+              <p className="userText">User</p>
+              {variant.chatBubbles.map((item, requestIndex) =>
+                renderBubble(item, requestIndex)
+              )}
+              {variant.responses.length > 0 && <ModelBubble />}
+            </React.Fragment>
+          ))}
         </>
       )}
     </div>

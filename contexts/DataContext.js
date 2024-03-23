@@ -1,80 +1,132 @@
-import React, { createContext, useState, useContext } from "react"
+import { createContext, useState, useContext } from "react"
 
 const DataContext = createContext()
-
 export const useData = () => useContext(DataContext)
 
-export const DataProvider = ({ children }) => {
-  class chatBubble {
-    constructor(type, text, index) {
-      this.type = type
-      this.text = text
-    }
+class chatBubble {
+  constructor(type, text) {
+    this.type = type
+    this.text = text
   }
+}
 
+export const DataProvider = ({ children }) => {
   const [data, setData] = useState({
-    chatBubbles: [],
-    responses: [],
-    readyToGenerate: false
+    variants: [
+      {
+        chatBubbles: [],
+        responses: []
+      }
+    ],
+    currentVariant: 0
   })
 
+  /** FUNCTIONS **/
+  /* For the currentVariant, pushes text to the requestChain. */
+  function pushUserText(text) {
+    setData((prevData) => {
+      const newVariants = [...prevData.variants]
 
-  const pushUserText = (text) => {
-    setData((prevData) => ({
-      ...prevData,
-      chatBubbles: [...prevData.chatBubbles, new chatBubble("user", text)]
-    }))
-    setReadyToGenerate(true)
-  }
+      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      targetVariant.chatBubbles = [
+        ...targetVariant.chatBubbles,
+        new chatBubble("user", text)
+      ]
 
-  const pushImages = (images) => {
-    for (let i = 0, len = images.length; i < len; i++) {
-      setData((prevData) => ({
+      newVariants[prevData.currentVariant] = targetVariant
+
+      return {
         ...prevData,
-        chatBubbles: [
-          ...prevData.chatBubbles,
-          new chatBubble("image", images[i])
-        ]
-      }))
-    }
-
-    setReadyToGenerate(true)
+        variants: newVariants
+      }
+    })
   }
 
-  const deleteIndex = (index) => {
-    setData((prevData) => ({
-      ...prevData,
-      chatBubbles: [...prevData.chatBubbles.slice(0, index), ...prevData.chatBubbles.slice(index + 1)]
-    }))
+  /* For the currentVariant, pushes an array of images to the requestChain. */
+  function pushImages(images) {
+    setData((prevData) => {
+      const newVariants = [...prevData.variants]
+
+      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      const toInsert = images.map((image) => new chatBubble("image", image))
+      targetVariant.chatBubbles = [...targetVariant.chatBubbles, ...toInsert]
+
+      newVariants[prevData.currentVariant] = targetVariant
+
+      return {
+        ...prevData,
+        variants: newVariants
+      }
+    })
   }
 
+  /* For the currentVariant, deletes a request node/bubble at the specified index. */
+  function deleteRequest(index) {
+    setData((prevData) => {
+      const newVariants = [...prevData.variants]
+
+      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      targetVariant.chatBubbles = [
+        ...targetVariant.chatBubbles.slice(0, index),
+        ...targetVariant.chatBubbles.slice(index + 1)
+      ]
+
+      newVariants[prevData.currentVariant] = targetVariant
+
+      return {
+        ...prevData,
+        variants: newVariants
+      }
+    })
+  }
+
+  /* For the currentVariant, adds a response node/bubble. */
   //TODO: CHANGE ONCE BACKEND IS IMPLEMENTED
-  const addResponse = () => {
-    setData((prevData) => ({
-      ...prevData,
-      responses: [
-        ...prevData.responses,
+  function addResponse() {
+    setData((prevData) => {
+      const newVariants = [...prevData.variants]
+
+      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      targetVariant.responses = [
+        ...targetVariant.responses,
         new chatBubble(
           "text",
           "This is a DUMMY RESPONSE to the user's message!!"
         )
       ]
-    }))
+
+      newVariants[prevData.currentVariant] = targetVariant
+
+      return {
+        ...prevData,
+        variants: newVariants
+      }
+    })
   }
 
-  const updateData = (newData) => {
-    setData((prev) => ({ ...prev, ...newData }))
-  }
+  /* For the currentVariant, takes the response at the specified index and converts it into a request node. Appends that request node to the requestChain. */
+  function acceptResponse(index) {}
 
-  const readyToGenerate = () => {
-    return data.readyToGenerate
-  }
-  const setReadyToGenerate = (bool) => {
+  /* For the currentVariant, clears all responses */
+  function clearResponses() {
     setData((prevData) => ({
       ...prevData,
-      readyToGenerate: bool
+      responses: []
     }))
   }
+
+  /* Creates a new variant, copying the specified variant's requestChain to the new variant. */
+  function copyVariant(index) {}
+
+  /* Setter function for currentVariant. */
+  function setCurrentVariant(index) {
+    setData((prevData) => ({
+      ...prevData,
+      currentVariant: index
+    }))
+  }
+
+  /** END FUNCTIONS **/
 
   return (
     <DataContext.Provider
@@ -82,10 +134,12 @@ export const DataProvider = ({ children }) => {
         data,
         pushUserText,
         pushImages,
-        deleteIndex,
+        deleteRequest,
         addResponse,
-        updateData,
-        readyToGenerate
+        acceptResponse,
+        clearResponses,
+        copyVariant,
+        setCurrentVariant
       }}
     >
       {children}
