@@ -6,7 +6,7 @@ import Arrow from "@/molecules/Arrow/Arrow"
 export default function ModelBubble() {
   const { data, addResponse } = useData()
 
-  const curIndex = data.variants[data.currentVariant].setCurrentResponseIndex
+  const curIndex = data.variants[data.currentVariant].currentResponseIndex
   const responses = data.variants[data.currentVariant].responses
   const numResponses = responses.length
 

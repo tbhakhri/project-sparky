@@ -2,11 +2,12 @@ import "./ChatBubble.css"
 import Image from "next/image"
 import { useData } from "%/DataContext"
 
-export default function ImageBubble({ imageURL, index }) {
-  const { deleteRequest } = useData()
+export default function ImageBubble({ imageURL, index, variant }) {
+  const { deleteRequest, acceptResponse } = useData()
 
   const handleDelete = (e) => {
-    deleteRequest(index)
+    deleteRequest(variant, index)
+    acceptResponse()
   }
 
   return (

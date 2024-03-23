@@ -5,9 +5,13 @@ import { useState, useEffect } from "react"
 import { useData } from "%/DataContext"
 
 export default function BottomBar({ tokenCount }) {
-  const { pushUserText, pushImages, addResponse } = useData()
+  const { data, pushUserText, pushImages, addResponse, acceptResponse } =
+    useData()
 
   const executePut = (_) => {
+    if (data.variants[data.currentVariant].responses.length !== 0) {
+      acceptResponse()
+    }
     if (!isTextEmpty()) {
       pushUserText(text)
     }

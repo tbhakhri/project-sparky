@@ -1,5 +1,3 @@
-import React from "react"
-
 import "./MainContent.css"
 import ChatBubble from "@/molecules/ChatBubble/ChatBubble"
 import ModelBubble from "@/molecules/ChatBubble/ModelBubble"
@@ -8,14 +6,26 @@ import { useData } from "%/DataContext"
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 
 export default function MainContent() {
-  const { data } = useData()
+  const { data, setCurrentVariant } = useData()
 
-  const renderBubble = (item, index) => {
+  const renderBubble = (item, requestIndex, variantIndex) => {
     switch (item.type) {
       case "text":
-        return <ChatBubble text={item.text} index={index} />
+        return (
+          <ChatBubble
+            text={item.text}
+            index={requestIndex}
+            variant={variantIndex}
+          />
+        )
       case "image":
-        return <ImageBubble imageURL={item.text} index={index} />
+        return (
+          <ImageBubble
+            imageURL={item.text}
+            index={requestIndex}
+            variant={variantIndex}
+          />
+        )
       default:
         return null
     }
@@ -33,13 +43,23 @@ export default function MainContent() {
       ) : (
         <>
           {data.variants.map((variant, variantIndex) => (
-            <React.Fragment key={variantIndex}>
+            <div
+              key={variantIndex}
+              className="variantContainer"
+              style={{
+                borderColor:
+                  variantIndex === data.currentVariant
+                    ? "#a5bcf6"
+                    : "rgba(0,0,0,0)"
+              }}
+              onClick={() => setCurrentVariant(variantIndex)}
+            >
               <p className="userText">User</p>
               {variant.chatBubbles.map((item, requestIndex) =>
-                renderBubble(item, requestIndex)
+                renderBubble(item, requestIndex, variantIndex)
               )}
               {variant.responses.length > 0 && <ModelBubble />}
-            </React.Fragment>
+            </div>
           ))}
         </>
       )}

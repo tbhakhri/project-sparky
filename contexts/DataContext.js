@@ -18,6 +18,11 @@ export const DataProvider = ({ children }) => {
         responses: [],
         currentResponseIndex: 0
       }
+      // {
+      //   chatBubbles: [],
+      //   responses: [],
+      //   currentResponseIndex: 0
+      // }
     ],
     currentVariant: 0
   })
@@ -61,18 +66,18 @@ export const DataProvider = ({ children }) => {
     })
   }
 
-  /* For the currentVariant, deletes a request node/bubble at the specified index. */
-  function deleteRequest(index) {
+  /* For the specified variant, deletes a request node/bubble at the specified index. */
+  function deleteRequest(variant, index) {
     setData((prevData) => {
       const newVariants = [...prevData.variants]
 
-      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      const targetVariant = { ...newVariants[variant] }
       targetVariant.chatBubbles = [
         ...targetVariant.chatBubbles.slice(0, index),
         ...targetVariant.chatBubbles.slice(index + 1)
       ]
 
-      newVariants[prevData.currentVariant] = targetVariant
+      newVariants[variant] = targetVariant
 
       return {
         ...prevData,
@@ -106,12 +111,15 @@ export const DataProvider = ({ children }) => {
   }
 
   /* For the currentVariant, takes the response at the specified index and converts it into a request node. Appends that request node to the requestChain. */
-  function acceptResponse(index) {
+  function acceptResponse() {
+    if (data.variants[data.currentVariant].responses.length === 0) return
     setData((prevData) => {
       const newVariants = [...prevData.variants]
 
       const targetVariant = { ...newVariants[prevData.currentVariant] }
-      const acceptedResponse = targetVariant.responses[index]
+      const acceptedResponse =
+        targetVariant.responses[targetVariant.currentResponseIndex]
+
       targetVariant.chatBubbles = [
         ...targetVariant.chatBubbles,
         acceptedResponse
