@@ -86,13 +86,13 @@ export const DataProvider = ({ children }) => {
     })
   }
 
-  /* For the currentVariant, adds a response node/bubble. */
+  /* For the specified variant, adds a response node/bubble. */
   //TODO: CHANGE ONCE BACKEND IS IMPLEMENTED
-  function addResponse() {
+  function addResponse(variant) {
     setData((prevData) => {
       const newVariants = [...prevData.variants]
 
-      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      const targetVariant = { ...newVariants[variant] }
       targetVariant.responses = [
         ...targetVariant.responses,
         new chatBubble(
@@ -101,7 +101,7 @@ export const DataProvider = ({ children }) => {
         )
       ]
 
-      newVariants[prevData.currentVariant] = targetVariant
+      newVariants[variant] = targetVariant
 
       return {
         ...prevData,
@@ -154,15 +154,15 @@ export const DataProvider = ({ children }) => {
     }))
   }
 
-  /* Setter function for currentResponseIndex for the currentVariant. */
-  function setCurrentResponseIndex(index) {
+  /* Setter function for currentResponseIndex for the specified variant. */
+  function setCurrentResponseIndex(variant, index) {
     setData((prevData) => {
       const newVariants = [...prevData.variants]
 
-      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      const targetVariant = { ...newVariants[variant] }
       targetVariant.currentResponseIndex = index
 
-      newVariants[prevData.currentVariant] = targetVariant
+      newVariants[variant] = targetVariant
 
       return {
         ...prevData,

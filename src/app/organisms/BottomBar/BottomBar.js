@@ -23,7 +23,7 @@ export default function BottomBar({ tokenCount }) {
 
   const executeRun = (_) => {
     executePut()
-    addResponse()
+    addResponse(data.currentVariant)
   }
 
   /* BOTTOMINPUTBAR STATE */

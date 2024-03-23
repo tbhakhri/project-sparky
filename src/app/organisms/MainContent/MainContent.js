@@ -58,7 +58,9 @@ export default function MainContent() {
               {variant.chatBubbles.map((item, requestIndex) =>
                 renderBubble(item, requestIndex, variantIndex)
               )}
-              {variant.responses.length > 0 && <ModelBubble />}
+              {variant.responses.length > 0 && (
+                <ModelBubble variant={variantIndex} />
+              )}
             </div>
           ))}
         </>
