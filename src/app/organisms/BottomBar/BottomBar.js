@@ -5,8 +5,14 @@ import { useState, useEffect } from "react"
 import { useData } from "%/DataContext"
 
 export default function BottomBar({ tokenCount }) {
-  const { data, pushUserText, pushImages, addResponse, acceptResponse } =
-    useData()
+  const {
+    data,
+    pushUserText,
+    pushImages,
+    addResponse,
+    acceptResponse,
+    clearResponses
+  } = useData()
 
   const executePut = (_) => {
     if (data.variants[data.currentVariant].responses.length !== 0) {
@@ -22,7 +28,7 @@ export default function BottomBar({ tokenCount }) {
   }
 
   const executeRun = (_) => {
-    executePut()
+    clearResponses()
     addResponse(data.currentVariant)
   }
 

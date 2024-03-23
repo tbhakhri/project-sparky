@@ -110,7 +110,7 @@ export const DataProvider = ({ children }) => {
     })
   }
 
-  /* For the currentVariant, takes the response at the specified index and converts it into a request node. Appends that request node to the requestChain. */
+  /* For the currentVariant, takes the response at the currentResponseIndex and converts it into a request node. Appends that request node to the requestChain. */
   function acceptResponse() {
     if (data.variants[data.currentVariant].responses.length === 0) return
     setData((prevData) => {
@@ -125,6 +125,7 @@ export const DataProvider = ({ children }) => {
         acceptedResponse
       ]
       targetVariant.responses = []
+      targetVariant.currentResponseIndex = 0
 
       newVariants[prevData.currentVariant] = targetVariant
 
@@ -137,10 +138,21 @@ export const DataProvider = ({ children }) => {
 
   /* For the currentVariant, clears all responses */
   function clearResponses() {
-    setData((prevData) => ({
-      ...prevData,
-      responses: []
-    }))
+    if (data.variants[data.currentVariant].responses.length === 0) return
+    setData((prevData) => {
+      const newVariants = [...prevData.variants]
+
+      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      targetVariant.responses = []
+      targetVariant.currentResponseIndex = 0
+
+      newVariants[prevData.currentVariant] = targetVariant
+
+      return {
+        ...prevData,
+        variants: newVariants
+      }
+    })
   }
 
   /* Creates a new variant, copying the specified variant's requestChain to the new variant. */
