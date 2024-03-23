@@ -26,6 +26,7 @@ export const DataProvider = ({ children }) => {
     ],
     currentVariant: 0
   })
+  console.log(data)
 
   /** FUNCTIONS **/
   /* For the currentVariant, pushes text to the requestChain. */

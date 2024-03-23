@@ -6,9 +6,10 @@ import Arrow from "@/molecules/Arrow/Arrow"
 export default function ModelBubble({ variant }) {
   const { data, addResponse, setCurrentResponseIndex } = useData()
 
-  const curIndex = data.variants[data.currentVariant].currentResponseIndex
-  const responses = data.variants[data.currentVariant].responses
+  const curIndex = data.variants[variant].currentResponseIndex
+  const responses = data.variants[variant].responses
   const numResponses = responses.length
+  console.log(curIndex, responses, numResponses)
 
   //TODO: CHANGE WHEN BACKEND IS IMPLEMENTED
   const handleRegenerate = (e) => {
