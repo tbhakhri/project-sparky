@@ -12,6 +12,11 @@
   border: 2px solid #a5bcf6;
 }
 
+.compareButton {
+  display: block;
+  margin: auto;
+}
+
 .userText {
   color: white;
   text-align: right;

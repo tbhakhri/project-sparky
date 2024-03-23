@@ -156,7 +156,25 @@ export const DataProvider = ({ children }) => {
   }
 
   /* Creates a new variant, copying the specified variant's requestChain to the new variant. */
-  function copyVariant(index) {}
+  function copyVariant(index) {
+    setData((prevData) => {
+      const variantToCopy = { ...prevData.variants[index] }
+
+      const newVariants = [
+        ...prevData.variants,
+        {
+          chatBubbles: variantToCopy.chatBubbles,
+          responses: [],
+          currentResponseIndex: 0
+        }
+      ]
+
+      return {
+        ...prevData,
+        variants: newVariants
+      }
+    })
+  }
 
   /* Setter function for currentVariant. */
   function setCurrentVariant(index) {

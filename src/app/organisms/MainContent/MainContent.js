@@ -6,7 +6,7 @@ import { useData } from "%/DataContext"
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 
 export default function MainContent() {
-  const { data, setCurrentVariant } = useData()
+  const { data, setCurrentVariant, copyVariant } = useData()
 
   const renderBubble = (item, requestIndex, variantIndex) => {
     switch (item.type) {
@@ -61,6 +61,12 @@ export default function MainContent() {
               {variant.responses.length > 0 && (
                 <ModelBubble variant={variantIndex} />
               )}
+              <button
+                className="compareButton"
+                onClick={(_) => copyVariant(variantIndex)}
+              >
+                compare
+              </button>
             </div>
           ))}
         </>
