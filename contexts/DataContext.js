@@ -15,7 +15,8 @@ export const DataProvider = ({ children }) => {
     variants: [
       {
         chatBubbles: [],
-        responses: []
+        responses: [],
+        currentResponseIndex: 0
       }
     ],
     currentVariant: 0
@@ -30,7 +31,7 @@ export const DataProvider = ({ children }) => {
       const targetVariant = { ...newVariants[prevData.currentVariant] }
       targetVariant.chatBubbles = [
         ...targetVariant.chatBubbles,
-        new chatBubble("user", text)
+        new chatBubble("text", text)
       ]
 
       newVariants[prevData.currentVariant] = targetVariant
@@ -105,7 +106,26 @@ export const DataProvider = ({ children }) => {
   }
 
   /* For the currentVariant, takes the response at the specified index and converts it into a request node. Appends that request node to the requestChain. */
-  function acceptResponse(index) {}
+  function acceptResponse(index) {
+    setData((prevData) => {
+      const newVariants = [...prevData.variants]
+
+      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      const acceptedResponse = targetVariant.responses[index]
+      targetVariant.chatBubbles = [
+        ...targetVariant.chatBubbles,
+        acceptedResponse
+      ]
+      targetVariant.responses = []
+
+      newVariants[prevData.currentVariant] = targetVariant
+
+      return {
+        ...prevData,
+        variants: newVariants
+      }
+    })
+  }
 
   /* For the currentVariant, clears all responses */
   function clearResponses() {
@@ -126,6 +146,23 @@ export const DataProvider = ({ children }) => {
     }))
   }
 
+  /* Setter function for currentResponseIndex for the currentVariant. */
+  function setCurrentResponseIndex(index) {
+    setData((prevData) => {
+      const newVariants = [...prevData.variants]
+
+      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      targetVariant.currentResponseIndex = index
+
+      newVariants[prevData.currentVariant] = targetVariant
+
+      return {
+        ...prevData,
+        variants: newVariants
+      }
+    })
+  }
+
   /** END FUNCTIONS **/
 
   return (
@@ -139,7 +176,8 @@ export const DataProvider = ({ children }) => {
         acceptResponse,
         clearResponses,
         copyVariant,
-        setCurrentVariant
+        setCurrentVariant,
+        setCurrentResponseIndex
       }}
     >
       {children}

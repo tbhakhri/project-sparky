@@ -1,4 +1,3 @@
-import { useState } from "react"
 import Image from "next/image"
 import "./ChatBubble.css"
 import { useData } from "%/DataContext"
@@ -7,15 +6,14 @@ import Arrow from "@/molecules/Arrow/Arrow"
 export default function ModelBubble() {
   const { data, addResponse } = useData()
 
-  const [curIndex, setCurIndex] = useState(0)
+  const curIndex = data.variants[data.currentVariant].setCurrentResponseIndex
   const responses = data.variants[data.currentVariant].responses
-  console.log("RESPONSES", responses)
   const numResponses = responses.length
 
   //TODO: CHANGE WHEN BACKEND IS IMPLEMENTED
   const handleRegenerate = (e) => {
     addResponse()
-    setCurIndex(numResponses)
+    setCurrentResponseIndex(numResponses)
   }
 
   return (
@@ -27,7 +25,7 @@ export default function ModelBubble() {
             <button
               className="leftRightButton"
               disabled={curIndex === 0}
-              onClick={(_) => setCurIndex((prev) => prev - 1)}
+              onClick={(_) => setCurrentResponseIndex((prev) => prev - 1)}
               style={{ cursor: curIndex === 0 ? "default" : "pointer" }}
             >
               <Arrow isLeft={true} fill={curIndex === 0 ? "grey" : "#ffffff"} />
@@ -35,7 +33,7 @@ export default function ModelBubble() {
             <button
               className="leftRightButton"
               disabled={curIndex === numResponses - 1}
-              onClick={(_) => setCurIndex((prev) => prev + 1)}
+              onClick={(_) => setCurrentResponseIndex((prev) => prev + 1)}
               style={{
                 cursor: curIndex === numResponses - 1 ? "default" : "pointer"
               }}
