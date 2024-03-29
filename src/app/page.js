@@ -2,12 +2,14 @@
 
 import AuthContext from "%/authContext"
 import styles from "@/page.module.css"
-import { useContext, useState } from "react"
+import { useContext, useState, useRef, useCallback } from "react"
 import { redirect } from "next/navigation"
 import TopBar from "@/organisms/TopBar/TopBar"
 import MainContent from "@/organisms/MainContent/MainContent"
 import BottomBar from "@/organisms/BottomBar/BottomBar"
 import { DataProvider } from "%/DataContext"
+
+import Webcam from "react-webcam"
 
 export default function App() {
   const { user, authReady } = useContext(AuthContext)
@@ -33,6 +35,16 @@ export default function App() {
     return 1000
   }
 
+  /* CAMERA */
+  const webcamRef = useRef(null)
+  const [isCameraOpen, setIsCameraOpen] = useState(false)
+  console.log(isCameraOpen)
+  const [cameraImage, setCameraImage] = useState(null)
+  const capture = useCallback(() => {
+    setCameraImage(webcamRef.current.getScreenshot())
+    setIsCameraOpen(false)
+  }, [webcamRef])
+
   return (
     <div className={styles.pageContainer}>
       {authReady ? (
@@ -41,13 +53,32 @@ export default function App() {
             redirect("/login")
           ) : (
             <>
-              <>
-                <DataProvider>
+              <DataProvider>
+                {isCameraOpen && (
+                  <>
+                    <Webcam
+                      audio={false}
+                      ref={webcamRef}
+                      width={"100%"}
+                      screenshotFormat="image/jpeg"
+                    />
+                    <button onClick={capture}>Capture</button>
+                  </>
+                )}
+                <div
+                  className={styles.pageContainer}
+                  style={{
+                    display: isCameraOpen ? "none" : "flex"
+                  }}
+                >
                   <TopBar />
                   <MainContent />
-                  <BottomBar />
-                </DataProvider>
-              </>
+                  <BottomBar
+                    openCameraFunc={() => setIsCameraOpen(true)}
+                    cameraImage={cameraImage}
+                  />
+                </div>
+              </DataProvider>
             </>
           )}
         </>
