@@ -10,6 +10,7 @@ import Image from "next/image"
 
 export default function Login() {
   const { user, login, authReady } = useContext(AuthContext)
+
   const setHeight = () => {
     let vh = window.innerHeight * 0.01
     document.documentElement.style.setProperty("--vh", `${vh}px`)

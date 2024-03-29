@@ -1,18 +1,27 @@
 "use client"
 
 import AuthContext from "%/authContext"
+import { useData } from "%/DataContext"
 import styles from "@/page.module.css"
 import { useContext, useState, useRef, useCallback, useEffect } from "react"
 import { redirect } from "next/navigation"
 import TopBar from "@/organisms/TopBar/TopBar"
 import MainContent from "@/organisms/MainContent/MainContent"
 import BottomBar from "@/organisms/BottomBar/BottomBar"
-import { DataProvider } from "%/DataContext"
-
 import Webcam from "react-webcam"
 
 export default function App() {
   const { user, authReady } = useContext(AuthContext)
+  let { apiKey } = useData()
+
+  // TODO: IF APIKEY IS EMPTY STRING, FIRST TRY TO RETREIVE IT FROM DB
+  if (apiKey === "") {
+    // ...try to get apiKey from db
+    // if successful, setApiKey
+    // but for now, we will hardcode the apiKey to be always non-empty
+    apiKey = "testkey"
+  }
+
   const setHeight = () => {
     let vh = window.innerHeight * 0.01
     document.documentElement.style.setProperty("--vh", `${vh}px`)
@@ -59,11 +68,9 @@ export default function App() {
     <div className={styles.pageContainer}>
       {authReady ? (
         <>
-          {user === null ? (
-            redirect("/login")
-          ) : (
-            <>
-              <DataProvider>
+          {user !== null ? (
+            apiKey !== "" ? (
+              <>
                 {isCameraOpen && (
                   <>
                     <Webcam
@@ -88,8 +95,12 @@ export default function App() {
                     cameraImage={cameraImage}
                   />
                 </div>
-              </DataProvider>
-            </>
+              </>
+            ) : (
+              redirect("/apikey")
+            )
+          ) : (
+            redirect("/login")
           )}
         </>
       ) : (

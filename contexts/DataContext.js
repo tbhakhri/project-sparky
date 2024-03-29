@@ -1,3 +1,5 @@
+"use client"
+
 import React, { createContext, useState, useContext } from "react"
 
 const DataContext = createContext()
@@ -11,6 +13,8 @@ export const DataProvider = ({ children }) => {
       this.text = text
     }
   }
+
+  const [apiKey, setApiKey] = useState("")
 
   const [data, setData] = useState({
     chatBubbles: [],
@@ -73,6 +77,8 @@ export const DataProvider = ({ children }) => {
     <DataContext.Provider
       value={{
         data,
+        apiKey,
+        setApiKey,
         pushUserText,
         pushImages,
         addResponseText,
