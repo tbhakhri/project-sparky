@@ -4,12 +4,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 /* Outer Mobile Container */
 .mobileContainer {
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100%;
 }
 

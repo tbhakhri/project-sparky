@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import AuthContext from "%/authContext"
 import GoogleSignInButton from "./logo"
 import "./page.css"
@@ -10,6 +10,17 @@ import Image from "next/image"
 
 export default function Login() {
   const { user, login, authReady } = useContext(AuthContext)
+  const setHeight = () => {
+    let vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty("--vh", `${vh}px`)
+  }
+
+  useEffect(() => {
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      window.addEventListener("resize", setHeight)
+      setHeight()
+    }
+  }, [])
 
   return (
     <div className={styles.pageContainer}>

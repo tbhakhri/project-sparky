@@ -13,9 +13,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <meta name="viewport" content="viewport-fit=cover" />
       <AuthContextProvider>
         <body className={inter.className}>
-          <main className={styles.main}>
+          <main className={styles.main} id="mainContainer">
             <div className={styles.mobileContainer}>{children}</div>
           </main>
         </body>

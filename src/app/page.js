@@ -2,7 +2,7 @@
 
 import AuthContext from "%/authContext"
 import styles from "@/page.module.css"
-import { useContext, useState, useRef, useCallback } from "react"
+import { useContext, useState, useRef, useCallback, useEffect } from "react"
 import { redirect } from "next/navigation"
 import TopBar from "@/organisms/TopBar/TopBar"
 import MainContent from "@/organisms/MainContent/MainContent"
@@ -13,6 +13,17 @@ import Webcam from "react-webcam"
 
 export default function App() {
   const { user, authReady } = useContext(AuthContext)
+  const setHeight = () => {
+    let vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty("--vh", `${vh}px`)
+  }
+
+  useEffect(() => {
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      window.addEventListener("resize", setHeight)
+      setHeight()
+    }
+  }, [])
 
   const [promptMetadata, setPromptMetadata] = useState(() => ({
     id: generateUUID(),
@@ -38,7 +49,6 @@ export default function App() {
   /* CAMERA */
   const webcamRef = useRef(null)
   const [isCameraOpen, setIsCameraOpen] = useState(false)
-  console.log(isCameraOpen)
   const [cameraImage, setCameraImage] = useState(null)
   const capture = useCallback(() => {
     setCameraImage(webcamRef.current.getScreenshot())
