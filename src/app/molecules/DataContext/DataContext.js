@@ -12,9 +12,9 @@ export const DataProvider = ({ children }) => {
       this.index = index;
     }
   }
+
   const [prompts, setPrompts] = useState({
     promptData: [],
-    
   });
 
   const [data, setData] = useState({
@@ -30,14 +30,14 @@ export const DataProvider = ({ children }) => {
 
   // console.log(data.chatBubbles);
 
-   data.chatBubbles.forEach(bubble => {
-     console.log('hiiiiiii', bubble.text, bubble.type);
-   });
+  data.chatBubbles.forEach((bubble) => {
+    console.log("hiiiiiii", bubble.text, bubble.type);
+  });
 
   const addPrompt = () => {
-    setPrompts(prevPrompts => ({
+    setPrompts((prevPrompts) => ({
       ...prevPrompts,
-      promptData: [...prevPrompts.promptData, {...data}],
+      promptData: [...prevPrompts.promptData, { ...data }],
     }));
 
     setData({
@@ -48,12 +48,11 @@ export const DataProvider = ({ children }) => {
       marked: false,
     });
 
-    chatBubbles.forEach(bubble => {
+    chatBubbles.forEach((bubble) => {
       console.log(bubble.text);
-  });
-  }
-  
-   
+    });
+  };
+
   const addUserText = () => {
     setData((prevData) => ({
       ...prevData,
@@ -70,7 +69,6 @@ export const DataProvider = ({ children }) => {
     }));
     // console.log(userIndex);
     setUserIndex((prev) => prev + 1);
-    
   };
 
   const addResponseText = () => {
@@ -92,7 +90,6 @@ export const DataProvider = ({ children }) => {
     }));
     // console.log(modelIndex);
     setModelIndex(modelIndex + 1);
-    
   };
 
   const addImage = (src) => {
@@ -105,7 +102,9 @@ export const DataProvider = ({ children }) => {
   const deleteImage = (index) => {
     setData((prevData) => ({
       ...prevData,
-      currImages: prevData.currImages.filter((_, currIndex) => currIndex !== index),
+      currImages: prevData.currImages.filter(
+        (_, currIndex) => currIndex !== index
+      ),
     }));
   };
 
