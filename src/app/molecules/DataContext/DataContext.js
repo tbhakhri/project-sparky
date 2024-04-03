@@ -15,9 +15,11 @@ export const DataProvider = ({ children }) => {
 
   const [prompts, setPrompts] = useState({
     promptData: [],
+    promptTitles: [],
   });
 
   const [data, setData] = useState({
+    //promptTitles: [],
     chatBubbles: [],
     currText: "",
     currImages: [],
@@ -35,12 +37,13 @@ export const DataProvider = ({ children }) => {
   // });
 
   const addPrompt = () => {
-    console.log("hi");
-
     setPrompts((prevPrompts) => ({
       ...prevPrompts,
       promptData: [...prevPrompts.promptData, { ...data }],
+      promptTitles: [data.chatBubbles[0], ...prevPrompts.promptTitles],
     }));
+
+    console.log(data.promptTitles);
 
     setData({
       chatBubbles: [],
@@ -157,14 +160,25 @@ export const DataProvider = ({ children }) => {
     return data.readyToGenerate;
   };
 
+  const updateTitle = (index, title) => {
+    setPrompts((prevPrompts) => {
+      const newPromptTitles = [...prevPrompts.promptTitles];
+      newPromptTitles[index] = title;
+      return { ...prevPrompts, promptTitles: newPromptTitles };
+    });
+    console.log(prompts.promptTitles);
+  };
+
   return (
     <DataContext.Provider
       value={{
         data,
+        prompts,
         addUserText,
         addResponseText,
         clearCurrText,
         updateData,
+        updateTitle,
         imageEmpty,
         textEmpty,
         addImage,

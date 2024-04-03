@@ -39,9 +39,10 @@ export default function PutRunSettings({
       addImages();
       clearCurrImages();
     }
-    if (readyToGenerate()) {
-      addResponseText();
-    }
+    // if (readyToGenerate()) {
+    //   addResponseText();
+    // }
+    addResponseText();
   };
 
   return (

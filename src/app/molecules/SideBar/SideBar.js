@@ -6,8 +6,9 @@ import React, { createContext, useState, useContext } from "react";
 import { useData } from "@/molecules/DataContext/DataContext";
 
 export default function SideBar({ toggleSidebar }) {
-  const { data, addPrompt } = useData(); // Assuming you want to access the entire state to get chatBubbles
+  const { data, addPrompt, prompts, updateTitle } = useData(); // Assuming you want to access the entire state to get chatBubbles
   const { chatBubbles } = data;
+  const { promptTitles } = prompts;
 
   return (
     <div className="sideBarContainer">
@@ -57,24 +58,38 @@ export default function SideBar({ toggleSidebar }) {
         </button>
       </div>
       <div className="currentPromptContainer">
-        <div className="promptHeaderText">Current Prompt</div>
-        <div className="promptItem"> Insert prompt here</div>
+        {/* <div className="promptHeaderText">
+          {chatBubbles.length > 0 ? chatBubbles[0].text : "Insert Prompt Here"}
+        </div> */}
+
+        <div className="promptItem">
+          {" "}
+          {chatBubbles.length > 0 ? chatBubbles[0].text : "Insert Prompt Here"}
+        </div>
       </div>
       <div className="pastPromptContainer">
         <div className="promptHeaderText">Past Prompts</div>
-        {chatBubbles.map((bubble, index) => (
+        {/* {chatBubbles.map((bubble, index) => ( */}
+        {promptTitles.map((title, index) => (
           <div key={index} className="promptItem">
             <textarea
               className="promptTextArea"
-              defaultValue={bubble.text}
+              value={title.text}
               // onBlur={(e) => updateBubbleText(index, e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  updateTitle(index, e.target.value);
+                }
+              }}
+              onChange={(e) => updateTitle(index, e.target.value)}
               rows="1" // Adjust based on your needs
             ></textarea>
           </div>
         ))}
+        {/* <div className="promptItem"> Insert prompt here</div>
         <div className="promptItem"> Insert prompt here</div>
-        <div className="promptItem"> Insert prompt here</div>
-        <div className="promptItem"> Insert prompt here</div>
+        <div className="promptItem"> Insert prompt here</div> */}
       </div>
     </div>
   );
