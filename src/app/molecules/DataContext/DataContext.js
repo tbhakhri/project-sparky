@@ -30,11 +30,13 @@ export const DataProvider = ({ children }) => {
 
   // console.log(data.chatBubbles);
 
-  data.chatBubbles.forEach((bubble) => {
-    console.log("hiiiiiii", bubble.text, bubble.type);
-  });
+  // data.chatBubbles.forEach((bubble) => {
+  //   console.log("hiiiiiii", bubble.text, bubble.type);
+  // });
 
   const addPrompt = () => {
+    console.log("hi");
+
     setPrompts((prevPrompts) => ({
       ...prevPrompts,
       promptData: [...prevPrompts.promptData, { ...data }],
@@ -46,10 +48,6 @@ export const DataProvider = ({ children }) => {
       currImages: [],
       readyToGenerate: false,
       marked: false,
-    });
-
-    chatBubbles.forEach((bubble) => {
-      console.log(bubble.text);
     });
   };
 
@@ -174,6 +172,7 @@ export const DataProvider = ({ children }) => {
         addImages,
         clearCurrImages,
         readyToGenerate,
+        addPrompt,
       }}
     >
       {children}
