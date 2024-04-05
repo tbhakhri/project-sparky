@@ -15,6 +15,16 @@
 .compareButton {
   display: block;
   margin: auto;
+  width: 75px;
+  border-radius: 20px;
+  background-color: #1a3059;
+  border: none;
+  color: white;
+  padding: 0.5rem 0;
+  text-decoration: none;
+  font-size: 0.6rem;
+  font-family: Kumbh Sans;
+  cursor: pointer;
 }
 
 .userText {

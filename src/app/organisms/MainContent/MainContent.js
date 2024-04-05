@@ -13,7 +13,7 @@ export default function MainContent() {
       case "text":
         return (
           <ChatBubble
-            text={item.text}
+            initialText={item.text}
             index={requestIndex}
             variant={variantIndex}
           />
@@ -65,7 +65,7 @@ export default function MainContent() {
                 className="compareButton"
                 onClick={(_) => copyVariant(variantIndex)}
               >
-                compare
+                Compare
               </button>
             </div>
           ))}

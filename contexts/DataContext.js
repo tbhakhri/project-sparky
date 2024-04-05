@@ -26,7 +26,6 @@ export const DataProvider = ({ children }) => {
     ],
     currentVariant: 0
   })
-  console.log(data)
 
   /** FUNCTIONS **/
   /* For the currentVariant, pushes text to the requestChain. */
@@ -77,6 +76,23 @@ export const DataProvider = ({ children }) => {
         ...targetVariant.chatBubbles.slice(0, index),
         ...targetVariant.chatBubbles.slice(index + 1)
       ]
+
+      newVariants[variant] = targetVariant
+
+      return {
+        ...prevData,
+        variants: newVariants
+      }
+    })
+  }
+
+  /* For the specified variant, deletes a request node/bubble at the specified index. */
+  function editRequestText(variant, index, newText) {
+    setData((prevData) => {
+      const newVariants = [...prevData.variants]
+
+      const targetVariant = { ...newVariants[variant] }
+      targetVariant.chatBubbles[index] = new chatBubble("text", newText)
 
       newVariants[variant] = targetVariant
 
@@ -211,6 +227,7 @@ export const DataProvider = ({ children }) => {
         pushUserText,
         pushImages,
         deleteRequest,
+        editRequestText,
         addResponse,
         acceptResponse,
         clearResponses,
