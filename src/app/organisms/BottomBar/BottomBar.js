@@ -1,14 +1,23 @@
 import "./BottomBar.css"
 import styles from "@/page.module.css"
 import Image from "next/image"
-import { useData } from "%/DataContext"
 import { useState, useEffect } from "react"
+import { useData } from "%/DataContext"
 
 export default function BottomBar({ tokenCount, openCameraFunc, cameraImage }) {
-  const { pushUserText, pushImages, addResponseText, readyToGenerate } =
-    useData()
+  const {
+    data,
+    pushUserText,
+    pushImages,
+    addResponse,
+    acceptResponse,
+    clearResponses
+  } = useData()
 
   const executePut = (_) => {
+    if (data.variants[data.currentVariant].responses.length !== 0) {
+      acceptResponse()
+    }
     if (!isTextEmpty()) {
       pushUserText(text)
     }
@@ -19,10 +28,8 @@ export default function BottomBar({ tokenCount, openCameraFunc, cameraImage }) {
   }
 
   const executeRun = (_) => {
-    executePut()
-    if (readyToGenerate()) {
-      addResponseText()
-    }
+    clearResponses()
+    addResponse(data.currentVariant)
   }
 
   /* BOTTOMINPUTBAR STATE */
