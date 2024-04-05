@@ -19,7 +19,7 @@ export default function App() {
     // ...try to get apiKey from db
     // if successful, setApiKey
     // but for now, we will hardcode the apiKey to be always non-empty
-    apiKey = "testkey"
+    // apiKey = "testkey"
   }
 
   const setHeight = () => {
