@@ -2,7 +2,7 @@ import { Kumbh_Sans } from "next/font/google"
 import "./ChatBubble.css"
 import Image from "next/image"
 import { useData } from "%/DataContext"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 
 const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
@@ -37,6 +37,11 @@ export default function ChatBubble({ initialText, index, variant }) {
   }
 
   const inputRef = useRef(null)
+  useEffect(() => {
+    const textarea = inputRef.current
+    textarea.style.height = "0.65rem"
+    textarea.style.height = textarea.scrollHeight + "px"
+  }, [text])
 
   return (
     <div className="bubble-container">
@@ -61,19 +66,16 @@ export default function ChatBubble({ initialText, index, variant }) {
           height={9}
         />
       </button>
-      <></>
-      <div className={kumbh_sans.className}>
-        <input
-          ref={inputRef}
-          value={text}
-          onChange={handleEdit}
-          onBlur={commitEdit}
-          onKeyDown={handleKeyDown}
-          disabled={!isEditable}
-          className="chatBubble"
-          style={{ backgroundColor: isEditable ? "#a5bcf6" : "#d9d9d9" }}
-        />
-      </div>
+      <textarea
+        ref={inputRef}
+        value={text}
+        onChange={handleEdit}
+        onBlur={commitEdit}
+        onKeyDown={handleKeyDown}
+        disabled={!isEditable}
+        className="chatBubble"
+        style={{ backgroundColor: isEditable ? "#a5bcf6" : "#d9d9d9" }}
+      />
     </div>
   )
 }
