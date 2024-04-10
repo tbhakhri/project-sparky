@@ -108,11 +108,11 @@
   font-family: 'Kumbh Sans', sans-serif;
   font-size: 14px;
   font-weight: 100 !important; 
-  height: 3%;
+  height: auto;
 
 }  
 
-.promptTextArea{
+.pastPromptContainer{
   color: white;
   font-family: 'Kumbh Sans', sans-serif;
   font-size: 14px;

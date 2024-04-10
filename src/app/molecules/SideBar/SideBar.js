@@ -4,11 +4,15 @@ import React, { createContext, useState, useContext } from "react";
 
 // import DataProvider from './DataContext/DataContext.js';
 import { useData } from "@/molecules/DataContext/DataContext";
+import PromptTitles from "@/molecules/SideBar/PromptTitles"
 
 export default function SideBar({ toggleSidebar }) {
-  const { data, addPrompt, prompts, updateTitle } = useData(); // Assuming you want to access the entire state to get chatBubbles
+  const { data, addPrompt, prompts, updateTitle, deletePrompt } = useData(); // Assuming you want to access the entire state to get chatBubbles
   const { chatBubbles } = data;
   const { promptTitles } = prompts;
+
+  console.log('DATA', data, chatBubbles)
+  console.log('PROMPT TITLES', promptTitles)
 
   return (
     <div className="sideBarContainer">
@@ -69,28 +73,25 @@ export default function SideBar({ toggleSidebar }) {
       </div>
       <div className="pastPromptContainer">
         <div className="promptHeaderText">Past Prompts</div>
-        {/* {chatBubbles.map((bubble, index) => ( */}
+        {/* <div className="promptItem"></div> */}
         {promptTitles.map((title, index) => (
-          <div key={index} className="promptItem">
-            <textarea
-              className="promptTextArea"
-              value={title.text}
-              // onBlur={(e) => updateBubbleText(index, e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  updateTitle(index, e.target.value);
-                }
-              }}
-              onChange={(e) => updateTitle(index, e.target.value)}
-              rows="1" // Adjust based on your needs
-            ></textarea>
-          </div>
+            <PromptTitles
+            key={index}
+            initialTitle={title}
+            index={index}
+            // className={"promptItem"}
+            />,
+            <button 
+                onClick={() => handleDelete(index)} 
+                className="delete_prompt_button">
+                <Image src="/x-button.svg" alt={`Delete image ${index + 1}`} width={10} height={10}/>
+            </button>
         ))}
         {/* <div className="promptItem"> Insert prompt here</div>
         <div className="promptItem"> Insert prompt here</div>
         <div className="promptItem"> Insert prompt here</div> */}
       </div>
+      
     </div>
   );
 }

@@ -17,6 +17,7 @@ export const DataProvider = ({ children }) => {
     promptData: [],
     promptTitles: [],
   });
+  console.log(prompts)
 
   const [data, setData] = useState({
     //promptTitles: [],
@@ -40,10 +41,9 @@ export const DataProvider = ({ children }) => {
     setPrompts((prevPrompts) => ({
       ...prevPrompts,
       promptData: [...prevPrompts.promptData, { ...data }],
-      promptTitles: [data.chatBubbles[0], ...prevPrompts.promptTitles],
+      promptTitles: [data.chatBubbles[0]?.text, ...prevPrompts.promptTitles],
     }));
-
-    console.log(data.promptTitles);
+   // console.log(data.promptTitles);
 
     setData({
       chatBubbles: [],
@@ -53,6 +53,18 @@ export const DataProvider = ({ children }) => {
       marked: false,
     });
   };
+
+  const deletePrompt = (index) => {
+    setPrompts((prevPrompts) => ({
+      ...prevPrompts,
+      promptData: prevPrompts.promptData.filter((_, currIndex) => currIndex !== index),
+      promptTitles: prevPrompts.promptData.filter((_, currIndex) => currIndex !== index),
+    }));
+  }
+    
+
+
+
 
   const addUserText = () => {
     setData((prevData) => ({
@@ -166,7 +178,7 @@ export const DataProvider = ({ children }) => {
       newPromptTitles[index] = title;
       return { ...prevPrompts, promptTitles: newPromptTitles };
     });
-    console.log(prompts.promptTitles);
+   // console.log(prompts.promptTitles);
   };
 
   return (
