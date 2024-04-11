@@ -17,10 +17,9 @@ export const DataProvider = ({ children }) => {
     promptData: [],
     promptTitles: [],
   });
-  console.log(prompts)
+
 
   const [data, setData] = useState({
-    //promptTitles: [],
     chatBubbles: [],
     currText: "",
     currImages: [],
@@ -43,7 +42,6 @@ export const DataProvider = ({ children }) => {
       promptData: [...prevPrompts.promptData, { ...data }],
       promptTitles: [data.chatBubbles[0]?.text, ...prevPrompts.promptTitles],
     }));
-   // console.log(data.promptTitles);
 
     setData({
       chatBubbles: [],
@@ -58,13 +56,9 @@ export const DataProvider = ({ children }) => {
     setPrompts((prevPrompts) => ({
       ...prevPrompts,
       promptData: prevPrompts.promptData.filter((_, currIndex) => currIndex !== index),
-      promptTitles: prevPrompts.promptData.filter((_, currIndex) => currIndex !== index),
-    }));
+      promptTitles: prevPrompts.promptTitles.filter((_, currIndex) => currIndex !== index),
+    })); 
   }
-    
-
-
-
 
   const addUserText = () => {
     setData((prevData) => ({
@@ -80,7 +74,6 @@ export const DataProvider = ({ children }) => {
       ...prevData,
       readyToGenerate: true,
     }));
-    // console.log(userIndex);
     setUserIndex((prev) => prev + 1);
   };
 
@@ -101,7 +94,6 @@ export const DataProvider = ({ children }) => {
       ...prevData,
       readyToGenerate: false,
     }));
-    // console.log(modelIndex);
     setModelIndex(modelIndex + 1);
   };
 
@@ -178,7 +170,6 @@ export const DataProvider = ({ children }) => {
       newPromptTitles[index] = title;
       return { ...prevPrompts, promptTitles: newPromptTitles };
     });
-   // console.log(prompts.promptTitles);
   };
 
   return (
@@ -199,6 +190,7 @@ export const DataProvider = ({ children }) => {
         clearCurrImages,
         readyToGenerate,
         addPrompt,
+        deletePrompt,
       }}
     >
       {children}

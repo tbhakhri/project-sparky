@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from "react"
 const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
 export default function PromptTitles({ initialTitle, index }) {
-    const { updateTitle } = useData()
+    const { updateTitle, deletePrompt } = useData()
 
     const [title, setTitle] = useState(initialTitle) 
 
@@ -23,9 +23,9 @@ export default function PromptTitles({ initialTitle, index }) {
         setTitle(e.target.value)
       }
     
-    // const handleDelete = () -> {
-      
-    // }
+    const handleDeletePrompt = (_) => {
+        deletePrompt(index);
+    }
 
     const inputRef = useRef(null)
       useEffect(() => {

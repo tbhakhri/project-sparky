@@ -79,7 +79,7 @@ export default function SideBar({ toggleSidebar }) {
             // className={"promptItem"}
             />
             <button 
-                onClick={() => handleDelete(index)} 
+                onClick={() => deletePrompt(index)} 
                 className="delete_prompt_button">
                 <Image src="/promptClear.svg" alt={`Delete image ${index + 1}`} width={15} height={15}/>
             </button>
