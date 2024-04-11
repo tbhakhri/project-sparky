@@ -62,12 +62,8 @@ export default function SideBar({ toggleSidebar }) {
         </button>
       </div>
       <div className="currentPromptContainer">
-        {/* <div className="promptHeaderText">
-          {chatBubbles.length > 0 ? chatBubbles[0].text : "Insert Prompt Here"}
-        </div> */}
-
-        <div className="promptItem">
-          {" "}
+      <div className="promptHeaderText">Current Prompt</div>
+        <div className="promptItem2">
           {chatBubbles.length > 0 ? chatBubbles[0].text : "Insert Prompt Here"}
         </div>
       </div>
@@ -75,17 +71,19 @@ export default function SideBar({ toggleSidebar }) {
         <div className="promptHeaderText">Past Prompts</div>
         {/* <div className="promptItem"></div> */}
         {promptTitles.map((title, index) => (
+            <div className="promptItemContainer">
             <PromptTitles
             key={index}
             initialTitle={title}
             index={index}
             // className={"promptItem"}
-            />,
+            />
             <button 
                 onClick={() => handleDelete(index)} 
                 className="delete_prompt_button">
-                <Image src="/x-button.svg" alt={`Delete image ${index + 1}`} width={10} height={10}/>
+                <Image src="/promptClear.svg" alt={`Delete image ${index + 1}`} width={15} height={15}/>
             </button>
+            </div>
         ))}
         {/* <div className="promptItem"> Insert prompt here</div>
         <div className="promptItem"> Insert prompt here</div>
