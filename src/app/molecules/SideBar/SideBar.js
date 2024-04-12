@@ -82,6 +82,7 @@ export default function SideBar({ toggleSidebar }) {
             setEditing={setEditingIndex}
             // className="promptItem"
             selectPrompt={selectPrompt}
+            toggleSidebar={toggleSidebar}
             // onClick={() => {selectPrompt(index); toggleSidebar();}}
             // className={"promptItem"}
             />

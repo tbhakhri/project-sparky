@@ -38,11 +38,13 @@ export const DataProvider = ({ children }) => {
   // });
 
   const addPrompt = () => {
+    if (data.chatBubbles.length > 0) {
     setPrompts((prevPrompts) => ({
       ...prevPrompts,
       promptData: [...prevPrompts.promptData, { ...data }],
       promptTitles: [data.chatBubbles[0]?.text, ...prevPrompts.promptTitles],
     }));
+    }
 
     setData({
       chatBubbles: [],
@@ -54,12 +56,25 @@ export const DataProvider = ({ children }) => {
   };
 
   const selectPrompt = (index) => {
+    console.log('currentData')
+    
     setData((prevData) => ({
       ...prevData,
-      chatBubbles: prompts.promptData[index].chatBubbles,
+      chatBubbles: prompts.promptData[prompts.promptData.length - index - 1].chatBubbles, 
     }));
+    //it's like in reverse order ^^
+    console.log('poooooo', index)
+    console.log(prompts.promptTitles);
+
+   
+    // setPrompts((prevPrompts) => ({
+    //   ...prevPrompts,
+    //   promptData: prevPrompts.promptData.filter((_, currIndex) => currIndex !== index),
+    //   promptTitles: prevPrompts.promptTitles.filter((_, currIndex) => currIndex !== index),
+    // })); 
+
+    
   };
-  
 
   const editPrompt = index => {
     //simply for setting it to an editable state
@@ -69,26 +84,6 @@ export const DataProvider = ({ children }) => {
     }));
   };
 
-  const commitEdit = (index, newTitle) => {
-    //for like actually making and saving the changes
-    const updatedPrompts = [...prompts.promptList];
-    updatedPrompts[index].title = newTitle;
-    setPrompts(prevState => ({
-        ...prevState,
-        promptList: updatedPrompts,
-        editingIndex: -1
-    }));
-};
-
-const handleEdit = (event, index) => {
-    //to see the edits being made in real-time
-    const updatedPrompts = [...prompts.promptList];
-    updatedPrompts[index].title = event.target.value;
-    setPrompts(prevState => ({
-        ...prevState,
-        promptList: updatedPrompts
-    }));
-};
   const deletePrompt = (index) => {
     setPrompts((prevPrompts) => ({
       ...prevPrompts,

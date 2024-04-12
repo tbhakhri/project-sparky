@@ -6,7 +6,7 @@ import { useState, useRef, useEffect } from "react"
 
 const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
-export default function PromptTitles({ initialTitle, index, isEditing, setEditing, selectPrompt }) {
+export default function PromptTitles({ initialTitle, index, isEditing, setEditing, selectPrompt, toggleSidebar }) {
     const { updateTitle } = useData()
 
     const [title, setTitle] = useState(initialTitle) 
@@ -28,6 +28,7 @@ export default function PromptTitles({ initialTitle, index, isEditing, setEditin
       const handleTitleClick = () => {
         if (!isEditing) {
             selectPrompt(index);
+            toggleSidebar();
         }
     };
 
