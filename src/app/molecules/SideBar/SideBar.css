@@ -10,6 +10,7 @@
   box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
   background-color: #282828;
   left: 0;
+  padding: 2%; 
 }
 
 
@@ -100,10 +101,6 @@
   padding-left: 5%;
   padding-right: 10%;
   border-bottom: 1px solid #DCDCDC;
-  /* background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Cpath%20d%3D%22M1%2011.6064L11.6066%200.999844%22%20stroke%3D%22%23D9D9D9%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%20%3Cpath%20d%3D%22M1%201L11.6066%2011.6066%22%20stroke%3D%22%23D9D9D9%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%20%3C/svg%3E%20");
-  background-repeat: no-repeat;
-  background-position: calc(100% - 10px) center; 
-  background-size: 14px 14px; */
   color: white;
   font-family: 'Kumbh Sans', sans-serif;
   font-size: 14px;

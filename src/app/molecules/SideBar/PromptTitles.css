@@ -11,22 +11,19 @@
     flex: 0.875;
     padding: 5%;
     padding-left: 4%;
-    padding-right: 10%;
+    padding-right: 2%;
     border: none;
     border-radius: 0px;
     background-color: transparent;
-    /* border-bottom: 1px solid #DCDCDC; */
-    /* background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Cpath%20d%3D%22M1%2011.6064L11.6066%200.999844%22%20stroke%3D%22%23D9D9D9%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%20%3Cpath%20d%3D%22M1%201L11.6066%2011.6066%22%20stroke%3D%22%23D9D9D9%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%20%3C/svg%3E%20");
-    background-repeat: no-repeat; */
-    /* background-position: calc(100% - 10px) center;  */
-    /* background-size: 14px 14px; */
     color: white;
     font-family: 'Kumbh Sans', sans-serif;
     font-size: 14px;
     font-weight: 100 !important; 
     height: auto;
     resize: none;
-
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }  
 
   .promptItem:focus {
@@ -56,8 +53,20 @@
     background-color: transparent; /* Change background to white on focus */
   }
 
-.delete_prompt_button {
-    flex: 0.125;
+.editPromptButton {
+  flex: 0.1 ;
+  position: center;
+  background: transparent;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  width: auto;
+}
+
+.deletePromptButton {
+    flex: 0.1;
     position: center;
     height: auto;
     width: auto;

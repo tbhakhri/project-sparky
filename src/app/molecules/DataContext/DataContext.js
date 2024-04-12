@@ -16,6 +16,7 @@ export const DataProvider = ({ children }) => {
   const [prompts, setPrompts] = useState({
     promptData: [],
     promptTitles: [],
+    editingIndex: -1
   });
 
 
@@ -52,6 +53,42 @@ export const DataProvider = ({ children }) => {
     });
   };
 
+  const selectPrompt = (index) => {
+    setData((prevData) => ({
+      ...prevData,
+      chatBubbles: prompts.promptData[index].chatBubbles,
+    }));
+  };
+  
+
+  const editPrompt = index => {
+    //simply for setting it to an editable state
+    setPrompts(prevState => ({
+        ...prevState,
+        editingIndex: index
+    }));
+  };
+
+  const commitEdit = (index, newTitle) => {
+    //for like actually making and saving the changes
+    const updatedPrompts = [...prompts.promptList];
+    updatedPrompts[index].title = newTitle;
+    setPrompts(prevState => ({
+        ...prevState,
+        promptList: updatedPrompts,
+        editingIndex: -1
+    }));
+};
+
+const handleEdit = (event, index) => {
+    //to see the edits being made in real-time
+    const updatedPrompts = [...prompts.promptList];
+    updatedPrompts[index].title = event.target.value;
+    setPrompts(prevState => ({
+        ...prevState,
+        promptList: updatedPrompts
+    }));
+};
   const deletePrompt = (index) => {
     setPrompts((prevPrompts) => ({
       ...prevPrompts,
@@ -190,6 +227,8 @@ export const DataProvider = ({ children }) => {
         clearCurrImages,
         readyToGenerate,
         addPrompt,
+        selectPrompt,
+        editPrompt,
         deletePrompt,
       }}
     >

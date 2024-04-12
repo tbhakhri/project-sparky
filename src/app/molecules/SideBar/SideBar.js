@@ -7,9 +7,10 @@ import { useData } from "@/molecules/DataContext/DataContext";
 import PromptTitles from "@/molecules/SideBar/PromptTitles"
 
 export default function SideBar({ toggleSidebar }) {
-  const { data, addPrompt, prompts, updateTitle, deletePrompt } = useData(); // Assuming you want to access the entire state to get chatBubbles
+  const { data, addPrompt, prompts, updateTitle, editPrompt, selectPrompt, deletePrompt } = useData(); // Assuming you want to access the entire state to get chatBubbles
   const { chatBubbles } = data;
   const { promptTitles } = prompts;
+  const [editingIndex, setEditingIndex] = useState(-1);
 
   console.log('DATA', data, chatBubbles)
   console.log('PROMPT TITLES', promptTitles)
@@ -64,23 +65,36 @@ export default function SideBar({ toggleSidebar }) {
       <div className="currentPromptContainer">
       <div className="promptHeaderText">Current Prompt</div>
         <div className="promptItem2">
-          {chatBubbles.length > 0 ? chatBubbles[0].text : "Insert Prompt Here"}
+          {chatBubbles.length > 0 ? chatBubbles[0].text : "start typing..."}
         </div>
       </div>
       <div className="pastPromptContainer">
         <div className="promptHeaderText">Past Prompts</div>
         {/* <div className="promptItem"></div> */}
         {promptTitles.map((title, index) => (
-            <div className="promptItemContainer">
+            <div key={index} className="promptItemContainer" > 
             <PromptTitles
-            key={index}
+            // key={index}
             initialTitle={title}
             index={index}
+            
+            isEditing={editingIndex === index}
+            setEditing={setEditingIndex}
+            // className="promptItem"
+            selectPrompt={selectPrompt}
+            // onClick={() => {selectPrompt(index); toggleSidebar();}}
             // className={"promptItem"}
             />
+          
+            <button 
+                onClick={() => setEditingIndex(index)} 
+                className="editPromptButton">
+                <Image src="/editPrompt.svg" alt={`edit image ${index + 1}`} width={15} height={15}/>
+            </button>
+
             <button 
                 onClick={() => deletePrompt(index)} 
-                className="delete_prompt_button">
+                className="deletePromptButton">
                 <Image src="/promptClear.svg" alt={`Delete image ${index + 1}`} width={15} height={15}/>
             </button>
             </div>
