@@ -176,10 +176,15 @@ export const DataProvider = ({ children }) => {
     setData((prevData) => {
       const variantToCopy = { ...prevData.variants[index] }
 
+      // Deep copy chatBubbles array
+      const deepCopiedChatBubbles = variantToCopy.chatBubbles.map((bubble) => {
+        return { ...bubble }
+      })
+
       const newVariants = [
         ...prevData.variants,
         {
-          chatBubbles: variantToCopy.chatBubbles,
+          chatBubbles: deepCopiedChatBubbles,
           responses: [],
           currentResponseIndex: 0
         }

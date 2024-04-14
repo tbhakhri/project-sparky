@@ -64,8 +64,10 @@ export default function MainContent() {
               <button
                 className="compareButton"
                 onClick={(_) => copyVariant(variantIndex)}
+                disabled={data.variants.length >= 3}
+                style={{ backgroundColor: data.variants.length >= 3 && "grey" }}
               >
-                Compare
+                {data.variants.length >= 3 ? "Max 3 Variants" : "Compare"}
               </button>
             </div>
           ))}
