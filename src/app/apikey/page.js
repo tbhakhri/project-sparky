@@ -27,7 +27,6 @@ export default function Enter_API_Key() {
   function handleSubmit(e) {
     e.preventDefault()
     setApiKey(e.target.elements.apiKeyInput.value)
-    console.log("submitttt")
     router.push("/")
   }
 

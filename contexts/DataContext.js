@@ -48,21 +48,32 @@ export const DataProvider = ({ children }) => {
   }
 
   /* For the currentVariant, pushes an array of images to the requestChain. */
-  function pushImages(images) {
-    setData((prevData) => {
-      const newVariants = [...prevData.variants]
+  async function pushImages(images) {
+    try {
+      const newVariants = [...data.variants]
+      const targetVariant = { ...newVariants[data.currentVariant] }
 
-      const targetVariant = { ...newVariants[prevData.currentVariant] }
-      const toInsert = images.map((image) => new chatBubble("image", image))
-      targetVariant.chatBubbles = [...targetVariant.chatBubbles, ...toInsert]
+      const convertedImages = await Promise.all(
+        images.map(async (image) => {
+          const reader = new FileReader()
+          return new Promise((resolve, _) => {
+            reader.onload = (event) =>
+              resolve(new chatBubble("image", event.target.result))
+            reader.readAsDataURL(image)
+          })
+        })
+      )
 
-      newVariants[prevData.currentVariant] = targetVariant
+      targetVariant.chatBubbles = [
+        ...targetVariant.chatBubbles,
+        ...convertedImages
+      ]
+      newVariants[data.currentVariant] = targetVariant
 
-      return {
-        ...prevData,
-        variants: newVariants
-      }
-    })
+      setData({ ...data, variants: newVariants })
+    } catch (error) {
+      console.error("Error processing images:", error)
+    }
   }
 
   /* For the specified variant, deletes a request node/bubble at the specified index. */

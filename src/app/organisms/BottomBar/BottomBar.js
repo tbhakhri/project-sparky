@@ -68,14 +68,11 @@ export default function BottomBar({ tokenCount, openCameraFunc, cameraImage }) {
     setText(e.target.value)
   }
 
-  //TODO: this implementation may be buggy, need to look into it
   const handleImageSelect = (e) => {
     const files = e.target.files
-    if (files) {
-      const fileArray = Array.from(files).map((file) =>
-        URL.createObjectURL(file)
-      )
-      setImages((prev) => [...prev, fileArray[fileArray.length - 1]])
+    if (files && files.length > 0) {
+      const latestFile = files[files.length - 1]
+      setImages((prev) => [...prev, latestFile])
     }
   }
 
@@ -108,11 +105,11 @@ export default function BottomBar({ tokenCount, openCameraFunc, cameraImage }) {
           </button>
         </div>
         <div className="image_preview_container">
-          {images.map((imageSrc, index) => (
+          {images.map((imageFile, index) => (
             <div key={index} className="image_preview">
               <Image
                 className="image_preview_img"
-                src={imageSrc}
+                src={URL.createObjectURL(imageFile)}
                 alt={`Uploaded image ${index + 1}`}
                 width={50}
                 height={50}

@@ -7,7 +7,6 @@ import { useState, useRef, useEffect } from "react"
 const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
 export default function ChatBubble({ initialText, index, variant }) {
-  console.log(index, initialText)
   const { editRequestText, deleteRequest, acceptResponse } = useData()
 
   const [text, setText] = useState(initialText)

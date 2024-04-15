@@ -9,7 +9,6 @@ export default function ModelBubble({ variant }) {
   const curIndex = data.variants[variant].currentResponseIndex
   const responses = data.variants[variant].responses
   const numResponses = responses.length
-  console.log(curIndex, responses, numResponses)
 
   //TODO: CHANGE WHEN BACKEND IS IMPLEMENTED
   const handleRegenerate = (e) => {
