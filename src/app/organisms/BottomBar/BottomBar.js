@@ -14,22 +14,36 @@ export default function BottomBar({ tokenCount, openCameraFunc, cameraImage }) {
     clearResponses
   } = useData()
 
-  const executePut = (_) => {
+  // returns true if a put was successful, else returns false
+  const executePut = async (_) => {
+    let didPut = false
     if (data.variants[data.currentVariant].responses.length !== 0) {
       acceptResponse()
     }
+    if (!isImagesEmpty()) {
+      await pushImages(images)
+      didPut = true
+    }
     if (!isTextEmpty()) {
       pushUserText(text)
-    }
-    if (!isImagesEmpty()) {
-      pushImages(images)
+      didPut = true
     }
     clearInputs()
+    return didPut
   }
 
-  const executeRun = (_) => {
+  const executeRun = async (_) => {
     clearResponses()
-    addResponse(data.currentVariant)
+    if ((await executePut(_)) || !isInputEmpty()) {
+      console.log("ADDING RESPONSE")
+      addResponse(data.currentVariant)
+    } else {
+      console.log("NO INPUTS TO RUN")
+    }
+  }
+
+  const isInputEmpty = () => {
+    return data.variants[data.currentVariant].chatBubbles.length === 0
   }
 
   /* BOTTOMINPUTBAR STATE */
