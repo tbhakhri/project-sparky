@@ -97,6 +97,7 @@
   right: 5px;
   background-color: rgba(0, 0, 0, 0);
   border: none;
+  filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 1));
   cursor: pointer;
   display: flex;
   justify-content: center;

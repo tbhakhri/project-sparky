@@ -4,7 +4,7 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { useData } from "%/DataContext"
 
-export default function BottomBar({ tokenCount, openCameraFunc, cameraImage }) {
+export default function BottomBar() {
   const {
     data,
     pushUserText,
@@ -64,13 +64,6 @@ export default function BottomBar({ tokenCount, openCameraFunc, cameraImage }) {
       mainContainer.style.height = `auto`
     }
   }, [images, text])
-
-  useEffect(() => {
-    // Append the captured camera image to the images array
-    if (cameraImage !== null) {
-      setImages((prev) => [...prev, cameraImage])
-    }
-  }, [cameraImage])
 
   const clearInputs = () => {
     setText("")
@@ -145,19 +138,6 @@ export default function BottomBar({ tokenCount, openCameraFunc, cameraImage }) {
         </div>
 
         <div className="icon_container">
-          <div className="tokens_remaining">{tokenCount}/12888</div>
-          <button
-            onClick={openCameraFunc}
-            className="bottom_icon_positioning cameraButton"
-          >
-            <Image
-              src="/camera.svg"
-              alt="camera"
-              className="icon"
-              width={10}
-              height={10}
-            />
-          </button>
           <div className="bottom_icon_positioning">
             <label htmlFor="imageInput">
               <Image
