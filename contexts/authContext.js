@@ -18,7 +18,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const login = async () => {
     try {
-      await signInWithRedirect(auth, provider)
+      await signInWithPopup(auth, provider)
     } catch (error) {
       console.error("Login failed:", error)
     }
