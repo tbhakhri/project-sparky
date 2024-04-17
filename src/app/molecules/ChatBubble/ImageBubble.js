@@ -1,16 +1,20 @@
-import { Kumbh_Sans } from "next/font/google";
-import "./ChatBubble.css";
-import Image from "next/image";
+import "./ChatBubble.css"
+import Image from "next/image"
+import { useData } from "%/DataContext"
 
-const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] });
+export default function ImageBubble({ imageURL, index, variant }) {
+  const { deleteRequest, acceptResponse } = useData()
 
-export default function ImageBubble({ imageURL, index }) {
+  const handleDelete = (e) => {
+    deleteRequest(variant, index)
+    acceptResponse()
+  }
+
   return (
     <div className="bubble-container">
-      <div style={{ width: "100px", position: "relative" }}>
-        {/* <div className={kumbh_sans.className}>
-          {index == 0 && <p className="userText">User</p>}
-        </div> */}
+      <div
+        style={{ width: "100px", position: "relative", display: "inline-flex" }}
+      >
         <Image
           src={imageURL}
           alt="added image"
@@ -18,7 +22,15 @@ export default function ImageBubble({ imageURL, index }) {
           height={0}
           layout="responsive"
         />
+        <button onClick={handleDelete} className="deleteImageButton">
+          <Image
+            src="/x-button-white.svg"
+            alt={`Delete image at index ${index}`}
+            width={10}
+            height={10}
+          />
+        </button>
       </div>
     </div>
-  );
+  )
 }

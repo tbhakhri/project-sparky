@@ -1,13 +1,13 @@
-import AuthContext from "../../../../contexts/authContext";
-import { useContext } from "react";
-import Image from "next/image";
-import "./TopBar.css";
+import AuthContext from "%/authContext"
+import { useContext } from "react"
+import Image from "next/image"
+import "./TopBar.css"
 
-export default function TopBar({ toggleSidebar }) {
-  const { logout } = useContext(AuthContext);
+export default function TopBar() {
+  const { logout } = useContext(AuthContext)
   return (
     <div className="topBarContainer">
-      <button className="historyButton" onClick={toggleSidebar}>
+      <button className="historyButton">
         <Image
           src="/history-button.svg"
           alt="historyButton"
@@ -26,5 +26,5 @@ export default function TopBar({ toggleSidebar }) {
       </button>
       <Image src="/sparkyLogo.svg" alt="sparky logo" width={115} height={50} />
     </div>
-  );
+  )
 }

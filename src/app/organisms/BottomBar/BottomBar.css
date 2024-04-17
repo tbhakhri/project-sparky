@@ -1,0 +1,161 @@
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans&display=swap");
+
+.bottom_bar_container {
+  flex-grow: 0;
+  width: 100%;
+  padding: 5px;
+  background: #282828;
+  box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: horizontal;
+}
+
+.input_container {
+  padding: 3%;
+  width: 83%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #e8e8e8;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+/* INPUT CONTAINER STYLES */
+
+.text_put_container {
+  display: flex;
+  width: 100%;
+}
+
+.text_container_text {
+  flex: 0.8;
+  box-sizing: border-box;
+  color: rgb(0, 0, 0);
+  font-family: Kumbh Sans;
+  height: auto;
+  font-size: 10px;
+  line-height: normal;
+  background-color: rgba(0, 0, 0, 0);
+  vertical-align: top;
+  margin: 5px 8px;
+  word-wrap: break-word;
+  resize: none;
+  border: none;
+}
+
+.text_container_text:focus {
+  outline: none;
+}
+.text_container_text::placeholder {
+  color: #c1c1c1;
+}
+.text_container_text::-webkit-scrollbar {
+  background-color: rgba(0, 0, 0, 0);
+  width: 8px;
+}
+.text_container_text::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  border-radius: 6px;
+  cursor: default;
+}
+.text_container_text::-webkit-scrollbar-thumb:hover {
+  background-color: #a8a8a8;
+}
+
+.icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  background-size: cover;
+  fill: rgb(216, 216, 216);
+}
+
+.icon_container {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: flex-end;
+  /* border: 1px solid purple; */
+}
+
+.bottom_icon_positioning {
+  flex: 1;
+  text-align: center;
+  padding: 0px;
+}
+
+.tokens_remaining {
+  flex: 8;
+  color: #909090;
+  text-align: left;
+  font-family: Kumbh Sans;
+  font-size: 8px;
+  padding: 2.5px;
+  margin-left: 6px;
+}
+
+.image_preview_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.image_preview {
+  position: relative;
+  margin: 4px;
+  overflow: hidden; /* Ensures the image doesn't overflow its container */
+  width: 50px;
+  height: 50px;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+}
+
+.delete_image_button {
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  top: 2px;
+  right: 2px;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.cameraButton {
+  border: none;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  height: 100%;
+  padding-top: 1px;
+}
+
+.delete_image_button img {
+  margin: 0;
+}
+
+.image_preview_img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  border-radius: 4px;
+}
+
+/* RUN BUTTON AREA STYLES */
+
+.runButtonContainer {
+  width: 17%;
+  display: flex;
+  margin-left: 5px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #282828;
+  font-size: 0.4rem;
+  /* width: 100%; */
+}

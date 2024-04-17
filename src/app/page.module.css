@@ -1,13 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans&display=swap");
+
 .main {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 /* Outer Mobile Container */
 .mobileContainer {
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100%;
 }
 
@@ -81,7 +85,9 @@
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
   border: 0.5px solid rgba(var(--card-border-rgb), 0);
-  transition: background 200ms, border 200ms;
+  transition:
+    background 200ms,
+    border 200ms;
 }
 
 .card span {
@@ -289,7 +295,7 @@
   margin-left: 50%;
   border: 0.5px solid black;
   /* width: 400px; I'm thinking we can specify this in styles for each container */
-  
+
   border-radius: 5px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
   background: white;
@@ -307,19 +313,14 @@
   margin: 2.5%;
 }
 
-.buttonsContainer {
-  display: flex;
-  justify-content: space-around;
-  padding-bottom: 0.3rem;
-} 
-
-.buttonContainer {
-  background: #1a3059;
-  color: white;
-  border-radius: 20px;
-  height: 2.5rem;
-  width: 10rem;
-  font-size: 1.2rem;
+.modelName {
+  background-color: rgba(217, 217, 217, 1);
+  color: black;
+  border-radius: 5px;
+  border: none;
+  font-size: 0.5rem;
+  padding: 0.2rem 0.4rem 0.2rem 0.4rem;
+  text-align: center;
 }
 
 .values {
@@ -331,6 +332,20 @@
   text-align: right;
 }
 
+.buttonsContainer {
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 0.3rem;
+}
+
+.buttonContainer {
+  background: #1a3059;
+  color: white;
+  border-radius: 20px;
+  height: 2.5rem;
+  width: 10rem;
+  font-size: 1.2rem;
+}
 
 /* Icon Buttons */
 
@@ -338,14 +353,17 @@
   flex-shrink: 0;
   border-radius: 20px;
   background-color: #1a3059;
+  height: 27px;
   border: none;
   color: white;
   padding: 0.5rem 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   text-decoration: none;
   font-size: 0.6rem;
+  font-family: Kumbh Sans;
   cursor: pointer;
 }
 

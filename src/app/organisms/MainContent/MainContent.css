@@ -1,0 +1,47 @@
+.mainContentContainer {
+  width: 100%;
+  flex-grow: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.variantContainer {
+  padding: 10px 0px;
+  border: 2px solid #a5bcf6;
+}
+
+.compareButton {
+  display: block;
+  margin: auto;
+  width: 75px;
+  border-radius: 20px;
+  background-color: #1a3059;
+  border: none;
+  color: white;
+  padding: 0.5rem 0;
+  text-decoration: none;
+  font-size: 0.6rem;
+  font-family: Kumbh Sans;
+  cursor: pointer;
+}
+
+.userText {
+  color: white;
+  text-align: right;
+  font-size: 0.65rem;
+  padding-right: 0.25rem;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  font-family: Kumbh Sans;
+}
+
+.modelText {
+  color: #a5bcf6;
+  text-align: left;
+  font-size: 0.65rem;
+  padding-left: 0.25rem;
+  margin-bottom: 0.25rem;
+  font-family: Kumbh Sans;
+}

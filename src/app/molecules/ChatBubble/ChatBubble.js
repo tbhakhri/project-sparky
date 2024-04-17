@@ -1,15 +1,85 @@
-import { Kumbh_Sans } from "next/font/google";
-import "./ChatBubble.css";
+import { Kumbh_Sans } from "next/font/google"
+import "./ChatBubble.css"
+import Image from "next/image"
+import { useData } from "%/DataContext"
+import { useState, useRef, useEffect } from "react"
 
-const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] });
+const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
-export default function ChatBubble({ text, index }) {
+export default function ChatBubble({ initialText, index, variant }) {
+  const { editRequestText, deleteRequest, acceptResponse } = useData()
+
+  const [text, setText] = useState(initialText)
+  const [isEditable, setIsEditable] = useState(false)
+
+  useEffect(() => {
+    setText(initialText)
+  }, [initialText])
+
+  const handleDelete = (e) => {
+    deleteRequest(variant, index)
+    acceptResponse()
+  }
+
+  const enableEdit = () => {
+    setIsEditable(true)
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 13 && isEditable) {
+      commitEdit()
+    }
+  }
+
+  const handleEdit = (e) => {
+    setText(e.target.value)
+  }
+
+  const commitEdit = () => {
+    editRequestText(variant, index, inputRef.current.value)
+    setIsEditable(false)
+  }
+
+  const inputRef = useRef(null)
+  useEffect(() => {
+    const textarea = inputRef.current
+    textarea.style.height = "0.65rem"
+    textarea.style.height = textarea.scrollHeight + "px"
+  }, [text])
+
   return (
     <div className="bubble-container">
-      <div className={kumbh_sans.className}>
-        {index == 0 && <p className="userText">User</p>}
-        <p className="chatBubble">{text}</p>
-      </div>
+      <button
+        className="editDeleteButton"
+        onClick={isEditable ? commitEdit : enableEdit}
+        style={{
+          marginRight: "0.35rem"
+        }}
+      >
+        <Image src="/edit.svg" alt="Edit text" width={10} height={10} />
+      </button>
+      <button
+        className="editDeleteButton"
+        onClick={handleDelete}
+        style={{ marginRight: "0.3rem" }}
+      >
+        <Image
+          src="/x-button-white.svg"
+          alt="Delete text at index ${index}"
+          width={9}
+          height={9}
+        />
+      </button>
+      <textarea
+        ref={inputRef}
+        value={text}
+        onChange={handleEdit}
+        onBlur={commitEdit}
+        onKeyDown={handleKeyDown}
+        disabled={!isEditable}
+        className="chatBubble"
+        style={{ backgroundColor: isEditable ? "#a5bcf6" : "#d9d9d9" }}
+      />
     </div>
-  );
+  )
 }

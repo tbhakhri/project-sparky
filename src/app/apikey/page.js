@@ -2,14 +2,15 @@
 
 import { useContext, useEffect } from "react"
 import AuthContext from "%/authContext"
-import GoogleSignInButton from "./logo"
+import { useData } from "%/DataContext"
 import "./page.css"
 import styles from "@/page.module.css"
-import { redirect } from "next/navigation"
-import Image from "next/image"
+import { redirect, useRouter } from "next/navigation"
 
-export default function Login() {
-  const { user, login, authReady } = useContext(AuthContext)
+export default function Enter_API_Key() {
+  const router = useRouter()
+  const { user, authReady } = useContext(AuthContext)
+  const { setApiKey } = useData()
 
   const setHeight = () => {
     let vh = window.innerHeight * 0.01
@@ -23,23 +24,29 @@ export default function Login() {
     }
   }, [])
 
+  function handleSubmit(e) {
+    e.preventDefault()
+    setApiKey(e.target.elements.apiKeyInput.value)
+    router.push("/")
+  }
+
   return (
     <div className={styles.pageContainer}>
       {authReady ? (
         <div>
-          {user === null ? (
+          {user !== null ? (
             <div className="outerContainer">
-              <Image
-                src="/sparkyLogo.svg"
-                alt="sparky logo"
-                width={230}
-                height={100}
-                style={{ paddingBottom: "30px" }}
-              />
-              <GoogleSignInButton onClick={() => login()} />
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  name="apiKeyInput"
+                  placeholder="Enter API Key"
+                />
+                <button type="submit">Submit</button>
+              </form>
             </div>
           ) : (
-            redirect("/")
+            redirect("/login")
           )}
         </div>
       ) : (
