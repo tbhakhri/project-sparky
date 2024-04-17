@@ -261,16 +261,16 @@ export const DataProvider = ({ children }) => {
       setPrompts((prevPrompts) => ({
         ...prevPrompts,
         promptData: [...prevPrompts.promptData, { ...data }],
-        promptTitles: [...prevPrompts.promptTitles, data.chatBubbles[0]?.text],
+        promptTitles: [...prevPrompts.promptTitles, data.variants[0].chatBubbles[0]?.text],
       }));
     }
 
     setData({variants: [{
       chatBubbles: [],
-      currText: "",
-      currImages: [],
-      readyToGenerate: false,
-      marked: false,
+      responses: [],
+      currentResponseIndex: 0
+     
+     
     }], currentVariant: 0});
   };
 

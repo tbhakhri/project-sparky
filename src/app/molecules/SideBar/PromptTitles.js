@@ -1,7 +1,7 @@
 import { Kumbh_Sans } from "next/font/google"
 import "./PromptTitles.css"
 import Image from "next/image"
-import { useData } from "@/molecules/DataContext/DataContext";
+import { useData } from "%/DataContext";
 import { useState, useRef, useEffect } from "react"
 
 const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })

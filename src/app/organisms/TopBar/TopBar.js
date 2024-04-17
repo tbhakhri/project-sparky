@@ -3,11 +3,11 @@ import { useContext } from "react"
 import Image from "next/image"
 import "./TopBar.css"
 
-export default function TopBar() {
+export default function TopBar({toggleSidebar}) {
   const { logout } = useContext(AuthContext)
   return (
     <div className="topBarContainer">
-      <button className="historyButton">
+      <button className="historyButton" onClick={toggleSidebar}>
         <Image
           src="/history-button.svg"
           alt="historyButton"

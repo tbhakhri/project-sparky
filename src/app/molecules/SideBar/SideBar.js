@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { createContext, useState, useContext } from "react";
 
 // import DataProvider from './DataContext/DataContext.js';
-import { useData } from "@/molecules/DataContext/DataContext";
+import { useData } from "%/DataContext"
 import PromptTitles from "@/molecules/SideBar/PromptTitles"
 
 export default function SideBar({ toggleSidebar }) {
@@ -65,7 +65,7 @@ export default function SideBar({ toggleSidebar }) {
       <div className="currentPromptContainer">
       <div className="promptHeaderText">Current Prompt</div>
         <div className="promptItem2">
-          {chatBubbles.length > 0 ? chatBubbles[0].text : "start typing..."}
+          {data.variants[data.currentVariant].chatBubbles.length > 0 ? data.variants[data.currentVariant].chatBubbles[0].text : "start typing..."}
         </div>
       </div>
       <div className="pastPromptContainer">

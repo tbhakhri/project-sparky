@@ -17,9 +17,11 @@ export default function BottomBar({ tokenCount, openCameraFunc, cameraImage }) {
   const executePut = (_) => {
     if (data.variants[data.currentVariant].responses.length !== 0) {
       acceptResponse()
+      console.log('accepted succesfully')
     }
     if (!isTextEmpty()) {
       pushUserText(text)
+      console.log('text pushed')
     }
     if (!isImagesEmpty()) {
       pushImages(images)

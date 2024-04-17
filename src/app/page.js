@@ -1,7 +1,7 @@
 "use client"
 
 import AuthContext from "%/authContext"
-import { useData } from "%/DataContext"
+import { useData, DataProvider } from "%/DataContext"
 import styles from "@/page.module.css"
 import { useContext, useState, useRef, useCallback, useEffect } from "react"
 import { redirect } from "next/navigation"
@@ -10,7 +10,7 @@ import TopBar from "@/organisms/TopBar/TopBar"
 import MainContent from "@/organisms/MainContent/MainContent"
 import BottomBar from "@/organisms/BottomBar/BottomBar"
 import Webcam from "react-webcam"
-import { DataProvider } from "@/molecules/DataContext/DataContext";
+// import { DataProvider } from "@/molecules/DataContext/DataContext";
 import SideBar from "@/molecules/SideBar/SideBar";
 
 export default function App() {
