@@ -33,10 +33,13 @@ export default function Enter_API_Key() {
 
   return (
     <div className={styles.pageContainer}>
-       <Image src="/sparkyLogo.svg" alt="sparky logo" width={115} height={50} />
-       <div className="instructions-container">
+      <Image src="/sparkyLogo.svg" alt="sparky logo" width={115} height={50} />
+      <div className="instructions-container">
         <div className="instructions">
-          Step 1: Generate API key on your desktop
+          Step 1:{" "}
+          <a href="https://aistudio.google.com/app/apikey" target="_blank">
+            Get API key (Desktop only)
+          </a>
         </div>
         <div className="instructions">
           Step 2: Transfer key to your mobile phone
@@ -47,7 +50,7 @@ export default function Enter_API_Key() {
         <div className="instructions">
           Step 4: Click "Submit" and start experimenting!
         </div>
-       </div>
+      </div>
       {authReady ? (
         <div>
           {user !== null ? (
