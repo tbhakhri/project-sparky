@@ -7,9 +7,10 @@ export const useData = () => useContext(DataContext)
 
 export const DataProvider = ({ children }) => {
   class chatBubble {
-    constructor(type, text) {
+    constructor(type, text, index) {
       this.type = type
       this.text = text
+      this.index = index;
     }
   }
 
@@ -21,10 +22,20 @@ export const DataProvider = ({ children }) => {
         chatBubbles: [],
         responses: [],
         currentResponseIndex: 0
+
       }
     ],
     currentVariant: 0
   })
+
+  const [prompts, setPrompts] = useState({
+    promptData: [],
+    promptTitles: [],
+    editingIndex: -1,
+  });
+
+  const [userIndex, setUserIndex] = useState(0);
+  const [modelIndex, setModelIndex] = useState(0);
 
   /** FUNCTIONS **/
   /* For the currentVariant, pushes text to the requestChain. */
@@ -95,6 +106,16 @@ export const DataProvider = ({ children }) => {
       }
     })
   }
+
+  const deleteImage = (index) => {
+    setData((prevData) => ({
+      ...prevData,
+      currImages: prevData.currImages.filter(
+        (_, currIndex) => currIndex !== index
+      ),
+    }));
+  };
+
 
   /* For the specified variant, deletes a request node/bubble at the specified index. */
   function editRequestText(variant, index, newText) {
@@ -233,12 +254,115 @@ export const DataProvider = ({ children }) => {
     })
   }
 
+  
+
+  function addPrompt () {
+    if (data.variants[0].chatBubbles.length > 0) {
+      setPrompts((prevPrompts) => ({
+        ...prevPrompts,
+        promptData: [...prevPrompts.promptData, { ...data }],
+        promptTitles: [...prevPrompts.promptTitles, data.variants[0].chatBubbles[0]?.text],
+      }));
+    }
+
+    setData({variants: [{
+      chatBubbles: [],
+      responses: [],
+      currentResponseIndex: 0
+     
+     
+    }], currentVariant: 0});
+  };
+
+
+
+  function editPrompt(index) {
+    //simply for setting it to an editable state
+    setPrompts((prevState) => ({
+      ...prevState,
+      editingIndex: index,
+    }));
+  };
+
+  const deletePrompt = (index) => {
+    setPrompts((prevPrompts) => ({
+      ...prevPrompts,
+      promptData: prevPrompts.promptData.filter(
+        (_, currIndex) => currIndex !== index
+      ),
+      promptTitles: prevPrompts.promptTitles.filter(
+        (_, currIndex) => currIndex !== index
+      ),
+    }));
+  };
+
+  const popPrompt = (index) => {
+    const prompt = prompts.promptData[index];
+
+    setPrompts((prevPrompts) => ({
+      ...prevPrompts,
+      promptData: prevPrompts.promptData.filter(
+        (_, currIndex) => currIndex !== index
+      ),
+      promptTitles: prevPrompts.promptTitles.filter(
+        (_, currIndex) => currIndex !== index
+      ),
+    }));
+
+    return prompt;
+  };
+
+  const textEmpty = () => {
+    if (data.currText == "") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const imageEmpty = () => {
+    if (data.currImages.length == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const clearCurrText = () => {
+    updateData({ currText: "" });
+  };
+
+  const clearCurrImages = () => {
+    updateData({ currImages: [] });
+  };
+
+  const selectPrompt = (index) => {
+    addPrompt();
+    setData(popPrompt(index));
+  };
+
+  const updateData = (newData) => {
+    setData((prev) => ({ ...prev, ...newData }));
+  };
+
+  const updateTitle = (index, title) => {
+    setPrompts((prevPrompts) => {
+      const newPromptTitles = [...prevPrompts.promptTitles];
+      newPromptTitles[index] = title;
+      return { ...prevPrompts, promptTitles: newPromptTitles };
+    });
+  };
+
+  
+  
+
   /** END FUNCTIONS **/
 
   return (
     <DataContext.Provider
       value={{
         data,
+        prompts,
         apiKey,
         setApiKey,
         pushUserText,
@@ -250,7 +374,19 @@ export const DataProvider = ({ children }) => {
         clearResponses,
         copyVariant,
         setCurrentVariant,
-        setCurrentResponseIndex
+        setCurrentResponseIndex, 
+        clearCurrText,
+        updateData,
+        updateTitle,
+        imageEmpty,
+        textEmpty,
+        deleteImage,
+        clearCurrImages,
+        addPrompt,
+        selectPrompt,
+        editPrompt,
+        deletePrompt,
+
       }}
     >
       {children}

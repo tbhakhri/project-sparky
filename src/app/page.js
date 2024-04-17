@@ -1,16 +1,29 @@
 "use client"
 
 import AuthContext from "%/authContext"
-import { useData } from "%/DataContext"
+import { useData, DataProvider } from "%/DataContext"
 import styles from "@/page.module.css"
 import { useContext, useState, useEffect } from "react"
 import { redirect } from "next/navigation"
+import CompareRerun from "@/molecules/CompareRerun/CompareRerun"
 import TopBar from "@/organisms/TopBar/TopBar"
 import MainContent from "@/organisms/MainContent/MainContent"
 import BottomBar from "@/organisms/BottomBar/BottomBar"
+import SideBar from "@/molecules/SideBar/SideBar"
 
 export default function App() {
   const { user, authReady } = useContext(AuthContext)
+  const [isSidebar, setIsSidebar] = useState(false)
+  const [showCompareRerun, setShowCompareRerun] = useState(false)
+
+  const toggleSidebar = () => {
+    setIsSidebar(!isSidebar)
+  }
+
+  const toggleCompareRerun = () => {
+    setShowCompareRerun(!showCompareRerun)
+  }
+
   let { apiKey } = useData()
 
   // TODO: IF APIKEY IS EMPTY STRING, FIRST TRY TO RETREIVE IT FROM DB
@@ -50,16 +63,30 @@ export default function App() {
         <>
           {user !== null ? (
             apiKey !== "" ? (
-              <div
-                className={styles.pageContainer}
-                style={{
-                  display: "flex"
-                }}
-              >
-                <TopBar />
-                <MainContent />
-                <BottomBar />
-              </div>
+              <>
+                <div
+                  className={styles.pageContainer}
+                  style={{
+                    display: "flex"
+                  }}
+                >
+                  <DataProvider>
+                    {isSidebar && <SideBar toggleSidebar={toggleSidebar} />}
+                    <TopBar toggleSidebar={toggleSidebar} />
+                    <MainContent />
+                    {showCompareRerun && (
+                      <CompareRerun onParameterChange={handleParameterChange} />
+                    )}
+
+                    <BottomBar
+                      showCompareRerun={showCompareRerun}
+                      toggleCompareRerun={toggleCompareRerun}
+                      openCameraFunc={() => setIsCameraOpen(true)}
+                      cameraImage={cameraImage}
+                    />
+                  </DataProvider>
+                </div>
+              </>
             ) : (
               redirect("/apikey")
             )
