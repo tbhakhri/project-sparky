@@ -35,7 +35,6 @@ export default function App() {
 
   useEffect(() => {
     async function fetchKey() {
-      console.log(apiKey)
       if (user && apiKey === "") {
         const url = new URL("/api/getApiKey", window.location.origin)
         //TODO: REPLACE "test" with user.uid
@@ -52,7 +51,7 @@ export default function App() {
         // setApiKey(data.apiKey)
       }
     }
-    fetchKey()
+    // fetchKey()
   }, [user, apiKey])
 
   const [promptMetadata, setPromptMetadata] = useState(() => ({
