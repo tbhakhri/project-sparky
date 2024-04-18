@@ -35,10 +35,11 @@ export default function App() {
 
   useEffect(() => {
     async function fetchKey() {
+      console.log(apiKey)
       if (user && apiKey === "") {
         const url = new URL("/api/getApiKey", window.location.origin)
         //TODO: REPLACE "test" with user.uid
-        url.searchParams.append("username", "test")
+        url.searchParams.append("username", "test1")
 
         const response = await fetch(url.toString(), {
           method: "GET"
@@ -47,8 +48,8 @@ export default function App() {
           console.log("No key for user found")
           router.push("/apikey")
         }
-        const data = await response.json()
-        setApiKey(data.apiKey)
+        // const data = await response.json()
+        // setApiKey(data.apiKey)
       }
     }
     fetchKey()
