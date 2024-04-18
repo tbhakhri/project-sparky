@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;500;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;500;900&display=swap");
 
 .sideBarContainer {
   display: flex;
@@ -10,9 +10,8 @@
   box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
   background-color: #282828;
   left: 0;
-  padding: 2%; 
+  padding: 2%;
 }
-
 
 .menuBarContainer {
   margin-top: 15%;
@@ -33,16 +32,16 @@
 .menuBarText {
   padding-left: 20%;
   padding-right: 20%;
-  color: #D9D9D9;
-  font-family: 'Kumbh Sans', sans-serif;
+  color: #d9d9d9;
+  font-family: "Kumbh Sans", sans-serif;
   font-size: 17px;
-  font-weight: 900; 
+  font-weight: 900;
 }
 
 .closeMenuButton {
   border: none;
   background-color: transparent;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 .newPromptButtonContainer {
@@ -57,12 +56,13 @@
 }
 
 .newPromptButton {
-  background-color: #1A3059;
+  background-color: #1a3059;
   justify-content: center;
   text-align: center;
-  font-family: 'Kumbh Sans', sans-serif;
+  font-family: "Kumbh Sans", sans-serif;
+  color: white;
   font-size: 12px;
-  font-weight: 900; 
+  font-weight: 900;
   border-radius: 7px;
   border: none;
   width: 35%;
@@ -88,9 +88,9 @@
   color: white;
   justify-content: center;
   text-align: center;
-  font-family: 'Kumbh Sans', sans-serif;
+  font-family: "Kumbh Sans", sans-serif;
   font-size: 14px;
-  font-weight: 900; 
+  font-weight: 900;
   flex: 1;
   margin-bottom: 5%;
 }
@@ -100,20 +100,19 @@
   padding: 3%;
   padding-left: 5%;
   padding-right: 10%;
-  border-bottom: 1px solid #DCDCDC;
+  border-bottom: 1px solid #dcdcdc;
   color: white;
-  font-family: 'Kumbh Sans', sans-serif;
+  font-family: "Kumbh Sans", sans-serif;
   font-size: 14px;
-  font-weight: 100 !important; 
+  font-weight: 100 !important;
   height: auto;
+}
 
-}  
-
-.pastPromptContainer{
+.pastPromptContainer {
   color: white;
-  font-family: 'Kumbh Sans', sans-serif;
+  font-family: "Kumbh Sans", sans-serif;
   font-size: 14px;
-  font-weight: 100 !important; 
+  font-weight: 100 !important;
   resize: none;
   border: none;
   background-color: transparent;
@@ -129,7 +128,6 @@
   border-color: transparent; /* Highlight border on focus, change the color as needed */
   background-color: transparent; /* Change background to white on focus */
 }
-
 
 .icon {
   width: 10px;

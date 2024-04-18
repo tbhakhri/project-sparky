@@ -11,7 +11,7 @@ export const metadata = {
   description: "A mobile web app for experimenting with Gemini"
 }
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <meta name="viewport" content="viewport-fit=cover" />
