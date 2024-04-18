@@ -47,11 +47,11 @@ export default function App() {
           console.log("No key for user found")
           router.push("/apikey")
         }
-        // const data = await response.json()
-        // setApiKey(data.apiKey)
+        const data = await response.json()
+        setApiKey(data.apiKey)
       }
     }
-    // fetchKey()
+    fetchKey()
   }, [user, apiKey])
 
   const [promptMetadata, setPromptMetadata] = useState(() => ({

@@ -2,9 +2,9 @@ import { db } from "%/config"
 import { doc, getDoc } from "firebase/firestore"
 
 export async function GET(request) {
+  const url = new URL(request.url)
+  const username = url.searchParams.get("username")
   try {
-    const url = new URL(request.url)
-    const username = url.searchParams.get("username")
     if (!username) {
       return new Response("Missing username parameter", {
         status: 400,
