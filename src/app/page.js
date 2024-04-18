@@ -46,9 +46,10 @@ export default function App() {
         if (response.status === 404) {
           console.log("No key for user found")
           router.push("/apikey")
+        } else {
+          const data = await response.json()
+          setApiKey(data.apiKey)
         }
-        const data = await response.json()
-        setApiKey(data.apiKey)
       }
     }
     fetchKey()
@@ -69,7 +70,7 @@ export default function App() {
 
   return (
     <div className={styles.pageContainer}>
-      {authReady ? (
+      {apiKey !== "" && authReady ? (
         <>
           {user !== null ? (
             <>
