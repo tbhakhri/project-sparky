@@ -6,7 +6,7 @@ import { useData } from "%/DataContext"
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 
 export default function MainContent() {
-  const { data, setCurrentVariant, copyVariant } = useData()
+  const { currentPrompt, setCurrentVariant, copyVariant } = useData()
 
   const renderBubble = (item, requestIndex, variantIndex) => {
     switch (item.type) {
@@ -33,8 +33,8 @@ export default function MainContent() {
 
   return (
     <div className="mainContentContainer">
-      {data.variants.length === 1 &&
-      data.variants[0].chatBubbles.length === 0 ? (
+      {currentPrompt.variants.length === 1 &&
+      currentPrompt.variants[0].currentRequests.length === 0 ? (
         <>
           <div className="defaultScreenContainer">
             <DefaultScreen />
@@ -42,20 +42,20 @@ export default function MainContent() {
         </>
       ) : (
         <>
-          {data.variants.map((variant, variantIndex) => (
+          {currentPrompt.variants.map((variant, variantIndex) => (
             <div
               key={variantIndex}
               className="variantContainer"
               style={{
                 borderColor:
-                  variantIndex === data.currentVariant
+                  variantIndex === currentPrompt.currentVariant
                     ? "#a5bcf6"
                     : "rgba(0,0,0,0)"
               }}
               onClick={() => setCurrentVariant(variantIndex)}
             >
               <p className="userText">User</p>
-              {variant.chatBubbles.map((item, requestIndex) =>
+              {variant.currentRequests.map((item, requestIndex) =>
                 renderBubble(item, requestIndex, variantIndex)
               )}
               {variant.responses.length > 0 && (
@@ -64,10 +64,14 @@ export default function MainContent() {
               <button
                 className="compareButton"
                 onClick={(_) => copyVariant(variantIndex)}
-                disabled={data.variants.length >= 3}
-                style={{ backgroundColor: data.variants.length >= 3 && "grey" }}
+                disabled={currentPrompt.variants.length >= 3}
+                style={{
+                  backgroundColor: currentPrompt.variants.length >= 3 && "grey"
+                }}
               >
-                {data.variants.length >= 3 ? "Max 3 Variants" : "Compare"}
+                {currentPrompt.variants.length >= 3
+                  ? "Max 3 Variants"
+                  : "Compare"}
               </button>
             </div>
           ))}

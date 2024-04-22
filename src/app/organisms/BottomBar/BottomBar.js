@@ -6,7 +6,7 @@ import { useData } from "%/DataContext"
 
 export default function BottomBar() {
   const {
-    data,
+    currentPrompt,
     pushUserText,
     pushImages,
     addResponse,
@@ -17,7 +17,10 @@ export default function BottomBar() {
   // returns true if a put was successful, else returns false
   const executePut = async (_) => {
     let didPut = false
-    if (data.variants[data.currentVariant].responses.length !== 0) {
+    if (
+      currentPrompt.variants[currentPrompt.currentVariant].responses.length !==
+      0
+    ) {
       acceptResponse()
     }
     if (!isImagesEmpty()) {
@@ -36,14 +39,17 @@ export default function BottomBar() {
     clearResponses()
     if ((await executePut(_)) || !isInputEmpty()) {
       console.log("ADDING RESPONSE")
-      addResponse(data.currentVariant)
+      addResponse(currentPrompt.currentVariant)
     } else {
       console.log("NO INPUTS TO RUN")
     }
   }
 
   const isInputEmpty = () => {
-    return data.variants[data.currentVariant].chatBubbles.length === 0
+    return (
+      currentPrompt.variants[currentPrompt.currentVariant].currentRequests
+        .length === 0
+    )
   }
 
   /* BOTTOMINPUTBAR STATE */

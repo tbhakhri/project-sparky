@@ -4,10 +4,10 @@ import { useData } from "%/DataContext"
 import Arrow from "@/molecules/Arrow/Arrow"
 
 export default function ModelBubble({ variant }) {
-  const { data, addResponse, setCurrentResponseIndex } = useData()
+  const { currentPrompt, addResponse, setCurrentResponseIndex } = useData()
 
-  const curIndex = data.variants[variant].currentResponseIndex
-  const responses = data.variants[variant].responses
+  const curIndex = currentPrompt.variants[variant].currentResponseIndex
+  const responses = currentPrompt.variants[variant].responses
   const numResponses = responses.length
 
   //TODO: CHANGE WHEN BACKEND IS IMPLEMENTED
