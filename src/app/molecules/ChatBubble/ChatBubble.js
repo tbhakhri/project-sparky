@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from "react"
 const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
 export default function ChatBubble({ initialText, index, variant }) {
-  const { editRequestText, deleteRequest, acceptResponse } = useData()
+  const { editRequestText, deleteRequest, clearResponses } = useData()
 
   const [text, setText] = useState(initialText)
   const [isEditable, setIsEditable] = useState(false)
@@ -18,7 +18,7 @@ export default function ChatBubble({ initialText, index, variant }) {
 
   const handleDelete = (e) => {
     deleteRequest(variant, index)
-    acceptResponse()
+    clearResponses()
   }
 
   const enableEdit = () => {
@@ -38,6 +38,7 @@ export default function ChatBubble({ initialText, index, variant }) {
   const commitEdit = () => {
     editRequestText(variant, index, inputRef.current.value)
     setIsEditable(false)
+    clearResponses()
   }
 
   const inputRef = useRef(null)

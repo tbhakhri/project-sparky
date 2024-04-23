@@ -3,14 +3,12 @@ import Image from "next/image"
 import { useData } from "%/DataContext"
 
 export default function ImageBubble({ imageURL, index, variant }) {
-  const { deleteRequest, acceptResponse } = useData()
+  const { deleteRequest, clearResponses } = useData()
 
   const handleDelete = (e) => {
     deleteRequest(variant, index)
-    acceptResponse()
+    clearResponses()
   }
-
-  console.log(imageURL)
 
   return (
     <div className="bubble-container">

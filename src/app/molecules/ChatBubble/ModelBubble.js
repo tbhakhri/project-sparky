@@ -12,8 +12,12 @@ export default function ModelBubble({ variant }) {
 
   //TODO: CHANGE WHEN BACKEND IS IMPLEMENTED
   const handleRegenerate = async (e) => {
-    await addResponse(variant)
-    setCurrentResponseIndex(variant, numResponses)
+    try {
+      await addResponse(variant)
+      setCurrentResponseIndex(variant, numResponses)
+    } catch (error) {
+      console.error("Error in addResponse:", error.message)
+    }
   }
 
   return (

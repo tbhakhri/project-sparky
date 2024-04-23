@@ -6,7 +6,8 @@ import { useData } from "%/DataContext"
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 
 export default function MainContent() {
-  const { currentPrompt, setCurrentVariant, copyVariant } = useData()
+  const { isResponseLoading, currentPrompt, setCurrentVariant, copyVariant } =
+    useData()
 
   const renderBubble = (item, requestIndex, variantIndex) => {
     switch (item.type) {
@@ -57,6 +58,11 @@ export default function MainContent() {
               <p className="userText">User</p>
               {variant.currentRequests.map((item, requestIndex) =>
                 renderBubble(item, requestIndex, variantIndex)
+              )}
+              {isResponseLoading && (
+                <>
+                  <div className="loading-dots"></div>
+                </>
               )}
               {variant.responses.length > 0 && (
                 <ModelBubble variant={variantIndex} />

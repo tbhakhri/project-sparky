@@ -10,19 +10,18 @@ export default function BottomBar() {
     pushUserText,
     pushImages,
     addResponse,
-    acceptResponse,
     clearResponses
   } = useData()
 
   // returns true if a put was successful, else returns false
   const executePut = async (_) => {
     let didPut = false
-    if (
-      currentPrompt.variants[currentPrompt.currentVariant].responses.length !==
-      0
-    ) {
-      acceptResponse()
-    }
+    // if (
+    //   currentPrompt.variants[currentPrompt.currentVariant].responses.length !==
+    //   0
+    // ) {
+    //   acceptResponse()
+    // }
     if (!isImagesEmpty()) {
       await pushImages(images)
       didPut = true
@@ -39,7 +38,11 @@ export default function BottomBar() {
     clearResponses()
     if ((await executePut(_)) || !isInputEmpty()) {
       console.log("ADDING RESPONSE")
-      await addResponse(currentPrompt.currentVariant)
+      try {
+        await addResponse(currentPrompt.currentVariant)
+      } catch (error) {
+        console.log(error)
+      }
     } else {
       console.log("NO INPUTS TO RUN")
     }

@@ -45,3 +45,25 @@
   margin-bottom: 0.25rem;
   font-family: Kumbh Sans;
 }
+
+.loading-dots {
+  margin-left: 0.5rem;
+  width: 100px;
+  height: 10px;
+  background: linear-gradient(to right, #4285f4, #db4437);
+  border-radius: 3px;
+  background-size: 200%;
+  animation: gradient 2.4s ease-in-out infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
