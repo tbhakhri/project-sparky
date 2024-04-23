@@ -11,8 +11,8 @@ export default function ModelBubble({ variant }) {
   const numResponses = responses.length
 
   //TODO: CHANGE WHEN BACKEND IS IMPLEMENTED
-  const handleRegenerate = (e) => {
-    addResponse(variant)
+  const handleRegenerate = async (e) => {
+    await addResponse(variant)
     setCurrentResponseIndex(variant, numResponses)
   }
 

@@ -10,6 +10,8 @@ export default function ImageBubble({ imageURL, index, variant }) {
     acceptResponse()
   }
 
+  console.log(imageURL)
+
   return (
     <div className="bubble-container">
       <div

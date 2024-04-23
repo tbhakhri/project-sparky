@@ -39,7 +39,7 @@ export default function BottomBar() {
     clearResponses()
     if ((await executePut(_)) || !isInputEmpty()) {
       console.log("ADDING RESPONSE")
-      addResponse(currentPrompt.currentVariant)
+      await addResponse(currentPrompt.currentVariant)
     } else {
       console.log("NO INPUTS TO RUN")
     }
