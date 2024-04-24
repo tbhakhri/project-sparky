@@ -1,13 +1,13 @@
-import "./MainContent.css"
-import ChatBubble from "@/molecules/ChatBubble/ChatBubble"
-import ModelBubble from "@/molecules/ChatBubble/ModelBubble"
-import ImageBubble from "@/molecules/ChatBubble/ImageBubble"
-import { useData } from "%/DataContext"
-import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
+import "./MainContent.css";
+import ChatBubble from "@/molecules/ChatBubble/ChatBubble";
+import ModelBubble from "@/molecules/ChatBubble/ModelBubble";
+import ImageBubble from "@/molecules/ChatBubble/ImageBubble";
+import { useData } from "%/DataContext";
+import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen";
 
 export default function MainContent() {
   const { isResponseLoading, currentPrompt, setCurrentVariant, copyVariant } =
-    useData()
+    useData();
 
   const renderBubble = (item, requestIndex, variantIndex) => {
     switch (item.type) {
@@ -18,7 +18,7 @@ export default function MainContent() {
             index={requestIndex}
             variant={variantIndex}
           />
-        )
+        );
       case "image":
         return (
           <ImageBubble
@@ -26,11 +26,11 @@ export default function MainContent() {
             index={requestIndex}
             variant={variantIndex}
           />
-        )
+        );
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <div className="mainContentContainer">
@@ -51,7 +51,7 @@ export default function MainContent() {
                 borderColor:
                   variantIndex === currentPrompt.currentVariant
                     ? "#a5bcf6"
-                    : "rgba(0,0,0,0)"
+                    : "rgba(0,0,0,0)",
               }}
               onClick={() => setCurrentVariant(variantIndex)}
             >
@@ -64,7 +64,7 @@ export default function MainContent() {
                   <div className="loading-dots"></div>
                 </>
               )}
-              {variant.responses.length > 0 && (
+              {variant.currentResponses.length > 0 && (
                 <ModelBubble variant={variantIndex} />
               )}
               <button
@@ -72,7 +72,7 @@ export default function MainContent() {
                 onClick={(_) => copyVariant(variantIndex)}
                 disabled={currentPrompt.variants.length >= 3}
                 style={{
-                  backgroundColor: currentPrompt.variants.length >= 3 && "grey"
+                  backgroundColor: currentPrompt.variants.length >= 3 && "grey",
                 }}
               >
                 {currentPrompt.variants.length >= 3
@@ -84,5 +84,5 @@ export default function MainContent() {
         </>
       )}
     </div>
-  )
+  );
 }

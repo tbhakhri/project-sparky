@@ -1,123 +1,131 @@
-"use client"
+"use client";
 
-import React, { createContext, useState, useContext } from "react"
-import { dataURLToPart } from "%/utils"
-import { GoogleGenerativeAI } from "@google/generative-ai"
+import React, { createContext, useState, useContext } from "react";
+import { dataURLToPart } from "%/utils";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const DataContext = createContext()
-export const useData = () => useContext(DataContext)
+const DataContext = createContext();
+export const useData = () => useContext(DataContext);
 
 export const DataProvider = ({ children }) => {
   class Node {
     constructor(type, text, index) {
-      this.type = type
-      this.text = text
-      this.index = index
+      this.type = type;
+      this.text = text;
+      this.index = index;
     }
   }
 
-  const [apiKey, setApiKey] = useState("")
+  class Variant {
+    constructor(model) {
+      if (model === null) {
+        this.variantHistory = null;
+      } else {
+        this.variantHistory = model.startChat();
+      }
+      this.currentRequests = [];
+      this.currentResponses = [];
+      this.currentResponseIndex = 0;
+    }
+  }
 
-  let model = null
+  const [apiKey, setApiKey] = useState("");
+
+  let model = null;
   if (apiKey !== "") {
-    const genAI = new GoogleGenerativeAI(apiKey)
+    const genAI = new GoogleGenerativeAI(apiKey);
     model = genAI.getGenerativeModel({
-      model: "gemini-1.5-pro-latest"
-    })
+      model: "gemini-1.5-pro-latest",
+    });
   } else {
   }
 
-  const [isResponseLoading, setIsResponseLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
+  const [isResponseLoading, setIsResponseLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   function closeErrorBox() {
-    setErrorMessage("")
+    setErrorMessage("");
   }
 
   const [currentPrompt, setCurrentPrompt] = useState({
-    variants: [
-      {
-        currentRequests: [],
-        responses: [],
-        currentResponseIndex: 0
-      }
-    ],
-    currentVariant: 0
-  })
+    variants: [new Variant(model)],
+    currentVariant: 0,
+  });
 
   const [prompts, setPrompts] = useState({
     promptData: [],
     promptTitles: [],
-    editingIndex: -1
-  })
+    editingIndex: -1,
+  });
 
   /** FUNCTIONS **/
   /* For the currentVariant, pushes text to the requestChain. */
   function pushUserText(text) {
+    console.log("ADDED");
     setCurrentPrompt((prevData) => {
-      const newVariants = [...prevData.variants]
+      const newVariants = [...prevData.variants];
 
-      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      const targetVariant = { ...newVariants[prevData.currentVariant] };
       targetVariant.currentRequests = [
         ...targetVariant.currentRequests,
-        new Node("text", text)
-      ]
+        new Node("text", text),
+      ];
 
-      newVariants[prevData.currentVariant] = targetVariant
+      newVariants[prevData.currentVariant] = targetVariant;
 
       return {
         ...prevData,
-        variants: newVariants
-      }
-    })
+        variants: newVariants,
+      };
+    });
   }
 
   /* For the currentVariant, pushes an array of images to the requestChain. */
   async function pushImages(images) {
     try {
-      const newVariants = [...currentPrompt.variants]
-      const targetVariant = { ...newVariants[currentPrompt.currentVariant] }
+      const newVariants = [...currentPrompt.variants];
+      const targetVariant = { ...newVariants[currentPrompt.currentVariant] };
 
       const convertedImages = await Promise.all(
         images.map(async (image) => {
-          const reader = new FileReader()
+          const reader = new FileReader();
           return new Promise((resolve, _) => {
             reader.onload = (event) =>
-              resolve(new Node("image", event.target.result))
-            reader.readAsDataURL(image)
-          })
+              resolve(new Node("image", event.target.result));
+            reader.readAsDataURL(image);
+          });
         })
-      )
+      );
 
       targetVariant.currentRequests = [
         ...targetVariant.currentRequests,
-        ...convertedImages
-      ]
-      newVariants[currentPrompt.currentVariant] = targetVariant
+        ...convertedImages,
+      ];
+      newVariants[currentPrompt.currentVariant] = targetVariant;
 
-      setCurrentPrompt({ ...currentPrompt, variants: newVariants })
+      setCurrentPrompt({ ...currentPrompt, variants: newVariants });
     } catch (error) {
-      console.error("Error processing images:", error)
+      console.error("Error processing images:", error);
     }
   }
 
   /* For the specified variant, deletes a request node/bubble at the specified index. */
   function deleteRequest(variant, index) {
     setCurrentPrompt((prevData) => {
-      const newVariants = [...prevData.variants]
+      const newVariants = [...prevData.variants];
 
-      const targetVariant = { ...newVariants[variant] }
+      const targetVariant = { ...newVariants[variant] };
       targetVariant.currentRequests = [
         ...targetVariant.currentRequests.slice(0, index),
-        ...targetVariant.currentRequests.slice(index + 1)
-      ]
+        ...targetVariant.currentRequests.slice(index + 1),
+      ];
 
-      newVariants[variant] = targetVariant
+      newVariants[variant] = targetVariant;
 
       return {
         ...prevData,
-        variants: newVariants
-      }
-    })
+        variants: newVariants,
+      };
+    });
   }
 
   const deleteImage = (index) => {
@@ -125,176 +133,190 @@ export const DataProvider = ({ children }) => {
       ...prevData,
       currImages: prevData.currImages.filter(
         (_, currIndex) => currIndex !== index
-      )
-    }))
-  }
+      ),
+    }));
+  };
 
   /* For the specified variant, deletes a request node/bubble at the specified index. */
   function editRequestText(variant, index, newText) {
     setCurrentPrompt((prevData) => {
-      const newVariants = [...prevData.variants]
+      const newVariants = [...prevData.variants];
 
-      const targetVariant = { ...newVariants[variant] }
-      targetVariant.currentRequests[index] = new Node("text", newText)
+      const targetVariant = { ...newVariants[variant] };
+      targetVariant.currentRequests[index] = new Node("text", newText);
 
-      newVariants[variant] = targetVariant
+      newVariants[variant] = targetVariant;
 
       return {
         ...prevData,
-        variants: newVariants
-      }
-    })
+        variants: newVariants,
+      };
+    });
   }
 
   /* For the specified variant, adds a response node/bubble. */
   //TODO: CHANGE THIS DUMMY IMPLEMENTATION
-  async function addResponse(variant) {
-    console.log("CALLING ADD RESPONSE")
-    setIsResponseLoading(true)
+  async function addResponse(variant_index) {
+    // console.log("CALLING ADD RESPONSE");
+    setIsResponseLoading(true);
     const dummyDataURL =
-      "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCABFAEUDASIAAhEBAxEB/8QAGwABAQACAwEAAAAAAAAAAAAAAAYEBwIDBQH/xAA4EAABAwMAAhEDAwUAAAAAAAABAAIDBAURBiEHEhUXMTQ2QVRVcnSSk7Gy0SJRYRNxgTIzQqHh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ANbaN6NU9/irKipq6qN0dQ5gEbwBjh5wfuvb3vLf0+v8bfhNj/iFx7270Cr0EhveW/p9f42/Cb3lv6fX+Nvwq9fM6+BBI73lv6fX+Nvwm95b+n1/jb8KuJwF2wQPqnhseo5xwIIze8t/T6/xt+E3vLf0+v8AG34VnU00lHKY5Dkj8YXWg1NNS7l3u4UUM8r44nMDXPdrORnm/dFkXnlZdu2z2ogotj/iFx7270Cr1IbH/ELj3t3oFXoOLs/wvcpLKJ7e+ocHaotuMH8LxmMMsoY3n+2tWVbK236OUTRgOlhLXYODwf8AUEScgYVfoZTPaJ6kt+mJzXE5/dSAydWslbEotpadHJyQNtPAHD/E/wBP++FBNaXVray9zPaQQQ3m/C8Nc6iU1FS6QnORznK4INXXnlZdu2z2ol55WXbts9qIKLY/4hce9u9Aq9SGx/xC497d6BV6D0tHqdlRdYWvBIOeA/hW90slPXUdPGGOJjBx9WOYLW8UskDw6NzmuHO04WQbpXdKn81yCqpNCpnVIeIR+ngj+4F1aXVjoIqSjYdTY3RuBH2wFlaKzVTaZlZNUTOjDnNIe84Upeap1VcpiXEhsr8a886DAa3AXJEQauvPKy7dtntRLzysu3bZ7UQUWx/xC497d6BV6kNj/iFx7270Cr0AnCyLfSPrquNjdrjbtBycaiVjkZCyaCufb3ucxjXl2OHmwgsLzKyx2Z9BEC2QODxjWNZ/KhnEvkc93C45WRX1slxqjPI0NJAGAdWpY6AiIg1deeVl27bPaiXnlZdu2z2ogU7bna3zx0N0dCx8pc5oiByf5XfujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiDqpbZPWVVTU1NaZZpC0ucYwM8I5iiIg//9k="
+      "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCABFAEUDASIAAhEBAxEB/8QAGwABAQACAwEAAAAAAAAAAAAAAAYEBwIDBQH/xAA4EAABAwMAAhEDAwUAAAAAAAABAAIDBAURBiEHEhUXMTQ2QVRVcnSSk7Gy0SJRYRNxgTIzQqHh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ANbaN6NU9/irKipq6qN0dQ5gEbwBjh5wfuvb3vLf0+v8bfhNj/iFx7270Cr0EhveW/p9f42/Cb3lv6fX+Nvwq9fM6+BBI73lv6fX+Nvwm95b+n1/jb8KuJwF2wQPqnhseo5xwIIze8t/T6/xt+E3vLf0+v8AG34VnU00lHKY5Dkj8YXWg1NNS7l3u4UUM8r44nMDXPdrORnm/dFkXnlZdu2z2ogotj/iFx7270Cr1IbH/ELj3t3oFXoOLs/wvcpLKJ7e+ocHaotuMH8LxmMMsoY3n+2tWVbK236OUTRgOlhLXYODwf8AUEScgYVfoZTPaJ6kt+mJzXE5/dSAydWslbEotpadHJyQNtPAHD/E/wBP++FBNaXVray9zPaQQQ3m/C8Nc6iU1FS6QnORznK4INXXnlZdu2z2ol55WXbts9qIKLY/4hce9u9Aq9SGx/xC497d6BV6D0tHqdlRdYWvBIOeA/hW90slPXUdPGGOJjBx9WOYLW8UskDw6NzmuHO04WQbpXdKn81yCqpNCpnVIeIR+ngj+4F1aXVjoIqSjYdTY3RuBH2wFlaKzVTaZlZNUTOjDnNIe84Upeap1VcpiXEhsr8a886DAa3AXJEQauvPKy7dtntRLzysu3bZ7UQUWx/xC497d6BV6kNj/iFx7270Cr0AnCyLfSPrquNjdrjbtBycaiVjkZCyaCufb3ucxjXl2OHmwgsLzKyx2Z9BEC2QODxjWNZ/KhnEvkc93C45WRX1slxqjPI0NJAGAdWpY6AiIg1deeVl27bPaiXnlZdu2z2ogU7bna3zx0N0dCx8pc5oiByf5XfujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiDqpbZPWVVTU1NaZZpC0ucYwM8I5iiIg//9k=";
 
-    const imagePart = dataURLToPart(dummyDataURL)
-    const chat = model.startChat({
-      history: [],
-      generationConfig: {
-        maxOutputTokens: 250
-      }
-    })
+    // const imagePart = dataURLToPart(dummyDataURL);
 
-    const text = "Describe this image."
-    const msg = [text, imagePart]
+    if (currentPrompt.variants[variant_index].variantHistory === null) {
+      currentPrompt.variants[variant_index].variantHistory = model.startChat();
+    }
+    const chat = currentPrompt.variants[variant_index].variantHistory;
+    // const chat = model.startChat({
+    //   history: [],
+    //   generationConfig: {
+    //     maxOutputTokens: 250,
+    //   },
+    // });
+
+    const nodeList = currentPrompt.variants[variant_index].currentRequests;
+
+    let text = nodeList
+      .filter((node) => node.type === "text")
+      .map((node) => node.text);
+    let imagePart = nodeList
+      .filter((node) => node.type === "image")
+      .map((node) => node.text);
+    console.log(chat);
+    console.log(currentPrompt.variants[variant_index]);
+    // console.log(text);
+    // console.log(imagePart);
+    const msg = text.concat(imagePart);
+    console.log("msg: ");
+    console.log(msg);
     try {
-      const result = await chat.sendMessage(msg)
-      console.log(result)
-      console.log(result.response.text())
+      const result = await chat.sendMessage(msg);
+      console.log(result);
+      console.log(result.response.text());
       setCurrentPrompt((prevData) => {
-        const newVariants = [...prevData.variants]
+        const newVariants = [...prevData.variants];
 
-        const targetVariant = { ...newVariants[variant] }
-        targetVariant.responses = [
-          ...targetVariant.responses,
-          new Node("text", result.response.text())
-        ]
+        const targetVariant = { ...newVariants[variant_index] };
+        targetVariant.currentResponses = [
+          ...targetVariant.currentResponses,
+          new Node("text", result.response.text()),
+        ];
 
-        newVariants[variant] = targetVariant
+        newVariants[variant_index] = targetVariant;
 
         return {
           ...prevData,
-          variants: newVariants
-        }
-      })
+          variants: newVariants,
+        };
+      });
     } catch (error) {
-      setErrorMessage(error.message)
-      throw new Error("Error in addResponse function: " + error.message)
+      setErrorMessage(error.message);
+      throw new Error("Error in addResponse function: " + error.message);
     } finally {
-      setIsResponseLoading(false)
+      setIsResponseLoading(false);
     }
   }
 
   /* For the currentVariant, takes the response at the currentResponseIndex and converts it into a request node. Appends that request node to the requestChain. */
   function acceptResponse() {
     if (
-      currentPrompt.variants[currentPrompt.currentVariant].responses.length ===
-      0
+      currentPrompt.variants[currentPrompt.currentVariant].currentResponses
+        .length === 0
     )
-      return
+      return;
     setCurrentPrompt((prevData) => {
-      const newVariants = [...prevData.variants]
+      const newVariants = [...prevData.variants];
 
-      const targetVariant = { ...newVariants[prevData.currentVariant] }
+      const targetVariant = { ...newVariants[prevData.currentVariant] };
       const acceptedResponse =
-        targetVariant.responses[targetVariant.currentResponseIndex]
+        targetVariant.currentResponses[targetVariant.currentResponseIndex];
 
       targetVariant.currentRequests = [
         ...targetVariant.currentRequests,
-        acceptedResponse
-      ]
-      targetVariant.responses = []
-      targetVariant.currentResponseIndex = 0
+        acceptedResponse,
+      ];
+      targetVariant.currentResponses = [];
+      targetVariant.currentResponseIndex = 0;
 
-      newVariants[prevData.currentVariant] = targetVariant
+      newVariants[prevData.currentVariant] = targetVariant;
 
       return {
         ...prevData,
-        variants: newVariants
-      }
-    })
+        variants: newVariants,
+      };
+    });
   }
 
   /* For the currentVariant, clears all responses */
   function clearResponses() {
-    console.log("CLEAR RESPONSES")
+    console.log("CLEAR RESPONSES");
     if (
-      currentPrompt.variants[currentPrompt.currentVariant].responses.length ===
-      0
+      currentPrompt.variants[currentPrompt.currentVariant].currentResponses
+        .length === 0
     )
-      return
+      return;
     setCurrentPrompt((prevData) => {
-      const newVariants = [...prevData.variants]
+      const newVariants = [...prevData.variants];
 
-      const targetVariant = { ...newVariants[prevData.currentVariant] }
-      targetVariant.responses = []
-      targetVariant.currentResponseIndex = 0
+      const targetVariant = { ...newVariants[prevData.currentVariant] };
+      targetVariant.currentResponses = [];
+      targetVariant.currentResponseIndex = 0;
 
-      newVariants[prevData.currentVariant] = targetVariant
+      newVariants[prevData.currentVariant] = targetVariant;
 
       return {
         ...prevData,
-        variants: newVariants
-      }
-    })
+        variants: newVariants,
+      };
+    });
   }
 
   /* Creates a new variant, copying the specified variant's requestChain to the new variant. */
   function copyVariant(index) {
     setCurrentPrompt((prevData) => {
-      const variantToCopy = { ...prevData.variants[index] }
+      const variantToCopy = { ...prevData.variants[index] };
 
       // Deep copy currentRequests array
       const deepCopiedRequests = variantToCopy.currentRequests.map((bubble) => {
-        return { ...bubble }
-      })
+        return { ...bubble };
+      });
 
-      const newVariants = [
-        ...prevData.variants,
-        {
-          currentRequests: deepCopiedRequests,
-          responses: [],
-          currentResponseIndex: 0
-        }
-      ]
+      const copiedVariant = new Variant(model);
+      copiedVariant.currentRequests = deepCopiedRequests;
+
+      const newVariants = [...prevData.variants, copiedVariant];
 
       return {
         ...prevData,
-        variants: newVariants
-      }
-    })
+        variants: newVariants,
+      };
+    });
   }
 
   /* Setter function for currentVariant. */
   function setCurrentVariant(index) {
     setCurrentPrompt((prevData) => ({
       ...prevData,
-      currentVariant: index
-    }))
+      currentVariant: index,
+    }));
   }
 
   /* Setter function for currentResponseIndex for the specified variant. */
   function setCurrentResponseIndex(variant, index) {
     setCurrentPrompt((prevData) => {
-      const newVariants = [...prevData.variants]
+      const newVariants = [...prevData.variants];
 
-      const targetVariant = { ...newVariants[variant] }
-      targetVariant.currentResponseIndex = index
+      const targetVariant = { ...newVariants[variant] };
+      targetVariant.currentResponseIndex = index;
 
-      newVariants[variant] = targetVariant
+      newVariants[variant] = targetVariant;
 
       return {
         ...prevData,
-        variants: newVariants
-      }
-    })
+        variants: newVariants,
+      };
+    });
   }
 
   function addPrompt() {
@@ -304,29 +326,29 @@ export const DataProvider = ({ children }) => {
         promptData: [...prevPrompts.promptData, { ...currentPrompt }],
         promptTitles: [
           ...prevPrompts.promptTitles,
-          currentPrompt.variants[0].currentRequests[0]?.text
-        ]
-      }))
+          currentPrompt.variants[0].currentRequests[0]?.text,
+        ],
+      }));
     }
 
     setCurrentPrompt({
       variants: [
         {
           currentRequests: [],
-          responses: [],
-          currentResponseIndex: 0
-        }
+          currentResponses: [],
+          currentResponseIndex: 0,
+        },
       ],
-      currentVariant: 0
-    })
+      currentVariant: 0,
+    });
   }
 
   function editPrompt(index) {
     //simply for setting it to an editable state
     setPrompts((prevState) => ({
       ...prevState,
-      editingIndex: index
-    }))
+      editingIndex: index,
+    }));
   }
 
   const deletePrompt = (index) => {
@@ -337,12 +359,12 @@ export const DataProvider = ({ children }) => {
       ),
       promptTitles: prevPrompts.promptTitles.filter(
         (_, currIndex) => currIndex !== index
-      )
-    }))
-  }
+      ),
+    }));
+  };
 
   const popPrompt = (index) => {
-    const prompt = prompts.promptData[index]
+    const prompt = prompts.promptData[index];
 
     setPrompts((prevPrompts) => ({
       ...prevPrompts,
@@ -351,52 +373,52 @@ export const DataProvider = ({ children }) => {
       ),
       promptTitles: prevPrompts.promptTitles.filter(
         (_, currIndex) => currIndex !== index
-      )
-    }))
+      ),
+    }));
 
-    return prompt
-  }
+    return prompt;
+  };
 
   const textEmpty = () => {
     if (currentPrompt.currText == "") {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
   const imageEmpty = () => {
     if (currentPrompt.currImages.length == 0) {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
   const clearCurrText = () => {
-    updateData({ currText: "" })
-  }
+    updateData({ currText: "" });
+  };
 
   const clearCurrImages = () => {
-    updateData({ currImages: [] })
-  }
+    updateData({ currImages: [] });
+  };
 
   const selectPrompt = (index) => {
-    addPrompt()
-    setCurrentPrompt(popPrompt(index))
-  }
+    addPrompt();
+    setCurrentPrompt(popPrompt(index));
+  };
 
   const updateData = (newData) => {
-    setCurrentPrompt((prev) => ({ ...prev, ...newData }))
-  }
+    setCurrentPrompt((prev) => ({ ...prev, ...newData }));
+  };
 
   const updateTitle = (index, title) => {
     setPrompts((prevPrompts) => {
-      const newPromptTitles = [...prevPrompts.promptTitles]
-      newPromptTitles[index] = title
-      return { ...prevPrompts, promptTitles: newPromptTitles }
-    })
-  }
+      const newPromptTitles = [...prevPrompts.promptTitles];
+      newPromptTitles[index] = title;
+      return { ...prevPrompts, promptTitles: newPromptTitles };
+    });
+  };
 
   /** END FUNCTIONS **/
 
@@ -430,10 +452,10 @@ export const DataProvider = ({ children }) => {
         addPrompt,
         selectPrompt,
         editPrompt,
-        deletePrompt
+        deletePrompt,
       }}
     >
       {children}
     </DataContext.Provider>
-  )
-}
+  );
+};

@@ -1,8 +1,8 @@
-import "./BottomBar.css"
-import styles from "@/page.module.css"
-import Image from "next/image"
-import { useState, useEffect } from "react"
-import { useData } from "%/DataContext"
+import "./BottomBar.css";
+import styles from "@/page.module.css";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { useData } from "%/DataContext";
 
 export default function BottomBar() {
   const {
@@ -10,12 +10,13 @@ export default function BottomBar() {
     pushUserText,
     pushImages,
     addResponse,
-    clearResponses
-  } = useData()
+    clearResponses,
+  } = useData();
 
   // returns true if a put was successful, else returns false
   const executePut = async (_) => {
-    let didPut = false
+    console.log("RUN EXECUTE PUT");
+    let didPut = false;
     // if (
     //   currentPrompt.variants[currentPrompt.currentVariant].responses.length !==
     //   0
@@ -23,78 +24,80 @@ export default function BottomBar() {
     //   acceptResponse()
     // }
     if (!isImagesEmpty()) {
-      await pushImages(images)
-      didPut = true
+      await pushImages(images);
+      didPut = true;
     }
     if (!isTextEmpty()) {
-      pushUserText(text)
-      didPut = true
+      await pushUserText(text);
+      didPut = true;
     }
-    clearInputs()
-    return didPut
-  }
+    clearInputs();
+    return didPut;
+  };
 
   const executeRun = async (_) => {
-    clearResponses()
-    if ((await executePut(_)) || !isInputEmpty()) {
-      console.log("ADDING RESPONSE")
+    let isInputExist = await executePut();
+    console.log("CURRENT PROMPT: ");
+    console.log(currentPrompt);
+    if (isInputExist || !isInputEmpty()) {
+      console.log("ADDING RESPONSE");
       try {
-        await addResponse(currentPrompt.currentVariant)
+        await addResponse(currentPrompt.currentVariant);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     } else {
-      console.log("NO INPUTS TO RUN")
+      console.log("NO INPUTS TO RUN");
     }
-  }
+  };
 
   const isInputEmpty = () => {
     return (
       currentPrompt.variants[currentPrompt.currentVariant].currentRequests
         .length === 0
-    )
-  }
+    );
+  };
 
   /* BOTTOMINPUTBAR STATE */
-  const [text, setText] = useState("")
-  const [images, setImages] = useState([])
+  const [text, setText] = useState("");
+  const [images, setImages] = useState([]);
 
   const isTextEmpty = () => {
-    return text.length === 0
-  }
+    return text.length === 0;
+  };
   const isImagesEmpty = () => {
-    return images.length === 0
-  }
+    return images.length === 0;
+  };
 
   useEffect(() => {
     // Automatically adjust main_container based on the number of uploaded images
-    const mainContainer = document.querySelector(".main_container")
+    const mainContainer = document.querySelector(".main_container");
     if (mainContainer) {
-      mainContainer.style.height = `auto`
+      mainContainer.style.height = `auto`;
     }
-  }, [images, text])
+  }, [images, text]);
 
   const clearInputs = () => {
-    setText("")
-    document.querySelector(".text_container_text").value = ""
-    setImages([])
-  }
+    setText("");
+    document.querySelector(".text_container_text").value = "";
+    setImages([]);
+  };
 
   const handleInputChange = (e) => {
-    setText(e.target.value)
-  }
+    setText(e.target.value);
+  };
 
   const handleImageSelect = (e) => {
-    const files = e.target.files
+    const files = e.target.files;
     if (files && files.length > 0) {
-      const latestFile = files[files.length - 1]
-      setImages((prev) => [...prev, latestFile])
+      const latestFile = files[files.length - 1];
+      setImages((prev) => [...prev, latestFile]);
     }
-  }
+  };
 
   const handleDeleteImage = (index) => {
-    setImages((prev) => prev.filter((_, currIndex) => currIndex !== index))
-  }
+    setImages((prev) => prev.filter((_, currIndex) => currIndex !== index));
+  };
 
   return (
     <div className="bottom_bar_container">
@@ -194,5 +197,5 @@ export default function BottomBar() {
         </button>
       </div>
     </div>
-  )
+  );
 }
