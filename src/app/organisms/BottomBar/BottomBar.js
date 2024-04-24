@@ -37,10 +37,10 @@ export default function BottomBar() {
 
   const executeRun = async (_) => {
     let isInputExist = await executePut();
-    console.log("CURRENT PROMPT: ");
-    console.log(currentPrompt);
+    // console.log("CURRENT PROMPT: ");
+    // console.log(currentPrompt);
+    clearResponses();
     if (isInputExist || !isInputEmpty()) {
-      console.log("ADDING RESPONSE");
       try {
         await addResponse(currentPrompt.currentVariant);
       } catch (error) {
