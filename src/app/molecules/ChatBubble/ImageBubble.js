@@ -19,7 +19,6 @@ export default function ImageBubble({ imageURL, index, variant }) {
     const loadImageFromStorage = async () => {
       try {
         getDownloadURL(ref(storage, imageURL)).then((url) => {
-          console.log(url)
           setImageDataUrl(url)
         })
       } catch (error) {

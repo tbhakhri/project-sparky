@@ -1,13 +1,13 @@
-import "./MainContent.css";
-import ChatBubble from "@/molecules/ChatBubble/ChatBubble";
-import ModelBubble from "@/molecules/ChatBubble/ModelBubble";
-import ImageBubble from "@/molecules/ChatBubble/ImageBubble";
-import { useData } from "%/DataContext";
-import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen";
+import "./MainContent.css"
+import ChatBubble from "@/molecules/ChatBubble/ChatBubble"
+import ModelBubble from "@/molecules/ChatBubble/ModelBubble"
+import ImageBubble from "@/molecules/ChatBubble/ImageBubble"
+import { useData } from "%/DataContext"
+import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 
 export default function MainContent() {
   const { isResponseLoading, currentPrompt, setCurrentVariant, copyVariant } =
-    useData();
+    useData()
 
   const renderBubble = (item, requestIndex, variantIndex) => {
     switch (item.type) {
@@ -15,24 +15,24 @@ export default function MainContent() {
         return (
           <ChatBubble
             key={item}
-            initialText={item.text}
+            initialText={item.data}
             index={requestIndex}
             variant={variantIndex}
           />
-        );
+        )
       case "image":
         return (
           <ImageBubble
             key={item}
-            imageURL={item.text}
+            imageURL={item.data}
             index={requestIndex}
             variant={variantIndex}
           />
-        );
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
     <div className="mainContentContainer">
@@ -53,7 +53,7 @@ export default function MainContent() {
                 borderColor:
                   variantIndex === currentPrompt.currentVariant
                     ? "#a5bcf6"
-                    : "rgba(0,0,0,0)",
+                    : "rgba(0,0,0,0)"
               }}
               onClick={() => setCurrentVariant(variantIndex)}
             >
@@ -74,7 +74,7 @@ export default function MainContent() {
                 onClick={(_) => copyVariant(variantIndex)}
                 disabled={currentPrompt.variants.length >= 3}
                 style={{
-                  backgroundColor: currentPrompt.variants.length >= 3 && "grey",
+                  backgroundColor: currentPrompt.variants.length >= 3 && "grey"
                 }}
               >
                 {currentPrompt.variants.length >= 3
@@ -86,5 +86,5 @@ export default function MainContent() {
         </>
       )}
     </div>
-  );
+  )
 }

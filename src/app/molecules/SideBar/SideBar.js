@@ -62,7 +62,7 @@ export default function SideBar({ toggleSidebar }) {
           {currentPrompt.variants[currentPrompt.currentVariant].currentRequests
             .length > 0
             ? currentPrompt.variants[currentPrompt.currentVariant]
-                .currentRequests[0].text
+                .currentRequests[0].data
             : "start typing..."}
         </div>
       </div>

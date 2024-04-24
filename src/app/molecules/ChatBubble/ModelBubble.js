@@ -1,24 +1,24 @@
-import Image from "next/image";
-import "./ChatBubble.css";
-import { useData } from "%/DataContext";
-import Arrow from "@/molecules/Arrow/Arrow";
+import Image from "next/image"
+import "./ChatBubble.css"
+import { useData } from "%/DataContext"
+import Arrow from "@/molecules/Arrow/Arrow"
 
 export default function ModelBubble({ variant }) {
-  const { currentPrompt, addResponse, setCurrentResponseIndex } = useData();
+  const { currentPrompt, addResponse, setCurrentResponseIndex } = useData()
 
-  const curIndex = currentPrompt.variants[variant].currentResponseIndex;
-  const responses = currentPrompt.variants[variant].currentResponses;
-  const numResponses = responses.length;
+  const curIndex = currentPrompt.variants[variant].currentResponseIndex
+  const responses = currentPrompt.variants[variant].currentResponses
+  const numResponses = responses.length
 
   //TODO: CHANGE WHEN BACKEND IS IMPLEMENTED
   const handleRegenerate = async (e) => {
     try {
-      await addResponse(variant);
-      setCurrentResponseIndex(variant, numResponses);
+      await addResponse(variant)
+      setCurrentResponseIndex(variant, numResponses)
     } catch (error) {
-      console.error("Error in addResponse:", error.message);
+      console.error("Error in addResponse:", error.message)
     }
-  };
+  }
 
   return (
     <div className="modelContainer">
@@ -39,7 +39,7 @@ export default function ModelBubble({ variant }) {
               disabled={curIndex === numResponses - 1}
               onClick={(_) => setCurrentResponseIndex(variant, curIndex + 1)}
               style={{
-                cursor: curIndex === numResponses - 1 ? "default" : "pointer",
+                cursor: curIndex === numResponses - 1 ? "default" : "pointer"
               }}
             >
               <Arrow
@@ -54,7 +54,7 @@ export default function ModelBubble({ variant }) {
         )}
       </div>
 
-      <p className="modelBubble">{responses[curIndex].text}</p>
+      <p className="modelBubble">{responses[curIndex].data}</p>
       <button
         className="regenerateButton"
         onClick={handleRegenerate}
@@ -63,5 +63,5 @@ export default function ModelBubble({ variant }) {
         <Image src="/regenerate.svg" alt="Regenerate" width={10} height={10} />
       </button>
     </div>
-  );
+  )
 }

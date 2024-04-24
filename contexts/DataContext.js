@@ -11,9 +11,9 @@ export const useData = () => useContext(DataContext)
 
 export const DataProvider = ({ children }) => {
   class Node {
-    constructor(type, text) {
+    constructor(type, data) {
       this.type = type
-      this.text = text
+      this.data = data
     }
   }
 
@@ -66,7 +66,6 @@ export const DataProvider = ({ children }) => {
   /** FUNCTIONS **/
   /* For the currentVariant, pushes text to the requestChain. */
   function pushUserText(text) {
-    console.log("ADDED")
     setCurrentPrompt((prevData) => {
       const newVariants = [...prevData.variants]
 
@@ -164,58 +163,55 @@ export const DataProvider = ({ children }) => {
 
   /* For the specified variant, adds a response node/bubble. */
   //TODO: CHANGE THIS DUMMY IMPLEMENTATION
-  async function addResponse(variant) {
+  async function addResponse(variantIndex) {
     console.log("CALLING ADD RESPONSE")
     setIsResponseLoading([
-      ...isResponseLoading.slice(0, variant),
+      ...isResponseLoading.slice(0, variantIndex),
       true,
-      ...isResponseLoading.slice(variant + 1)
+      ...isResponseLoading.slice(variantIndex + 1)
     ])
     const dummyDataURL =
       "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCABFAEUDASIAAhEBAxEB/8QAGwABAQACAwEAAAAAAAAAAAAAAAYEBwIDBQH/xAA4EAABAwMAAhEDAwUAAAAAAAABAAIDBAURBiEHEhUXMTQ2QVRVcnSSk7Gy0SJRYRNxgTIzQqHh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ANbaN6NU9/irKipq6qN0dQ5gEbwBjh5wfuvb3vLf0+v8bfhNj/iFx7270Cr0EhveW/p9f42/Cb3lv6fX+Nvwq9fM6+BBI73lv6fX+Nvwm95b+n1/jb8KuJwF2wQPqnhseo5xwIIze8t/T6/xt+E3vLf0+v8AG34VnU00lHKY5Dkj8YXWg1NNS7l3u4UUM8r44nMDXPdrORnm/dFkXnlZdu2z2ogotj/iFx7270Cr1IbH/ELj3t3oFXoOLs/wvcpLKJ7e+ocHaotuMH8LxmMMsoY3n+2tWVbK236OUTRgOlhLXYODwf8AUEScgYVfoZTPaJ6kt+mJzXE5/dSAydWslbEotpadHJyQNtPAHD/E/wBP++FBNaXVray9zPaQQQ3m/C8Nc6iU1FS6QnORznK4INXXnlZdu2z2ol55WXbts9qIKLY/4hce9u9Aq9SGx/xC497d6BV6D0tHqdlRdYWvBIOeA/hW90slPXUdPGGOJjBx9WOYLW8UskDw6NzmuHO04WQbpXdKn81yCqpNCpnVIeIR+ngj+4F1aXVjoIqSjYdTY3RuBH2wFlaKzVTaZlZNUTOjDnNIe84Upeap1VcpiXEhsr8a886DAa3AXJEQauvPKy7dtntRLzysu3bZ7UQUWx/xC497d6BV6kNj/iFx7270Cr0AnCyLfSPrquNjdrjbtBycaiVjkZCyaCufb3ucxjXl2OHmwgsLzKyx2Z9BEC2QODxjWNZ/KhnEvkc93C45WRX1slxqjPI0NJAGAdWpY6AiIg1deeVl27bPaiXnlZdu2z2ogU7bna3zx0N0dCx8pc5oiByf5XfujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiDqpbZPWVVTU1NaZZpC0ucYwM8I5iiIg//9k="
 
     // const imagePart = dataURLToPart(dummyDataURL);
 
-    if (currentPrompt.variants[variant_index].variantHistory === null) {
-      currentPrompt.variants[variant_index].variantHistory = model.startChat()
+    if (currentPrompt.variants[variantIndex].variantHistory === null) {
+      currentPrompt.variants[variantIndex].variantHistory = model.startChat({
+        history: [],
+        generationConfig: {
+          maxOutputTokens: 250
+        }
+      })
     }
-    const chat = currentPrompt.variants[variant_index].variantHistory
-    // const chat = model.startChat({
-    //   history: [],
-    //   generationConfig: {
-    //     maxOutputTokens: 250,
-    //   },
-    // });
+    const chat = currentPrompt.variants[variantIndex].variantHistory
 
-    const nodeList = currentPrompt.variants[variant_index].currentRequests
+    const nodeList = currentPrompt.variants[variantIndex].currentRequests
 
-    let text = nodeList
+    let textInputs = nodeList
       .filter((node) => node.type === "text")
-      .map((node) => node.text)
-    let imagePart = nodeList
+      .map((node) => node.data)
+    let imageInputs = nodeList
       .filter((node) => node.type === "image")
-      .map((node) => node.text)
-    console.log(chat)
-    console.log(currentPrompt.variants[variant_index])
-    // console.log(text);
-    // console.log(imagePart);
-    const msg = text.concat(imagePart)
-    console.log("msg: ")
-    console.log(msg)
+      .map((node) => node.data)
+    console.log(
+      "target variant:",
+      variantIndex,
+      currentPrompt.variants[variantIndex]
+    )
+    const msg = textInputs.concat(imageInputs)
+    console.log("msg: ", msg)
     try {
       const result = await chat.sendMessage(msg)
-      console.log(result)
-      console.log(result.response.text())
       setCurrentPrompt((prevData) => {
         const newVariants = [...prevData.variants]
 
-        const targetVariant = { ...newVariants[variant_index] }
+        const targetVariant = { ...newVariants[variantIndex] }
         targetVariant.currentResponses = [
           ...targetVariant.currentResponses,
           new Node("text", result.response.text())
         ]
 
-        newVariants[variant_index] = targetVariant
+        newVariants[variantIndex] = targetVariant
 
         return {
           ...prevData,
@@ -227,9 +223,9 @@ export const DataProvider = ({ children }) => {
       throw new Error("Error in addResponse function: " + error.message)
     } finally {
       setIsResponseLoading([
-        ...isResponseLoading.slice(0, variant),
+        ...isResponseLoading.slice(0, variantIndex),
         false,
-        ...isResponseLoading.slice(variant + 1)
+        ...isResponseLoading.slice(variantIndex + 1)
       ])
     }
   }
@@ -266,7 +262,7 @@ export const DataProvider = ({ children }) => {
 
   /* For the currentVariant, clears all responses */
   function clearResponses() {
-    console.log("CLEAR RESPONSES")
+    console.log("CALLING CLEAR RESPONSES")
     if (
       currentPrompt.variants[currentPrompt.currentVariant].currentResponses
         .length === 0
@@ -342,7 +338,7 @@ export const DataProvider = ({ children }) => {
         promptData: [...prevPrompts.promptData, { ...currentPrompt }],
         promptTitles: [
           ...prevPrompts.promptTitles,
-          currentPrompt.variants[0].currentRequests[0]?.text
+          currentPrompt.variants[0].currentRequests[0]?.data
         ]
       }))
     }
