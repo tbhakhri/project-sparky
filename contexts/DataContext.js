@@ -17,6 +17,19 @@ export const DataProvider = ({ children }) => {
     }
   }
 
+  class Variant {
+    constructor(model) {
+      if (model === null) {
+        this.variantHistory = null
+      } else {
+        this.variantHistory = model.startChat()
+      }
+      this.currentRequests = []
+      this.currentResponses = []
+      this.currentResponseIndex = 0
+    }
+  }
+
   const [apiKey, setApiKey] = useState("")
 
   let model = null
@@ -40,16 +53,9 @@ export const DataProvider = ({ children }) => {
 
   const [currentPrompt, setCurrentPrompt] = useState({
     id: generatePromptID(),
-    variants: [
-      {
-        currentRequests: [],
-        responses: [],
-        currentResponseIndex: 0
-      }
-    ],
+    variants: [new Variant(model)],
     currentVariant: 0
   })
-  console.log(currentPrompt)
 
   const [prompts, setPrompts] = useState({
     promptData: [],
@@ -60,6 +66,7 @@ export const DataProvider = ({ children }) => {
   /** FUNCTIONS **/
   /* For the currentVariant, pushes text to the requestChain. */
   function pushUserText(text) {
+    console.log("ADDED")
     setCurrentPrompt((prevData) => {
       const newVariants = [...prevData.variants]
 
@@ -167,16 +174,34 @@ export const DataProvider = ({ children }) => {
     const dummyDataURL =
       "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCABFAEUDASIAAhEBAxEB/8QAGwABAQACAwEAAAAAAAAAAAAAAAYEBwIDBQH/xAA4EAABAwMAAhEDAwUAAAAAAAABAAIDBAURBiEHEhUXMTQ2QVRVcnSSk7Gy0SJRYRNxgTIzQqHh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ANbaN6NU9/irKipq6qN0dQ5gEbwBjh5wfuvb3vLf0+v8bfhNj/iFx7270Cr0EhveW/p9f42/Cb3lv6fX+Nvwq9fM6+BBI73lv6fX+Nvwm95b+n1/jb8KuJwF2wQPqnhseo5xwIIze8t/T6/xt+E3vLf0+v8AG34VnU00lHKY5Dkj8YXWg1NNS7l3u4UUM8r44nMDXPdrORnm/dFkXnlZdu2z2ogotj/iFx7270Cr1IbH/ELj3t3oFXoOLs/wvcpLKJ7e+ocHaotuMH8LxmMMsoY3n+2tWVbK236OUTRgOlhLXYODwf8AUEScgYVfoZTPaJ6kt+mJzXE5/dSAydWslbEotpadHJyQNtPAHD/E/wBP++FBNaXVray9zPaQQQ3m/C8Nc6iU1FS6QnORznK4INXXnlZdu2z2ol55WXbts9qIKLY/4hce9u9Aq9SGx/xC497d6BV6D0tHqdlRdYWvBIOeA/hW90slPXUdPGGOJjBx9WOYLW8UskDw6NzmuHO04WQbpXdKn81yCqpNCpnVIeIR+ngj+4F1aXVjoIqSjYdTY3RuBH2wFlaKzVTaZlZNUTOjDnNIe84Upeap1VcpiXEhsr8a886DAa3AXJEQauvPKy7dtntRLzysu3bZ7UQUWx/xC497d6BV6kNj/iFx7270Cr0AnCyLfSPrquNjdrjbtBycaiVjkZCyaCufb3ucxjXl2OHmwgsLzKyx2Z9BEC2QODxjWNZ/KhnEvkc93C45WRX1slxqjPI0NJAGAdWpY6AiIg1deeVl27bPaiXnlZdu2z2ogU7bna3zx0N0dCx8pc5oiByf5XfujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiDqpbZPWVVTU1NaZZpC0ucYwM8I5iiIg//9k="
 
-    const imagePart = dataURLToPart(dummyDataURL)
-    const chat = model.startChat({
-      history: [],
-      generationConfig: {
-        maxOutputTokens: 250
-      }
-    })
+    // const imagePart = dataURLToPart(dummyDataURL);
 
-    const text = "Describe this image."
-    const msg = [text, imagePart]
+    if (currentPrompt.variants[variant_index].variantHistory === null) {
+      currentPrompt.variants[variant_index].variantHistory = model.startChat()
+    }
+    const chat = currentPrompt.variants[variant_index].variantHistory
+    // const chat = model.startChat({
+    //   history: [],
+    //   generationConfig: {
+    //     maxOutputTokens: 250,
+    //   },
+    // });
+
+    const nodeList = currentPrompt.variants[variant_index].currentRequests
+
+    let text = nodeList
+      .filter((node) => node.type === "text")
+      .map((node) => node.text)
+    let imagePart = nodeList
+      .filter((node) => node.type === "image")
+      .map((node) => node.text)
+    console.log(chat)
+    console.log(currentPrompt.variants[variant_index])
+    // console.log(text);
+    // console.log(imagePart);
+    const msg = text.concat(imagePart)
+    console.log("msg: ")
+    console.log(msg)
     try {
       const result = await chat.sendMessage(msg)
       console.log(result)
@@ -184,13 +209,13 @@ export const DataProvider = ({ children }) => {
       setCurrentPrompt((prevData) => {
         const newVariants = [...prevData.variants]
 
-        const targetVariant = { ...newVariants[variant] }
-        targetVariant.responses = [
-          ...targetVariant.responses,
+        const targetVariant = { ...newVariants[variant_index] }
+        targetVariant.currentResponses = [
+          ...targetVariant.currentResponses,
           new Node("text", result.response.text())
         ]
 
-        newVariants[variant] = targetVariant
+        newVariants[variant_index] = targetVariant
 
         return {
           ...prevData,
@@ -212,8 +237,8 @@ export const DataProvider = ({ children }) => {
   /* For the currentVariant, takes the response at the currentResponseIndex and converts it into a request node. Appends that request node to the requestChain. */
   function acceptResponse() {
     if (
-      currentPrompt.variants[currentPrompt.currentVariant].responses.length ===
-      0
+      currentPrompt.variants[currentPrompt.currentVariant].currentResponses
+        .length === 0
     )
       return
     setCurrentPrompt((prevData) => {
@@ -221,13 +246,13 @@ export const DataProvider = ({ children }) => {
 
       const targetVariant = { ...newVariants[prevData.currentVariant] }
       const acceptedResponse =
-        targetVariant.responses[targetVariant.currentResponseIndex]
+        targetVariant.currentResponses[targetVariant.currentResponseIndex]
 
       targetVariant.currentRequests = [
         ...targetVariant.currentRequests,
         acceptedResponse
       ]
-      targetVariant.responses = []
+      targetVariant.currentResponses = []
       targetVariant.currentResponseIndex = 0
 
       newVariants[prevData.currentVariant] = targetVariant
@@ -243,15 +268,15 @@ export const DataProvider = ({ children }) => {
   function clearResponses() {
     console.log("CLEAR RESPONSES")
     if (
-      currentPrompt.variants[currentPrompt.currentVariant].responses.length ===
-      0
+      currentPrompt.variants[currentPrompt.currentVariant].currentResponses
+        .length === 0
     )
       return
     setCurrentPrompt((prevData) => {
       const newVariants = [...prevData.variants]
 
       const targetVariant = { ...newVariants[prevData.currentVariant] }
-      targetVariant.responses = []
+      targetVariant.currentResponses = []
       targetVariant.currentResponseIndex = 0
 
       newVariants[prevData.currentVariant] = targetVariant
@@ -273,14 +298,10 @@ export const DataProvider = ({ children }) => {
         return { ...bubble }
       })
 
-      const newVariants = [
-        ...prevData.variants,
-        {
-          currentRequests: deepCopiedRequests,
-          responses: [],
-          currentResponseIndex: 0
-        }
-      ]
+      const copiedVariant = new Variant(model)
+      copiedVariant.currentRequests = deepCopiedRequests
+
+      const newVariants = [...prevData.variants, copiedVariant]
 
       return {
         ...prevData,
@@ -330,7 +351,7 @@ export const DataProvider = ({ children }) => {
       variants: [
         {
           currentRequests: [],
-          responses: [],
+          currentResponses: [],
           currentResponseIndex: 0
         }
       ],

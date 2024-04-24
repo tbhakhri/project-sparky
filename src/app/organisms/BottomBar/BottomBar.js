@@ -18,6 +18,7 @@ export default function BottomBar() {
 
   // returns true if a put was successful, else returns false
   const executePut = async (_) => {
+    console.log("RUN EXECUTE PUT")
     let didPut = false
     // if (
     //   currentPrompt.variants[currentPrompt.currentVariant].responses.length !==
@@ -30,7 +31,7 @@ export default function BottomBar() {
       didPut = true
     }
     if (!isTextEmpty()) {
-      pushUserText(text)
+      await pushUserText(text)
       didPut = true
     }
     clearInputs()
@@ -38,8 +39,10 @@ export default function BottomBar() {
   }
 
   const executeRun = async (_) => {
-    clearResponses()
-    if ((await executePut(_)) || !isInputEmpty()) {
+    let isInputExist = await executePut()
+    console.log("CURRENT PROMPT: ")
+    console.log(currentPrompt)
+    if (isInputExist || !isInputEmpty()) {
       console.log("ADDING RESPONSE")
       try {
         await addResponse(currentPrompt.currentVariant)
