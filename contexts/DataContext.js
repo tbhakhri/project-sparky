@@ -1,7 +1,7 @@
 "use client"
 
 import React, { createContext, useState, useContext } from "react"
-import { dataURLToPart, generatePromptID, generateImageID } from "%/utils"
+import { filePathToPart, generatePromptID, generateImageID } from "%/utils"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { storage } from "%/config"
 import { ref, uploadBytes } from "firebase/storage"
@@ -173,8 +173,6 @@ export const DataProvider = ({ children }) => {
     const dummyDataURL =
       "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCABFAEUDASIAAhEBAxEB/8QAGwABAQACAwEAAAAAAAAAAAAAAAYEBwIDBQH/xAA4EAABAwMAAhEDAwUAAAAAAAABAAIDBAURBiEHEhUXMTQ2QVRVcnSSk7Gy0SJRYRNxgTIzQqHh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ANbaN6NU9/irKipq6qN0dQ5gEbwBjh5wfuvb3vLf0+v8bfhNj/iFx7270Cr0EhveW/p9f42/Cb3lv6fX+Nvwq9fM6+BBI73lv6fX+Nvwm95b+n1/jb8KuJwF2wQPqnhseo5xwIIze8t/T6/xt+E3vLf0+v8AG34VnU00lHKY5Dkj8YXWg1NNS7l3u4UUM8r44nMDXPdrORnm/dFkXnlZdu2z2ogotj/iFx7270Cr1IbH/ELj3t3oFXoOLs/wvcpLKJ7e+ocHaotuMH8LxmMMsoY3n+2tWVbK236OUTRgOlhLXYODwf8AUEScgYVfoZTPaJ6kt+mJzXE5/dSAydWslbEotpadHJyQNtPAHD/E/wBP++FBNaXVray9zPaQQQ3m/C8Nc6iU1FS6QnORznK4INXXnlZdu2z2ol55WXbts9qIKLY/4hce9u9Aq9SGx/xC497d6BV6D0tHqdlRdYWvBIOeA/hW90slPXUdPGGOJjBx9WOYLW8UskDw6NzmuHO04WQbpXdKn81yCqpNCpnVIeIR+ngj+4F1aXVjoIqSjYdTY3RuBH2wFlaKzVTaZlZNUTOjDnNIe84Upeap1VcpiXEhsr8a886DAa3AXJEQauvPKy7dtntRLzysu3bZ7UQUWx/xC497d6BV6kNj/iFx7270Cr0AnCyLfSPrquNjdrjbtBycaiVjkZCyaCufb3ucxjXl2OHmwgsLzKyx2Z9BEC2QODxjWNZ/KhnEvkc93C45WRX1slxqjPI0NJAGAdWpY6AiIg1deeVl27bPaiXnlZdu2z2ogU7bna3zx0N0dCx8pc5oiByf5XfujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiDqpbZPWVVTU1NaZZpC0ucYwM8I5iiIg//9k="
 
-    // const imagePart = dataURLToPart(dummyDataURL);
-
     if (currentPrompt.variants[variantIndex].variantHistory === null) {
       currentPrompt.variants[variantIndex].variantHistory = model.startChat({
         history: [],
@@ -184,21 +182,28 @@ export const DataProvider = ({ children }) => {
       })
     }
     const chat = currentPrompt.variants[variantIndex].variantHistory
-
     const nodeList = currentPrompt.variants[variantIndex].currentRequests
 
-    let textInputs = nodeList
+    const textParts = nodeList
       .filter((node) => node.type === "text")
       .map((node) => node.data)
-    let imageInputs = nodeList
-      .filter((node) => node.type === "image")
-      .map((node) => node.data)
+    const imageNodes = nodeList.filter((node) => node.type === "image")
+
+    const imageParts = await Promise.all(
+      imageNodes.map(async (node) => {
+        try {
+          return await filePathToPart(node.data)
+        } catch (error) {
+          console.error("Error downloading image:", error)
+        }
+      })
+    )
     console.log(
       "target variant:",
       variantIndex,
       currentPrompt.variants[variantIndex]
     )
-    const msg = textInputs.concat(imageInputs)
+    const msg = textParts.concat(imageParts)
     console.log("msg: ", msg)
     try {
       const result = await chat.sendMessage(msg)
