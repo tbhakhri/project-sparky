@@ -14,6 +14,7 @@ export default function MainContent() {
       case "text":
         return (
           <ChatBubble
+            key={item}
             initialText={item.text}
             index={requestIndex}
             variant={variantIndex}
@@ -22,6 +23,7 @@ export default function MainContent() {
       case "image":
         return (
           <ImageBubble
+            key={item}
             imageURL={item.text}
             index={requestIndex}
             variant={variantIndex}

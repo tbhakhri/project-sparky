@@ -1,18 +1,19 @@
 "use client"
 
 import React, { createContext, useState, useContext } from "react"
-import { dataURLToPart } from "%/utils"
+import { dataURLToPart, generatePromptID, generateImageID } from "%/utils"
 import { GoogleGenerativeAI } from "@google/generative-ai"
+import { storage } from "%/config"
+import { ref, uploadBytes } from "firebase/storage"
 
 const DataContext = createContext()
 export const useData = () => useContext(DataContext)
 
 export const DataProvider = ({ children }) => {
   class Node {
-    constructor(type, text, index) {
+    constructor(type, text) {
       this.type = type
       this.text = text
-      this.index = index
     }
   }
 
@@ -32,13 +33,13 @@ export const DataProvider = ({ children }) => {
     false,
     false
   ])
-  console.log(isResponseLoading)
   const [errorMessage, setErrorMessage] = useState("")
   function closeErrorBox() {
     setErrorMessage("")
   }
 
   const [currentPrompt, setCurrentPrompt] = useState({
+    id: generatePromptID(),
     variants: [
       {
         currentRequests: [],
@@ -48,6 +49,7 @@ export const DataProvider = ({ children }) => {
     ],
     currentVariant: 0
   })
+  console.log(currentPrompt)
 
   const [prompts, setPrompts] = useState({
     promptData: [],
@@ -77,19 +79,21 @@ export const DataProvider = ({ children }) => {
   }
 
   /* For the currentVariant, pushes an array of images to the requestChain. */
-  async function pushImages(images) {
+  async function pushImages(userID, images) {
     try {
       const newVariants = [...currentPrompt.variants]
       const targetVariant = { ...newVariants[currentPrompt.currentVariant] }
 
       const convertedImages = await Promise.all(
         images.map(async (image) => {
-          const reader = new FileReader()
-          return new Promise((resolve, _) => {
-            reader.onload = (event) =>
-              resolve(new Node("image", event.target.result))
-            reader.readAsDataURL(image)
-          })
+          const filePath = `${userID}/${currentPrompt.id}/${generateImageID()}`
+          const imageRef = ref(storage, filePath)
+          try {
+            await uploadBytes(imageRef, image)
+            return new Node("image", filePath)
+          } catch (error) {
+            console.error("Error uploading image:", error)
+          }
         })
       )
 

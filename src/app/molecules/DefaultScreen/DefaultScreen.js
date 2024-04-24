@@ -1,6 +1,5 @@
 import IdeaBox from "./IdeaBox/IdeaBox.js"
 import "./DefaultScreen.css"
-import Image from "next/image"
 
 export default function DefaultScreen() {
   return (

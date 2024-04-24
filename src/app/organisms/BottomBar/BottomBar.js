@@ -1,8 +1,9 @@
 import "./BottomBar.css"
 import styles from "@/page.module.css"
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useData } from "%/DataContext"
+import AuthContext from "%/authContext"
 
 export default function BottomBar() {
   const {
@@ -12,6 +13,8 @@ export default function BottomBar() {
     addResponse,
     clearResponses
   } = useData()
+
+  const { user } = useContext(AuthContext)
 
   // returns true if a put was successful, else returns false
   const executePut = async (_) => {
@@ -23,7 +26,7 @@ export default function BottomBar() {
     //   acceptResponse()
     // }
     if (!isImagesEmpty()) {
-      await pushImages(images)
+      await pushImages(user.uid, images)
       didPut = true
     }
     if (!isTextEmpty()) {
