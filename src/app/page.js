@@ -37,17 +37,17 @@ export default function App() {
     async function fetchKey() {
       if (user && apiKey === "") {
         const url = new URL("/api/getApiKey", window.location.origin)
-        //TODO: REPLACE "test" with user.uid
-        url.searchParams.append("username", "test1")
+        url.searchParams.append("username", user.uid)
 
         const response = await fetch(url.toString(), {
           method: "GET"
         })
         if (response.status === 404) {
-          console.log("No key for user found")
+          console.log("No key found for user", user.uid)
           router.push("/apikey")
         } else {
           const data = await response.json()
+          console.log("Key found for user", user.uid)
           setApiKey(data.apiKey)
         }
       }

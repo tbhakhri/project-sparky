@@ -25,10 +25,28 @@ export default function Enter_API_Key() {
     }
   }, [])
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    setApiKey(e.target.elements.apiKeyInput.value)
-    router.push("/")
+    const apiKey = e.target.elements.apiKeyInput.value
+
+    try {
+      const response = await fetch("/api/storeApiKey", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userID: user.uid, apiKey })
+      })
+
+      if (!response.ok) {
+        console.error("Failed to store API key.")
+      } else {
+        setApiKey(apiKey)
+        router.push("/")
+      }
+    } catch (error) {
+      console.error("Error storing API key:", error)
+    }
   }
 
   return (
@@ -60,8 +78,8 @@ export default function Enter_API_Key() {
                   type="text"
                   name="apiKeyInput"
                   placeholder="Enter API Key"
+                  autoComplete="off"
                 />
-
                 <button type="submit">Submit</button>
               </form>
             </div>
