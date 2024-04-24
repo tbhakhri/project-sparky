@@ -59,7 +59,7 @@ export default function MainContent() {
               {variant.currentRequests.map((item, requestIndex) =>
                 renderBubble(item, requestIndex, variantIndex)
               )}
-              {isResponseLoading && (
+              {isResponseLoading[variantIndex] && (
                 <>
                   <div className="loading-dots"></div>
                 </>
