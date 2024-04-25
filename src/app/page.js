@@ -70,16 +70,20 @@ export default function App() {
 
   return (
     <div className={styles.pageContainer}>
-      {apiKey !== "" && authReady ? (
+      {authReady ? (
         <>
           {user !== null ? (
             <>
-              <div className={styles.pageContainer}>
-                {isSidebar && <SideBar toggleSidebar={toggleSidebar} />}
-                <TopBar toggleSidebar={toggleSidebar} />
-                <MainContent />
-                <BottomBar />
-              </div>
+              {apiKey !== "" ? (
+                <div className={styles.pageContainer}>
+                  {isSidebar && <SideBar toggleSidebar={toggleSidebar} />}
+                  <TopBar toggleSidebar={toggleSidebar} />
+                  <MainContent />
+                  <BottomBar />
+                </div>
+              ) : (
+                <div>Loading...</div>
+              )}
             </>
           ) : (
             redirect("/login")
