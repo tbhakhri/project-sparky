@@ -6,7 +6,7 @@ import { useState, useRef, useEffect } from "react"
 
 const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
-export default function ChatBubble({ initialText, index, variant }) {
+export default function ChatBubble({ isCurrent, initialText, index, variant }) {
   const { editRequestText, deleteRequest, clearResponses } = useData()
 
   const [text, setText] = useState(initialText)
@@ -50,27 +50,32 @@ export default function ChatBubble({ initialText, index, variant }) {
 
   return (
     <div className="bubble-container">
-      <button
-        className="editDeleteButton"
-        onClick={isEditable ? commitEdit : enableEdit}
-        style={{
-          marginRight: "0.35rem"
-        }}
-      >
-        <Image src="/edit.svg" alt="Edit text" width={10} height={10} />
-      </button>
-      <button
-        className="editDeleteButton"
-        onClick={handleDelete}
-        style={{ marginRight: "0.3rem" }}
-      >
-        <Image
-          src="/x-button-white.svg"
-          alt="Delete text at index ${index}"
-          width={9}
-          height={9}
-        />
-      </button>
+      {isCurrent && (
+        <>
+          <button
+            className="editDeleteButton"
+            onClick={isEditable ? commitEdit : enableEdit}
+            style={{
+              marginRight: "0.35rem"
+            }}
+          >
+            <Image src="/edit.svg" alt="Edit text" width={10} height={10} />
+          </button>
+          <button
+            className="editDeleteButton"
+            onClick={handleDelete}
+            style={{ marginRight: "0.3rem" }}
+          >
+            <Image
+              src="/x-button-white.svg"
+              alt="Delete text at index ${index}"
+              width={9}
+              height={9}
+            />
+          </button>
+        </>
+      )}
+
       <textarea
         ref={inputRef}
         value={text}

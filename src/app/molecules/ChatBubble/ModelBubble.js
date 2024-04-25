@@ -10,7 +10,6 @@ export default function ModelBubble({ variant }) {
   const responses = currentPrompt.variants[variant].currentResponses
   const numResponses = responses.length
 
-  //TODO: CHANGE WHEN BACKEND IS IMPLEMENTED
   const handleRegenerate = async (e) => {
     try {
       await addResponse(variant)

@@ -12,21 +12,25 @@ export default function BottomBar() {
     pushImages,
     addResponse,
     setErrorMessage,
-    clearResponses
+    clearResponses,
+    updateVariantHistory
   } = useData()
 
   const { user } = useContext(AuthContext)
 
   // returns true if a put was successful, else returns false
-  const handlePut = async (_) => {
-    console.log("EXECUTING PUT")
+  const handlePut = async (followByRun) => {
+    if (
+      currentPrompt.variants[currentPrompt.currentVariant].currentResponses
+        .length !== 0
+    ) {
+      updateVariantHistory()
+    }
+    setQueuePut(followByRun === true ? "putAndRun" : "putOnly")
+  }
+
+  async function put(followByRun) {
     let didPut = false
-    // if (
-    //   currentPrompt.variants[currentPrompt.currentVariant].responses.length !==
-    //   0
-    // ) {
-    //   acceptResponse()
-    // }
     if (!isImagesEmpty()) {
       await pushImages(user.uid, images)
       didPut = true
@@ -36,18 +40,26 @@ export default function BottomBar() {
       didPut = true
     }
     clearInputs()
-    return didPut
-  }
 
-  const handleRun = async (_) => {
-    let isInputExist = await handlePut()
-    if (isInputExist || !isInputEmpty()) {
-      setQueueRun(true)
-    } else {
-      setErrorMessage("No inputs to run.")
+    if (followByRun === "putAndRun") {
+      if (didPut || !isInputEmpty()) {
+        setQueueRun(true)
+      } else {
+        setErrorMessage("No inputs to run.")
+      }
     }
   }
+  const [queuePut, setQueuePut] = useState("")
+  useEffect(() => {
+    if (queuePut !== "") {
+      put(queuePut)
+      setQueuePut("")
+    }
+  }, [queuePut])
 
+  const handleRun = async (_) => {
+    await handlePut(true)
+  }
   const [queueRun, setQueueRun] = useState(false)
   useEffect(() => {
     const run = async () => {

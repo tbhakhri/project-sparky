@@ -1,9 +1,8 @@
 import { storage } from "%/config"
-import { ref, getBlob, getMetadata } from "firebase/storage"
+import { ref, getBlob } from "firebase/storage"
 
 /* Given the filePath to the image that's stored on the cloud, return a part */
 export async function filePathToPart(filePath) {
-  console.log("filePath", filePath)
   const imgRef = ref(storage, filePath)
   const blob = await getBlob(imgRef)
   const dataURL = await blobToDataURL(blob)
@@ -66,4 +65,51 @@ export function generateImageID() {
 function generateRandomID(i) {
   const buffer = crypto.getRandomValues(new Uint8Array(i))
   return buffer.toString("base64").replace(/,/g, "")
+}
+
+export async function constructChatHistory(variantHistory) {
+  const n = variantHistory.length
+  const res = []
+  let cur = {
+    role: "user",
+    parts: []
+  }
+  for (let i = 0; i < n; i++) {
+    const node = variantHistory[i]
+    if (isDifferentRole(node.type, cur.role)) {
+      res.push(cur)
+      cur = {
+        role: cur.role === "user" ? "model" : "user",
+        parts: []
+      }
+    }
+    await appendToParts(node.type, node.data, cur.parts)
+  }
+  if (cur.parts.length > 0) {
+    res.push(cur)
+  }
+  return res
+}
+
+function isDifferentRole(type, curRole) {
+  switch (type) {
+    case "text":
+    case "image":
+      return curRole === "model"
+    case "modelText":
+      return curRole === "user"
+  }
+}
+
+async function appendToParts(type, data, parts) {
+  switch (type) {
+    case "text":
+    case "modelText":
+      parts.push({ text: data })
+      return
+    case "image":
+      console.log("IMAGE!!!")
+      parts.push(await filePathToPart(data))
+      return
+  }
 }

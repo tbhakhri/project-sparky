@@ -1,7 +1,12 @@
 "use client"
 
 import React, { createContext, useState, useContext } from "react"
-import { filePathToPart, generatePromptID, generateImageID } from "%/utils"
+import {
+  filePathToPart,
+  generatePromptID,
+  generateImageID,
+  constructChatHistory
+} from "%/utils"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { storage } from "%/config"
 import { ref, uploadBytes } from "firebase/storage"
@@ -18,12 +23,8 @@ export const DataProvider = ({ children }) => {
   }
 
   class Variant {
-    constructor(model) {
-      if (model === null) {
-        this.variantHistory = null
-      } else {
-        this.variantHistory = model.startChat()
-      }
+    constructor() {
+      this.variantHistory = []
       this.currentRequests = []
       this.currentResponses = []
       this.currentResponseIndex = 0
@@ -53,7 +54,7 @@ export const DataProvider = ({ children }) => {
 
   const [currentPrompt, setCurrentPrompt] = useState({
     id: generatePromptID(),
-    variants: [new Variant(model)],
+    variants: [new Variant()],
     currentVariant: 0
   })
 
@@ -135,15 +136,6 @@ export const DataProvider = ({ children }) => {
     })
   }
 
-  const deleteImage = (index) => {
-    setCurrentPrompt((prevData) => ({
-      ...prevData,
-      currImages: prevData.currImages.filter(
-        (_, currIndex) => currIndex !== index
-      )
-    }))
-  }
-
   /* For the specified variant, deletes a request node/bubble at the specified index. */
   function editRequestText(variant, index, newText) {
     setCurrentPrompt((prevData) => {
@@ -162,7 +154,6 @@ export const DataProvider = ({ children }) => {
   }
 
   /* For the specified variant, adds a response node/bubble. */
-  //TODO: CHANGE THIS DUMMY IMPLEMENTATION
   async function addResponse(variantIndex) {
     console.log("CALLING ADD RESPONSE")
     setIsResponseLoading([
@@ -170,22 +161,26 @@ export const DataProvider = ({ children }) => {
       true,
       ...isResponseLoading.slice(variantIndex + 1)
     ])
-    if (currentPrompt.variants[variantIndex].variantHistory === null) {
-      currentPrompt.variants[variantIndex].variantHistory = model.startChat({
-        history: [],
-        generationConfig: {
-          maxOutputTokens: 250
-        }
-      })
-    }
-    const chat = currentPrompt.variants[variantIndex].variantHistory
-    const nodeList = currentPrompt.variants[variantIndex].currentRequests
+    console.log(
+      "formatted history",
+      await constructChatHistory(
+        currentPrompt.variants[variantIndex].variantHistory
+      )
+    )
+    const chat = model.startChat({
+      history: await constructChatHistory(
+        currentPrompt.variants[variantIndex].variantHistory
+      ),
+      generationConfig: {
+        maxOutputTokens: 250
+      }
+    })
 
+    const nodeList = currentPrompt.variants[variantIndex].currentRequests
     const textParts = nodeList
       .filter((node) => node.type === "text")
       .map((node) => node.data)
     const imageNodes = nodeList.filter((node) => node.type === "image")
-
     const imageParts = await Promise.all(
       imageNodes.map(async (node) => {
         try {
@@ -195,22 +190,19 @@ export const DataProvider = ({ children }) => {
         }
       })
     )
-    console.log(
-      "target variant:",
-      variantIndex,
-      currentPrompt.variants[variantIndex]
-    )
     const msg = textParts.concat(imageParts)
     console.log("msg: ", msg)
+
     try {
       const result = await chat.sendMessage(msg)
+      console.log("chatHistory", await chat.getHistory())
       setCurrentPrompt((prevData) => {
         const newVariants = [...prevData.variants]
 
         const targetVariant = { ...newVariants[variantIndex] }
         targetVariant.currentResponses = [
           ...targetVariant.currentResponses,
-          new Node("text", result.response.text())
+          new Node("modelText", result.response.text())
         ]
 
         newVariants[variantIndex] = targetVariant
@@ -232,8 +224,8 @@ export const DataProvider = ({ children }) => {
     }
   }
 
-  /* For the currentVariant, takes the response at the currentResponseIndex and converts it into a request node. Appends that request node to the requestChain. */
-  function acceptResponse() {
+  /* For the currentVariant, takes the currentRequests and the selected currentReponse and appends it to the variantHistory */
+  function updateVariantHistory() {
     if (
       currentPrompt.variants[currentPrompt.currentVariant].currentResponses
         .length === 0
@@ -246,10 +238,12 @@ export const DataProvider = ({ children }) => {
       const acceptedResponse =
         targetVariant.currentResponses[targetVariant.currentResponseIndex]
 
-      targetVariant.currentRequests = [
+      targetVariant.variantHistory = [
+        ...targetVariant.variantHistory,
         ...targetVariant.currentRequests,
         acceptedResponse
       ]
+      targetVariant.currentRequests = []
       targetVariant.currentResponses = []
       targetVariant.currentResponseIndex = 0
 
@@ -264,7 +258,6 @@ export const DataProvider = ({ children }) => {
 
   /* For the currentVariant, clears all responses */
   function clearResponses() {
-    console.log("CALLING CLEAR RESPONSES")
     if (
       currentPrompt.variants[currentPrompt.currentVariant].currentResponses
         .length === 0
@@ -296,7 +289,8 @@ export const DataProvider = ({ children }) => {
         return { ...bubble }
       })
 
-      const copiedVariant = new Variant(model)
+      const copiedVariant = new Variant()
+      copiedVariant.variantHistory = [...variantToCopy.variantHistory]
       copiedVariant.currentRequests = deepCopiedRequests
 
       const newVariants = [...prevData.variants, copiedVariant]
@@ -452,7 +446,7 @@ export const DataProvider = ({ children }) => {
         deleteRequest,
         editRequestText,
         addResponse,
-        acceptResponse,
+        updateVariantHistory,
         clearResponses,
         copyVariant,
         setCurrentVariant,
@@ -462,7 +456,6 @@ export const DataProvider = ({ children }) => {
         updateTitle,
         imageEmpty,
         textEmpty,
-        deleteImage,
         clearCurrImages,
         addPrompt,
         selectPrompt,

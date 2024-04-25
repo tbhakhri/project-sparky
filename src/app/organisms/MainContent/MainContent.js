@@ -9,12 +9,13 @@ export default function MainContent() {
   const { isResponseLoading, currentPrompt, setCurrentVariant, copyVariant } =
     useData()
 
-  const renderBubble = (item, requestIndex, variantIndex) => {
+  const renderBubble = (isCurrent, item, requestIndex, variantIndex) => {
     switch (item.type) {
       case "text":
         return (
           <ChatBubble
-            key={item}
+            key={requestIndex}
+            isCurrent={isCurrent}
             initialText={item.data}
             index={requestIndex}
             variant={variantIndex}
@@ -23,11 +24,18 @@ export default function MainContent() {
       case "image":
         return (
           <ImageBubble
-            key={item}
+            key={requestIndex}
+            isCurrent={isCurrent}
             imageURL={item.data}
             index={requestIndex}
             variant={variantIndex}
           />
+        )
+      case "modelText":
+        return (
+          <div key={requestIndex} className="modelContainer">
+            <p className="modelBubble">{item.data}</p>
+          </div>
         )
       default:
         return null
@@ -37,7 +45,8 @@ export default function MainContent() {
   return (
     <div className="mainContentContainer">
       {currentPrompt.variants.length === 1 &&
-      currentPrompt.variants[0].currentRequests.length === 0 ? (
+      currentPrompt.variants[0].currentRequests.length === 0 &&
+      currentPrompt.variants[0].variantHistory.length === 0 ? (
         <>
           <div className="defaultScreenContainer">
             <DefaultScreen />
@@ -57,10 +66,15 @@ export default function MainContent() {
               }}
               onClick={() => setCurrentVariant(variantIndex)}
             >
+              {variant.variantHistory.map((item, _) =>
+                renderBubble(false, item, _, variantIndex)
+              )}
+
               <p className="userText">User</p>
               {variant.currentRequests.map((item, requestIndex) =>
-                renderBubble(item, requestIndex, variantIndex)
+                renderBubble(true, item, requestIndex, variantIndex)
               )}
+
               {isResponseLoading[variantIndex] && (
                 <>
                   <div className="loading-dots"></div>

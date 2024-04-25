@@ -5,7 +5,7 @@ import { storage } from "%/config"
 import { useState, useEffect } from "react"
 import { ref, getDownloadURL } from "firebase/storage"
 
-export default function ImageBubble({ imageURL, index, variant }) {
+export default function ImageBubble({ isCurrent, imageURL, index, variant }) {
   const { deleteRequest, clearResponses } = useData()
 
   const handleDelete = (e) => {
@@ -50,14 +50,16 @@ export default function ImageBubble({ imageURL, index, variant }) {
               height={0}
               layout="responsive"
             />
-            <button onClick={handleDelete} className="deleteImageButton">
-              <Image
-                src="/x-button-white.svg"
-                alt={`Delete image at index ${index}`}
-                width={10}
-                height={10}
-              />
-            </button>
+            {isCurrent && (
+              <button onClick={handleDelete} className="deleteImageButton">
+                <Image
+                  src="/x-button-white.svg"
+                  alt={`Delete image at index ${index}`}
+                  width={10}
+                  height={10}
+                />
+              </button>
+            )}
           </div>
         </div>
       )}
