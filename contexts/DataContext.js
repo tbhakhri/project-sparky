@@ -172,7 +172,7 @@ export const DataProvider = ({ children }) => {
         currentPrompt.variants[variantIndex].variantHistory
       ),
       generationConfig: {
-        maxOutputTokens: 250
+        maxOutputTokens: 2048
       }
     })
 
@@ -195,7 +195,7 @@ export const DataProvider = ({ children }) => {
 
     try {
       const result = await chat.sendMessage(msg)
-      console.log("chatHistory", await chat.getHistory())
+      console.log(result)
       setCurrentPrompt((prevData) => {
         const newVariants = [...prevData.variants]
 
