@@ -11,13 +11,14 @@ export default function BottomBar() {
     pushUserText,
     pushImages,
     addResponse,
+    setErrorMessage,
     clearResponses
   } = useData()
 
   const { user } = useContext(AuthContext)
 
   // returns true if a put was successful, else returns false
-  const executePut = async (_) => {
+  const handlePut = async (_) => {
     console.log("EXECUTING PUT")
     let didPut = false
     // if (
@@ -38,18 +39,30 @@ export default function BottomBar() {
     return didPut
   }
 
-  const executeRun = async (_) => {
-    let isInputExist = await executePut()
+  const handleRun = async (_) => {
+    let isInputExist = await handlePut()
     if (isInputExist || !isInputEmpty()) {
+      setQueueRun(true)
+    } else {
+      setErrorMessage("No inputs to run.")
+    }
+  }
+
+  const [queueRun, setQueueRun] = useState(false)
+  useEffect(() => {
+    const run = async () => {
       try {
         await addResponse(currentPrompt.currentVariant)
       } catch (error) {
         console.error(error)
       }
-    } else {
-      console.log("NO INPUTS TO RUN")
     }
-  }
+    if (queueRun) {
+      clearResponses()
+      run()
+      setQueueRun(false)
+    }
+  }, [queueRun])
 
   const isInputEmpty = () => {
     return (
@@ -110,7 +123,7 @@ export default function BottomBar() {
           />
           <button
             className={styles.putruniconButton}
-            onClick={executePut}
+            onClick={handlePut}
             style={{ flex: "0.2" }}
           >
             <Image
@@ -183,7 +196,7 @@ export default function BottomBar() {
       <div className="runButtonContainer">
         <button
           className={styles.putruniconButton}
-          onClick={executeRun}
+          onClick={handleRun}
           style={{ width: "100%" }}
         >
           <Image

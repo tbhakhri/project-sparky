@@ -26,6 +26,7 @@ export default function App() {
     let vh = window.innerHeight * 0.01
     document.documentElement.style.setProperty("--vh", `${vh}px`)
   }
+
   useEffect(() => {
     if (window.matchMedia("(max-width: 768px)").matches) {
       window.addEventListener("resize", setHeight)
@@ -38,7 +39,6 @@ export default function App() {
       if (user && apiKey === "") {
         const url = new URL("/api/getApiKey", window.location.origin)
         url.searchParams.append("username", user.uid)
-
         const response = await fetch(url.toString(), {
           method: "GET"
         })
