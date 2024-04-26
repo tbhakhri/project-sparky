@@ -6,6 +6,7 @@ import PromptTitles from "@/molecules/SideBar/PromptTitles"
 
 export default function SideBar({ toggleSidebar }) {
   const {
+    apiKey,
     currentPrompt,
     addPrompt,
     prompts,
@@ -77,6 +78,7 @@ export default function SideBar({ toggleSidebar }) {
               setEditing={setEditingIndex}
               selectPrompt={selectPrompt}
               toggleSidebar={toggleSidebar}
+              API_KEY={apiKey}
             />
 
             <button

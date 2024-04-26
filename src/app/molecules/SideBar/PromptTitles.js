@@ -3,18 +3,36 @@ import "./PromptTitles.css"
 import Image from "next/image"
 import { useData } from "%/DataContext";
 import { useState, useRef, useEffect } from "react"
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
 
-export default function PromptTitles({ initialTitle, index, isEditing, setEditing, selectPrompt, toggleSidebar }) {
+export default function PromptTitles({ initialTitle, index, isEditing, setEditing, selectPrompt, toggleSidebar, API_KEY }) {
     const { updateTitle } = useData()
 
     const [title, setTitle] = useState(initialTitle) 
-
+    const genAI = new GoogleGenerativeAI(API_KEY);
     useEffect(() => {
-        setTitle(initialTitle)
+        async function generateTitle() {
+          try {
+            const prompt = "Describe the following text as a prompt title in 11 words or less:" + initialTitle;
+            const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
+            console.log(text);
+
+            setTitle(text)
+          } catch (error) {
+            console.error('Error creating title for prompt: ', error);
+          }
+        }
+        generateTitle();
       }, [initialTitle])
-    
+
+    // useEffect(() => {
+    //     setTitle(initialTitle)
+    //   }, [initialTitle])
    
     const commitEdit = () => {
       updateTitle(index, title); 
