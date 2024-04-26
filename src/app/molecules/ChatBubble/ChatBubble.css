@@ -10,7 +10,7 @@
   padding-left: 0.5rem;
   display: inline-flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .modelContainerTop {
@@ -60,8 +60,7 @@
 
 .regenerateButton {
   background-color: rgba(0, 0, 0, 0);
-  margin-top: 0.5rem;
-  margin-right: 0.5rem;
+  margin-left: 0.5rem;
   border: none;
   cursor: pointer;
 }
@@ -71,7 +70,6 @@
   color: #a5bcf6;
   text-align: left;
   font-size: 0.65rem;
-  margin-left: 0.25rem;
   margin-bottom: 0.5rem;
 }
 

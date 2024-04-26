@@ -1,8 +1,9 @@
 import "./BottomBar.css";
 import styles from "@/page.module.css";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useData } from "%/DataContext";
+import AuthContext from "%/authContext";
 
 export default function BottomBar() {
   const {
@@ -10,21 +11,28 @@ export default function BottomBar() {
     pushUserText,
     pushImages,
     addResponse,
+    setErrorMessage,
     clearResponses,
+    updateVariantHistory,
   } = useData();
 
+  const { user } = useContext(AuthContext);
+
   // returns true if a put was successful, else returns false
-  const executePut = async (_) => {
-    console.log("RUN EXECUTE PUT");
+  const handlePut = async (followByRun) => {
+    if (
+      currentPrompt.variants[currentPrompt.currentVariant].currentResponses
+        .length !== 0
+    ) {
+      updateVariantHistory();
+    }
+    setQueuePut(followByRun === true ? "putAndRun" : "putOnly");
+  };
+
+  async function put(followByRun) {
     let didPut = false;
-    // if (
-    //   currentPrompt.variants[currentPrompt.currentVariant].responses.length !==
-    //   0
-    // ) {
-    //   acceptResponse()
-    // }
     if (!isImagesEmpty()) {
-      await pushImages(images);
+      await pushImages(user.uid, images);
       didPut = true;
     }
     if (!isTextEmpty()) {
@@ -32,24 +40,41 @@ export default function BottomBar() {
       didPut = true;
     }
     clearInputs();
-    return didPut;
-  };
 
-  const executeRun = async (_) => {
-    let isInputExist = await executePut();
-    // console.log("CURRENT PROMPT: ");
-    // console.log(currentPrompt);
-    clearResponses();
-    if (isInputExist || !isInputEmpty()) {
+    if (followByRun === "putAndRun") {
+      if (didPut || !isInputEmpty()) {
+        setQueueRun(true);
+      } else {
+        setErrorMessage("No inputs to run.");
+      }
+    }
+  }
+  const [queuePut, setQueuePut] = useState("");
+  useEffect(() => {
+    if (queuePut !== "") {
+      put(queuePut);
+      setQueuePut("");
+    }
+  }, [queuePut]);
+
+  const handleRun = async (_) => {
+    await handlePut(true);
+  };
+  const [queueRun, setQueueRun] = useState(false);
+  useEffect(() => {
+    const run = async () => {
       try {
         await addResponse(currentPrompt.currentVariant);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
-    } else {
-      console.log("NO INPUTS TO RUN");
+    };
+    if (queueRun) {
+      clearResponses();
+      run();
+      setQueueRun(false);
     }
-  };
+  }, [queueRun]);
 
   const isInputEmpty = () => {
     return (
@@ -110,7 +135,7 @@ export default function BottomBar() {
           />
           <button
             className={styles.putruniconButton}
-            onClick={executePut}
+            onClick={handlePut}
             style={{ flex: "0.2" }}
           >
             <Image
@@ -183,7 +208,7 @@ export default function BottomBar() {
       <div className="runButtonContainer">
         <button
           className={styles.putruniconButton}
-          onClick={executeRun}
+          onClick={handleRun}
           style={{ width: "100%" }}
         >
           <Image

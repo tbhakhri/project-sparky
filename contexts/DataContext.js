@@ -1,28 +1,33 @@
 "use client";
 
 import React, { createContext, useState, useContext } from "react";
-import { dataURLToPart } from "%/utils";
+import AuthContext from "./authContext";
+import {
+  filePathToPart,
+  generatePromptID,
+  generateImageID,
+  constructChatHistory,
+} from "%/utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { storage } from "%/config";
+import { ref, uploadBytes } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "%/config";
 
 const DataContext = createContext();
 export const useData = () => useContext(DataContext);
 
 export const DataProvider = ({ children }) => {
   class Node {
-    constructor(type, text, index) {
+    constructor(type, data) {
       this.type = type;
-      this.text = text;
-      this.index = index;
+      this.data = data;
     }
   }
 
   class Variant {
-    constructor(model) {
-      if (model === null) {
-        this.variantHistory = null;
-      } else {
-        this.variantHistory = model.startChat();
-      }
+    constructor() {
+      this.variantHistory = [];
       this.currentRequests = [];
       this.currentResponses = [];
       this.currentResponseIndex = 0;
@@ -30,6 +35,7 @@ export const DataProvider = ({ children }) => {
   }
 
   const [apiKey, setApiKey] = useState("");
+  const { userID } = useContext(AuthContext);
 
   let model = null;
   if (apiKey !== "") {
@@ -37,17 +43,22 @@ export const DataProvider = ({ children }) => {
     model = genAI.getGenerativeModel({
       model: "gemini-1.5-pro-latest",
     });
-  } else {
   }
 
-  const [isResponseLoading, setIsResponseLoading] = useState(false);
+  // NOTE: This is hard-coded for up to 3 variants
+  const [isResponseLoading, setIsResponseLoading] = useState([
+    false,
+    false,
+    false,
+  ]);
   const [errorMessage, setErrorMessage] = useState("");
   function closeErrorBox() {
     setErrorMessage("");
   }
 
   const [currentPrompt, setCurrentPrompt] = useState({
-    variants: [new Variant(model)],
+    id: generatePromptID(),
+    variants: [new Variant()],
     currentVariant: 0,
   });
 
@@ -59,8 +70,7 @@ export const DataProvider = ({ children }) => {
 
   /** FUNCTIONS **/
   /* For the currentVariant, pushes text to the requestChain. */
-  function pushUserText(text) {
-    console.log("ADDED");
+  async function pushUserText(text) {
     setCurrentPrompt((prevData) => {
       const newVariants = [...prevData.variants];
 
@@ -80,19 +90,21 @@ export const DataProvider = ({ children }) => {
   }
 
   /* For the currentVariant, pushes an array of images to the requestChain. */
-  async function pushImages(images) {
+  async function pushImages(userID, images) {
     try {
       const newVariants = [...currentPrompt.variants];
       const targetVariant = { ...newVariants[currentPrompt.currentVariant] };
 
       const convertedImages = await Promise.all(
         images.map(async (image) => {
-          const reader = new FileReader();
-          return new Promise((resolve, _) => {
-            reader.onload = (event) =>
-              resolve(new Node("image", event.target.result));
-            reader.readAsDataURL(image);
-          });
+          const filePath = `${userID}/${currentPrompt.id}/${generateImageID()}`;
+          const imageRef = ref(storage, filePath);
+          try {
+            await uploadBytes(imageRef, image);
+            return new Node("image", filePath);
+          } catch (error) {
+            console.error("Error uploading image:", error);
+          }
         })
       );
 
@@ -128,15 +140,6 @@ export const DataProvider = ({ children }) => {
     });
   }
 
-  const deleteImage = (index) => {
-    setCurrentPrompt((prevData) => ({
-      ...prevData,
-      currImages: prevData.currImages.filter(
-        (_, currIndex) => currIndex !== index
-      ),
-    }));
-  };
-
   /* For the specified variant, deletes a request node/bubble at the specified index. */
   function editRequestText(variant, index, newText) {
     setCurrentPrompt((prevData) => {
@@ -155,55 +158,60 @@ export const DataProvider = ({ children }) => {
   }
 
   /* For the specified variant, adds a response node/bubble. */
-  //TODO: CHANGE THIS DUMMY IMPLEMENTATION
-  async function addResponse(variant_index) {
-    // console.log("CALLING ADD RESPONSE");
-    setIsResponseLoading(true);
-    const dummyDataURL =
-      "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCABFAEUDASIAAhEBAxEB/8QAGwABAQACAwEAAAAAAAAAAAAAAAYEBwIDBQH/xAA4EAABAwMAAhEDAwUAAAAAAAABAAIDBAURBiEHEhUXMTQ2QVRVcnSSk7Gy0SJRYRNxgTIzQqHh/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ANbaN6NU9/irKipq6qN0dQ5gEbwBjh5wfuvb3vLf0+v8bfhNj/iFx7270Cr0EhveW/p9f42/Cb3lv6fX+Nvwq9fM6+BBI73lv6fX+Nvwm95b+n1/jb8KuJwF2wQPqnhseo5xwIIze8t/T6/xt+E3vLf0+v8AG34VnU00lHKY5Dkj8YXWg1NNS7l3u4UUM8r44nMDXPdrORnm/dFkXnlZdu2z2ogotj/iFx7270Cr1IbH/ELj3t3oFXoOLs/wvcpLKJ7e+ocHaotuMH8LxmMMsoY3n+2tWVbK236OUTRgOlhLXYODwf8AUEScgYVfoZTPaJ6kt+mJzXE5/dSAydWslbEotpadHJyQNtPAHD/E/wBP++FBNaXVray9zPaQQQ3m/C8Nc6iU1FS6QnORznK4INXXnlZdu2z2ol55WXbts9qIKLY/4hce9u9Aq9SGx/xC497d6BV6D0tHqdlRdYWvBIOeA/hW90slPXUdPGGOJjBx9WOYLW8UskDw6NzmuHO04WQbpXdKn81yCqpNCpnVIeIR+ngj+4F1aXVjoIqSjYdTY3RuBH2wFlaKzVTaZlZNUTOjDnNIe84Upeap1VcpiXEhsr8a886DAa3AXJEQauvPKy7dtntRLzysu3bZ7UQUWx/xC497d6BV6kNj/iFx7270Cr0AnCyLfSPrquNjdrjbtBycaiVjkZCyaCufb3ucxjXl2OHmwgsLzKyx2Z9BEC2QODxjWNZ/KhnEvkc93C45WRX1slxqjPI0NJAGAdWpY6AiIg1deeVl27bPaiXnlZdu2z2ogU7bna3zx0N0dCx8pc5oiByf5XfujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiBujpB12/yGpujpB12/yGoiDqpbZPWVVTU1NaZZpC0ucYwM8I5iiIg//9k=";
+  async function addResponse(variantIndex) {
+    console.log("CALLING ADD RESPONSE");
+    setIsResponseLoading([
+      ...isResponseLoading.slice(0, variantIndex),
+      true,
+      ...isResponseLoading.slice(variantIndex + 1),
+    ]);
+    console.log(
+      "formatted history",
+      await constructChatHistory(
+        currentPrompt.variants[variantIndex].variantHistory
+      )
+    );
+    const chat = model.startChat({
+      history: await constructChatHistory(
+        currentPrompt.variants[variantIndex].variantHistory
+      ),
+      generationConfig: {
+        maxOutputTokens: 2048,
+      },
+    });
 
-    // const imagePart = dataURLToPart(dummyDataURL);
-
-    if (currentPrompt.variants[variant_index].variantHistory === null) {
-      currentPrompt.variants[variant_index].variantHistory = model.startChat();
-    }
-    const chat = currentPrompt.variants[variant_index].variantHistory;
-    // const chat = model.startChat({
-    //   history: [],
-    //   generationConfig: {
-    //     maxOutputTokens: 250,
-    //   },
-    // });
-
-    const nodeList = currentPrompt.variants[variant_index].currentRequests;
-
-    let text = nodeList
+    const nodeList = currentPrompt.variants[variantIndex].currentRequests;
+    const textParts = nodeList
       .filter((node) => node.type === "text")
-      .map((node) => node.text);
-    let imagePart = nodeList
-      .filter((node) => node.type === "image")
-      .map((node) => node.text);
-    console.log(chat);
-    console.log(currentPrompt.variants[variant_index]);
-    // console.log(text);
-    // console.log(imagePart);
-    const msg = text.concat(imagePart);
-    console.log("msg: ");
-    console.log(msg);
+      .map((node) => node.data);
+    const imageNodes = nodeList.filter((node) => node.type === "image");
+    const imageParts = await Promise.all(
+      imageNodes.map(async (node) => {
+        try {
+          return await filePathToPart(node.data);
+        } catch (error) {
+          console.error("Error downloading image:", error);
+        }
+      })
+    );
+    const msg = textParts.concat(imageParts);
+    console.log("msg: ", msg);
+
     try {
       const result = await chat.sendMessage(msg);
       console.log(result);
-      console.log(result.response.text());
       setCurrentPrompt((prevData) => {
         const newVariants = [...prevData.variants];
 
-        const targetVariant = { ...newVariants[variant_index] };
+        const targetVariant = { ...newVariants[variantIndex] };
         targetVariant.currentResponses = [
           ...targetVariant.currentResponses,
-          new Node("text", result.response.text()),
+          new Node("modelText", result.response.text()),
         ];
 
-        newVariants[variant_index] = targetVariant;
+        newVariants[variantIndex] = targetVariant;
+
+        storeUserResponse(userID, prevData, prompts.promptTitles);
 
         return {
           ...prevData,
@@ -214,12 +222,16 @@ export const DataProvider = ({ children }) => {
       setErrorMessage(error.message);
       throw new Error("Error in addResponse function: " + error.message);
     } finally {
-      setIsResponseLoading(false);
+      setIsResponseLoading([
+        ...isResponseLoading.slice(0, variantIndex),
+        false,
+        ...isResponseLoading.slice(variantIndex + 1),
+      ]);
     }
   }
 
-  /* For the currentVariant, takes the response at the currentResponseIndex and converts it into a request node. Appends that request node to the requestChain. */
-  function acceptResponse() {
+  /* For the currentVariant, takes the currentRequests and the selected currentReponse and appends it to the variantHistory */
+  function updateVariantHistory() {
     if (
       currentPrompt.variants[currentPrompt.currentVariant].currentResponses
         .length === 0
@@ -232,10 +244,12 @@ export const DataProvider = ({ children }) => {
       const acceptedResponse =
         targetVariant.currentResponses[targetVariant.currentResponseIndex];
 
-      targetVariant.currentRequests = [
+      targetVariant.variantHistory = [
+        ...targetVariant.variantHistory,
         ...targetVariant.currentRequests,
         acceptedResponse,
       ];
+      targetVariant.currentRequests = [];
       targetVariant.currentResponses = [];
       targetVariant.currentResponseIndex = 0;
 
@@ -250,7 +264,6 @@ export const DataProvider = ({ children }) => {
 
   /* For the currentVariant, clears all responses */
   function clearResponses() {
-    console.log("CLEAR RESPONSES");
     if (
       currentPrompt.variants[currentPrompt.currentVariant].currentResponses
         .length === 0
@@ -282,7 +295,8 @@ export const DataProvider = ({ children }) => {
         return { ...bubble };
       });
 
-      const copiedVariant = new Variant(model);
+      const copiedVariant = new Variant();
+      copiedVariant.variantHistory = [...variantToCopy.variantHistory];
       copiedVariant.currentRequests = deepCopiedRequests;
 
       const newVariants = [...prevData.variants, copiedVariant];
@@ -326,7 +340,7 @@ export const DataProvider = ({ children }) => {
         promptData: [...prevPrompts.promptData, { ...currentPrompt }],
         promptTitles: [
           ...prevPrompts.promptTitles,
-          currentPrompt.variants[0].currentRequests[0]?.text,
+          currentPrompt.variants[0].currentRequests[0]?.data,
         ],
       }));
     }
@@ -420,6 +434,27 @@ export const DataProvider = ({ children }) => {
     });
   };
 
+  async function storeUserResponse(userID, promptData, promptTitles) {
+    const userResponsesRef = doc(
+      db,
+      "users",
+      userID,
+      "responses",
+      new Date().toISOString()
+    ); // Use a timestamp or another unique identifier for each response
+
+    try {
+      await setDoc(userResponsesRef, {
+        promptData: promptData,
+        promptTitles: promptTitles,
+        timestamp: new Date(),
+      });
+      console.log("Response saved successfully");
+    } catch (error) {
+      console.error("Error saving response:", error);
+    }
+  }
+
   /** END FUNCTIONS **/
 
   return (
@@ -430,6 +465,7 @@ export const DataProvider = ({ children }) => {
         apiKey,
         isResponseLoading,
         errorMessage,
+        setErrorMessage,
         closeErrorBox,
         setApiKey,
         pushUserText,
@@ -437,7 +473,7 @@ export const DataProvider = ({ children }) => {
         deleteRequest,
         editRequestText,
         addResponse,
-        acceptResponse,
+        updateVariantHistory,
         clearResponses,
         copyVariant,
         setCurrentVariant,
@@ -447,7 +483,6 @@ export const DataProvider = ({ children }) => {
         updateTitle,
         imageEmpty,
         textEmpty,
-        deleteImage,
         clearCurrImages,
         addPrompt,
         selectPrompt,

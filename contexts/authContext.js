@@ -1,51 +1,54 @@
-"use client"
+"use client";
 
-import { createContext, useState, useEffect } from "react"
-import { auth, provider } from "./config"
-import { signInWithPopup, signInWithRedirect } from "firebase/auth"
+import { createContext, useState, useEffect } from "react";
+import { auth, provider } from "./config";
+import { signInWithPopup, signInWithRedirect } from "firebase/auth";
 
 const AuthContext = createContext({
   user: null,
   login: async () => {},
   logout: async () => {},
   // boolean is true when connection to firebase is established
-  authReady: false
-})
+  authReady: false,
+});
 
 export const AuthContextProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-  const [authReady, setAuthReady] = useState(false)
+  const [user, setUser] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
 
   const login = async () => {
     try {
-      await signInWithPopup(auth, provider)
+      await signInWithPopup(auth, provider);
     } catch (error) {
-      console.error("Login failed:", error)
+      console.error("Login failed:", error);
     }
-  }
+  };
 
   const logout = async () => {
-    await auth.signOut()
-  }
+    await auth.signOut();
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user)
-      setAuthReady(true)
-    })
+      setUser(user);
+      setAuthReady(true);
+    });
 
     // Cleanup subscription on unmount
-    return () => unsubscribe()
-  }, [])
+    return () => unsubscribe();
+  }, []);
 
   const context = {
     user,
     login,
     logout,
-    authReady
-  }
+    authReady,
+    userID: user?.uid || null,
+  };
 
-  return <AuthContext.Provider value={context}>{children}</AuthContext.Provider>
-}
+  return (
+    <AuthContext.Provider value={context}>{children}</AuthContext.Provider>
+  );
+};
 
-export default AuthContext
+export default AuthContext;
