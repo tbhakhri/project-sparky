@@ -7,6 +7,9 @@ import AuthContext from "%/authContext"
 
 export default function BottomBar() {
   const {
+    text,
+    setText,
+    handleImageSelect,
     currentPrompt,
     pushUserText,
     pushImages,
@@ -84,7 +87,7 @@ export default function BottomBar() {
   }
 
   /* BOTTOMINPUTBAR STATE */
-  const [text, setText] = useState("")
+  /*const [text, setText] = useState("")*/
   const [images, setImages] = useState([])
 
   const isTextEmpty = () => {
@@ -112,13 +115,13 @@ export default function BottomBar() {
     setText(e.target.value)
   }
 
-  const handleImageSelect = (e) => {
+  /*const handleImageSelect = (e) => {
     const files = e.target.files
     if (files && files.length > 0) {
       const latestFile = files[files.length - 1]
       setImages((prev) => [...prev, latestFile])
     }
-  }
+  }*/
 
   const handleDeleteImage = (index) => {
     setImages((prev) => prev.filter((_, currIndex) => currIndex !== index))

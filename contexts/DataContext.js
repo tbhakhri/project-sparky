@@ -32,6 +32,8 @@ export const DataProvider = ({ children }) => {
   }
 
   const [apiKey, setApiKey] = useState("")
+  const [text, setText] = useState("")
+  const [images, setImages] = useState([])
 
   let model = null
   if (apiKey !== "") {
@@ -387,6 +389,14 @@ export const DataProvider = ({ children }) => {
     return prompt
   }
 
+  const handleImageSelect = (e) => {
+    const files = e.target.files
+    if (files && files.length > 0) {
+      const latestFile = files[files.length - 1]
+      setImages((prev) => [...prev, latestFile])
+    }
+  }
+
   const textEmpty = () => {
     if (currentPrompt.currText == "") {
       return true
@@ -428,11 +438,17 @@ export const DataProvider = ({ children }) => {
     })
   }
 
+  /** DEFAULT SCREEN FUNCTIONS **/
+  
+
   /** END FUNCTIONS **/
 
   return (
     <DataContext.Provider
       value={{
+        text,
+        setText,
+        handleImageSelect,
         currentPrompt,
         prompts,
         apiKey,
