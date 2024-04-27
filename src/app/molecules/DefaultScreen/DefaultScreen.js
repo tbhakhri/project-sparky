@@ -7,18 +7,27 @@ export default function DefaultScreen() {
     text,
     setText,
     handleImageSelect,
+    pushUserText,
+    addResponse,
+    handleRun,
+    put,
+    setQueueRun,
   } = useData()
 
-  const boxOneClick = () => {
-    setText("Tell me a story about a magic backpack.")
-    console.log("hi")
-    console.log(text)
-  }
+//   const boxOneClick = () => {
+//     pushUserText("Tell me a story about a magic backpack.")
+//   }
 
-  const boxTwoClick = (e) => {
-    setText("What is the recipe of this dish?")
-    handleImageSelect(e)
-  }
+//   const boxTwoClick = (e) => {
+//     pushUserText("Take a photo of your food and ask me for the recipe")
+//     const fileInput = document.getElementById('fileInput');
+//     fileInput.click();
+// }
+
+  
+//   const boxThreeClick = (e) => {
+//     handleImageSelect(e)
+//   }
 
 
   return (
@@ -30,7 +39,7 @@ export default function DefaultScreen() {
             text="Write a story about a magic backpack"
             pathToSvg="/textbox.svg"
             alt="hi"
-            handleClick={boxOneClick}
+            involvesImage={false}
           />
         </div>
         <div className="ideaBoxItem">
@@ -38,7 +47,7 @@ export default function DefaultScreen() {
             text="Take a photo of your food and ask me for the recipe"
             pathToSvg="/camerafordefaultscreen.svg"
             alt="bye"
-            handleClick={boxTwoClick}
+            involvesImage={true}
           />
         </div>
         <div className="ideaBoxItem">
@@ -52,7 +61,7 @@ export default function DefaultScreen() {
             text="Insert an image and ask me anything about it"
             pathToSvg="/landscape.svg"
             alt="hi"
-            handleClick={handleImageSelect}
+            involvesImage={true}
           />
         </div>
       </div>
