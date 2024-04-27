@@ -344,7 +344,8 @@ export const DataProvider = ({ children }) => {
         {
           currentRequests: [],
           currentResponses: [],
-          currentResponseIndex: 0
+          currentResponseIndex: 0,
+          variantHistory: []
         }
       ],
       currentVariant: 0

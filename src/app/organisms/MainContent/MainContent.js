@@ -41,12 +41,15 @@ export default function MainContent() {
         return null
     }
   }
-
+  // console.log('test2:', currentPrompt)
   return (
+    
     <div className="mainContentContainer">
       {currentPrompt.variants.length === 1 &&
-      currentPrompt.variants[0].currentRequests.length === 0 &&
-      currentPrompt.variants[0].variantHistory.length === 0 ? (
+      currentPrompt.variants[0].currentRequests.length === 0 
+      &&
+      currentPrompt.variants[0].variantHistory.length === 0 
+      ? (
         <>
           <div className="defaultScreenContainer">
             <DefaultScreen />
@@ -66,6 +69,7 @@ export default function MainContent() {
               }}
               onClick={() => setCurrentVariant(variantIndex)}
             >
+              {console.log('variant', variant)}
               {variant.variantHistory.map((item, _) =>
                 renderBubble(false, item, _, variantIndex)
               )}
