@@ -36,32 +36,40 @@ export default function DefaultScreen() {
       <div className="ideaBoxContainer">
         <div className="ideaBoxItem">
           <IdeaBox
-            text="Write a story about a magic backpack"
+            displayText="Write a story about a magic backpack"
+            inputText = "Write a story about a magic backpack"
             pathToSvg="/textbox.svg"
             alt="hi"
             involvesImage={false}
+            imageAndText={false}
           />
         </div>
         <div className="ideaBoxItem">
           <IdeaBox
-            text="Take a photo of your food and ask me for the recipe"
+            displayText="Take a photo of your food and ask me for the recipe"
+            inputText = "What is the recipe of this dish?"
             pathToSvg="/camerafordefaultscreen.svg"
             alt="bye"
             involvesImage={true}
+            imageAndText={true}
           />
         </div>
         <div className="ideaBoxItem">
           <IdeaBox
-            text="Hum a tune and ask me to identify the song"
+            displayText="Hum a tune and ask me to identify the song"
+            inputText="What is the song I am humming?"
             pathToSvg="/audio.svg"
           />
         </div>
         <div className="ideaBoxItem">
           <IdeaBox
-            text="Insert an image and ask me anything about it"
+            displayText="Insert an image and ask me anything about it"
+            inputText=""
             pathToSvg="/landscape.svg"
             alt="hi"
             involvesImage={true}
+            imageAndText={false}
+
           />
         </div>
       </div>
