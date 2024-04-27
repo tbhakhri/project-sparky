@@ -35,7 +35,7 @@ export const DataProvider = ({ children }) => {
   }
 
   const [apiKey, setApiKey] = useState("");
-  const { userID } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   let model = null;
   if (apiKey !== "") {
@@ -159,18 +159,11 @@ export const DataProvider = ({ children }) => {
 
   /* For the specified variant, adds a response node/bubble. */
   async function addResponse(variantIndex) {
-    console.log("CALLING ADD RESPONSE");
     setIsResponseLoading([
       ...isResponseLoading.slice(0, variantIndex),
       true,
       ...isResponseLoading.slice(variantIndex + 1),
     ]);
-    console.log(
-      "formatted history",
-      await constructChatHistory(
-        currentPrompt.variants[variantIndex].variantHistory
-      )
-    );
     const chat = model.startChat({
       history: await constructChatHistory(
         currentPrompt.variants[variantIndex].variantHistory
@@ -195,7 +188,6 @@ export const DataProvider = ({ children }) => {
       })
     );
     const msg = textParts.concat(imageParts);
-    console.log("msg: ", msg);
 
     try {
       const result = await chat.sendMessage(msg);
@@ -210,8 +202,6 @@ export const DataProvider = ({ children }) => {
         ];
 
         newVariants[variantIndex] = targetVariant;
-
-        storeUserResponse(userID, prevData, prompts.promptTitles);
 
         return {
           ...prevData,
@@ -333,7 +323,7 @@ export const DataProvider = ({ children }) => {
     });
   }
 
-  function addPrompt() {
+  async function addPrompt() {
     if (currentPrompt.variants[0].currentRequests.length > 0) {
       setPrompts((prevPrompts) => ({
         ...prevPrompts,
@@ -343,6 +333,24 @@ export const DataProvider = ({ children }) => {
           currentPrompt.variants[0].currentRequests[0]?.data,
         ],
       }));
+      try {
+        const response = await fetch("firebase/storePromptTitles", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userID: user.uid,
+            promptTitles: prompts.promptTitles,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error("Failed to store prompt titles.");
+        }
+      } catch (error) {
+        console.error("Error storing prompt titles:", error);
+      }
     }
 
     setCurrentPrompt({
@@ -434,24 +442,25 @@ export const DataProvider = ({ children }) => {
     });
   };
 
-  async function storeUserResponse(userID, promptData, promptTitles) {
-    const userResponsesRef = doc(
-      db,
-      "users",
-      userID,
-      "responses",
-      new Date().toISOString()
-    ); // Use a timestamp or another unique identifier for each response
-
+  async function storePromptTitles() {
+    console.log(prompts.promptTitles);
     try {
-      await setDoc(userResponsesRef, {
-        promptData: promptData,
-        promptTitles: promptTitles,
-        timestamp: new Date(),
+      const response = await fetch("/api/storePromptTitles", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userID: user.uid,
+          promptTitles: prompts.promptTitles,
+        }),
       });
-      console.log("Response saved successfully");
+
+      if (!response.ok) {
+        console.error("Failed to store prompt titles.");
+      }
     } catch (error) {
-      console.error("Error saving response:", error);
+      console.error("Error storing prompt titles:", error);
     }
   }
 
