@@ -69,7 +69,6 @@ export default function MainContent() {
               }}
               onClick={() => setCurrentVariant(variantIndex)}
             >
-              {console.log('variant', variant)}
               {variant.variantHistory.map((item, _) =>
                 renderBubble(false, item, _, variantIndex)
               )}
