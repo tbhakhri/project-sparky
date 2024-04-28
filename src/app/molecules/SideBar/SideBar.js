@@ -18,6 +18,8 @@ export default function SideBar({ toggleSidebar }) {
     initializeNewPrompt
   } = useData()
 
+  //TODO: ADD LOADING SPINNER THAT SHOWS WHEN WE TRY TO DELETE A PROMPT
+
   const pastPrompts = promptNames.filter(
     (item) => item.promptID !== currentPrompt.promptID
   )

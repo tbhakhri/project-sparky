@@ -7,7 +7,6 @@ import { useState, useRef, useEffect, useContext } from "react"
 export default function PromptTitles({
   promptID,
   initialTitle,
-  index,
   isEditing,
   setEditing,
   selectPrompt,
@@ -53,6 +52,12 @@ export default function PromptTitles({
     setTitle(initialTitle)
   }, [initialTitle])
 
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 13 && isEditing) {
+      commitEdit()
+    }
+  }
+
   async function commitEdit() {
     await updateName(title)
     setEditing(-1)
@@ -82,8 +87,10 @@ export default function PromptTitles({
       ref={inputRef}
       value={title}
       onChange={handleEdit}
+      onKeyDown={handleKeyDown}
       onBlur={commitEdit}
       className="promptItem"
+      style={{ color: "#a5bcf6" }}
       autoFocus
     />
   ) : (

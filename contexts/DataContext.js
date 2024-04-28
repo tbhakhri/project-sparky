@@ -54,8 +54,7 @@ export const DataProvider = ({ children }) => {
 
   const [currentPrompt, setCurrentPrompt] = useState({
     promptID: generatePromptID(),
-    promptName:
-      "New Prompt " + (Math.floor(Math.random() * 1000) + 1).toString(),
+    promptName: "New Prompt",
     variants: [new Variant()],
     currentVariant: 0,
     hasGeneratedName: false
@@ -367,8 +366,7 @@ export const DataProvider = ({ children }) => {
   function initializeNewPrompt() {
     setCurrentPrompt({
       promptID: generatePromptID(),
-      promptName:
-        "New Prompt " + (Math.floor(Math.random() * 1000) + 1).toString(),
+      promptName: "New Prompt",
       variants: [new Variant()],
       currentVariant: 0,
       hasGeneratedName: false
