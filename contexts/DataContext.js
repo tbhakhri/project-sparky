@@ -334,7 +334,7 @@ export const DataProvider = ({ children }) => {
 
   async function generateTitle(initialTitle) {
     try {
-      const prompt = "Describe the following text as a prompt title in 11 words or less:" + initialTitle;
+      const prompt = "If you were a chatbot, describe the following text as a prompt title in about 7 words or less:" + initialTitle;
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
