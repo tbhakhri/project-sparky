@@ -10,27 +10,32 @@ export default function DefaultScreen() {
           <IdeaBox
             text="Write a story about a magic backpack"
             pathToSvg="/textbox.svg"
-            alt="hi"
+            alt="ideaBoxWriteStory"
+            id="0"
           />
         </div>
         <div className="ideaBoxItem">
           <IdeaBox
             text="Take a photo of your food and ask me for the recipe"
             pathToSvg="/camerafordefaultscreen.svg"
-            alt="bye"
+            alt="ideaBoxFoodPhoto"
+            id="1"
           />
         </div>
         <div className="ideaBoxItem">
           <IdeaBox
             text="Hum a tune and ask me to identify the song"
             pathToSvg="/audio.svg"
+            alt="ideaBoxIdentifySong"
+            id="2"
           />
         </div>
         <div className="ideaBoxItem">
           <IdeaBox
             text="Insert an image and ask me anything about it"
             pathToSvg="/landscape.svg"
-            alt="hi"
+            alt="ideaBoxPhotoAskMe"
+            id="3"
           />
         </div>
       </div>

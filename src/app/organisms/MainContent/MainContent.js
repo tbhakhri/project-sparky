@@ -6,8 +6,13 @@ import { useData } from "%/DataContext"
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 
 export default function MainContent() {
-  const { isResponseLoading, currentPrompt, setCurrentVariant, copyVariant } =
-    useData()
+  const {
+    isResponseLoading,
+    currentPrompt,
+    setCurrentVariant,
+    copyVariant,
+    isCurrentPromptEmpty
+  } = useData()
 
   const renderBubble = (isCurrent, item, requestIndex, variantIndex) => {
     switch (item.type) {
@@ -44,9 +49,7 @@ export default function MainContent() {
 
   return (
     <div className="mainContentContainer">
-      {currentPrompt.variants.length === 1 &&
-      currentPrompt.variants[0].currentRequests.length === 0 &&
-      currentPrompt.variants[0].variantHistory.length === 0 ? (
+      {isCurrentPromptEmpty() ? (
         <>
           <div className="defaultScreenContainer">
             <DefaultScreen />

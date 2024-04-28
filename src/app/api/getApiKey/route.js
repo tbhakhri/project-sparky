@@ -3,19 +3,19 @@ import { doc, getDoc } from "firebase/firestore"
 
 export async function GET(request) {
   const url = new URL(request.url)
-  const username = url.searchParams.get("username")
+  const userID = url.searchParams.get("userID")
   try {
-    if (!username) {
-      return new Response("Missing username parameter", {
+    if (!userID) {
+      return new Response("Missing userID parameter", {
         status: 400,
         statusText: "Bad Request"
       })
     }
-    const userRef = doc(db, "keys", username)
+    const userRef = doc(db, "keys", userID)
     const snapshot = await getDoc(userRef)
 
     if (!snapshot.exists()) {
-      return new Response(`Database entry for user ${username} not found`, {
+      return new Response(`Database entry for user ${userID} not found`, {
         status: 404,
         statusText: "Not Found"
       })
@@ -28,7 +28,7 @@ export async function GET(request) {
       }),
       {
         status: 200,
-        statusText: `Successfully got api key for user ${username}`
+        statusText: `Successfully got api key for user ${userID}`
       }
     )
   } catch (e) {

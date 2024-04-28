@@ -53,18 +53,32 @@ export const DataProvider = ({ children }) => {
   }
 
   const [currentPrompt, setCurrentPrompt] = useState({
-    id: generatePromptID(),
+    promptID: generatePromptID(),
+    promptName:
+      "New Prompt " + (Math.floor(Math.random() * 1000) + 1).toString(),
     variants: [new Variant()],
-    currentVariant: 0
+    currentVariant: 0,
+    hasGeneratedName: false
   })
-
-  const [prompts, setPrompts] = useState({
-    promptData: [],
-    promptTitles: [],
-    editingIndex: -1
-  })
+  const [promptNames, setPromptNames] = useState([])
 
   /** FUNCTIONS **/
+
+  async function generateTitle(msg) {
+    try {
+      const prompt = [
+        "If you were a chatbot, describe the following input as a prompt title in about 7 words or less:"
+      ].concat(msg)
+      const result = await model.generateContent(prompt)
+      const response = await result.response
+      const text = response.text()
+      console.log("generated title: ", text)
+      return text
+    } catch (error) {
+      console.error("Error creating title for prompt: ", error)
+    }
+  }
+
   /* For the currentVariant, pushes text to the requestChain. */
   async function pushUserText(text) {
     setCurrentPrompt((prevData) => {
@@ -93,7 +107,7 @@ export const DataProvider = ({ children }) => {
 
       const convertedImages = await Promise.all(
         images.map(async (image) => {
-          const filePath = `${userID}/${currentPrompt.id}/${generateImageID()}`
+          const filePath = `${userID}/${currentPrompt.promptID}/${generateImageID()}`
           const imageRef = ref(storage, filePath)
           try {
             await uploadBytes(imageRef, image)
@@ -153,7 +167,8 @@ export const DataProvider = ({ children }) => {
     })
   }
 
-  /* For the specified variant, adds a response node/bubble. */
+  /* For the specified variant, adds a response node/bubble.
+  If a promptName has not been generated yet, do so. */
   async function addResponse(variantIndex) {
     console.log("CALLING ADD RESPONSE")
     setIsResponseLoading([
@@ -193,6 +208,11 @@ export const DataProvider = ({ children }) => {
     const msg = textParts.concat(imageParts)
     console.log("msg: ", msg)
 
+    let generatedName = ""
+    if (!currentPrompt.hasGeneratedName) {
+      generatedName = await generateTitle(msg)
+    }
+
     try {
       const result = await chat.sendMessage(msg)
       console.log(result)
@@ -207,9 +227,18 @@ export const DataProvider = ({ children }) => {
 
         newVariants[variantIndex] = targetVariant
 
-        return {
-          ...prevData,
-          variants: newVariants
+        if (prevData.hasGeneratedName) {
+          return {
+            ...prevData,
+            variants: newVariants
+          }
+        } else {
+          return {
+            ...prevData,
+            variants: newVariants,
+            hasGeneratedName: true,
+            promptName: generatedName
+          }
         }
       })
     } catch (error) {
@@ -327,104 +356,22 @@ export const DataProvider = ({ children }) => {
     })
   }
 
-  function addPrompt() {
-    if (currentPrompt.variants[0].currentRequests.length > 0) {
-      setPrompts((prevPrompts) => ({
-        ...prevPrompts,
-        promptData: [...prevPrompts.promptData, { ...currentPrompt }],
-        promptTitles: [
-          ...prevPrompts.promptTitles,
-          currentPrompt.variants[0].currentRequests[0]?.data
-        ]
-      }))
-    }
+  function isCurrentPromptEmpty() {
+    return (
+      currentPrompt.variants.length === 1 &&
+      currentPrompt.variants[0].currentRequests.length === 0 &&
+      currentPrompt.variants[0].variantHistory.length === 0
+    )
+  }
 
+  function initializeNewPrompt() {
     setCurrentPrompt({
-      variants: [
-        {
-          currentRequests: [],
-          currentResponses: [],
-          currentResponseIndex: 0
-        }
-      ],
-      currentVariant: 0
-    })
-  }
-
-  function editPrompt(index) {
-    //simply for setting it to an editable state
-    setPrompts((prevState) => ({
-      ...prevState,
-      editingIndex: index
-    }))
-  }
-
-  const deletePrompt = (index) => {
-    setPrompts((prevPrompts) => ({
-      ...prevPrompts,
-      promptData: prevPrompts.promptData.filter(
-        (_, currIndex) => currIndex !== index
-      ),
-      promptTitles: prevPrompts.promptTitles.filter(
-        (_, currIndex) => currIndex !== index
-      )
-    }))
-  }
-
-  const popPrompt = (index) => {
-    const prompt = prompts.promptData[index]
-
-    setPrompts((prevPrompts) => ({
-      ...prevPrompts,
-      promptData: prevPrompts.promptData.filter(
-        (_, currIndex) => currIndex !== index
-      ),
-      promptTitles: prevPrompts.promptTitles.filter(
-        (_, currIndex) => currIndex !== index
-      )
-    }))
-
-    return prompt
-  }
-
-  const textEmpty = () => {
-    if (currentPrompt.currText == "") {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  const imageEmpty = () => {
-    if (currentPrompt.currImages.length == 0) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  const clearCurrText = () => {
-    updateData({ currText: "" })
-  }
-
-  const clearCurrImages = () => {
-    updateData({ currImages: [] })
-  }
-
-  const selectPrompt = (index) => {
-    addPrompt()
-    setCurrentPrompt(popPrompt(index))
-  }
-
-  const updateData = (newData) => {
-    setCurrentPrompt((prev) => ({ ...prev, ...newData }))
-  }
-
-  const updateTitle = (index, title) => {
-    setPrompts((prevPrompts) => {
-      const newPromptTitles = [...prevPrompts.promptTitles]
-      newPromptTitles[index] = title
-      return { ...prevPrompts, promptTitles: newPromptTitles }
+      promptID: generatePromptID(),
+      promptName:
+        "New Prompt " + (Math.floor(Math.random() * 1000) + 1).toString(),
+      variants: [new Variant()],
+      currentVariant: 0,
+      hasGeneratedName: false
     })
   }
 
@@ -434,13 +381,15 @@ export const DataProvider = ({ children }) => {
     <DataContext.Provider
       value={{
         currentPrompt,
-        prompts,
+        promptNames,
         apiKey,
         isResponseLoading,
         errorMessage,
+        setCurrentPrompt,
+        setPromptNames,
+        setApiKey,
         setErrorMessage,
         closeErrorBox,
-        setApiKey,
         pushUserText,
         pushImages,
         deleteRequest,
@@ -451,16 +400,8 @@ export const DataProvider = ({ children }) => {
         copyVariant,
         setCurrentVariant,
         setCurrentResponseIndex,
-        clearCurrText,
-        updateData,
-        updateTitle,
-        imageEmpty,
-        textEmpty,
-        clearCurrImages,
-        addPrompt,
-        selectPrompt,
-        editPrompt,
-        deletePrompt
+        isCurrentPromptEmpty,
+        initializeNewPrompt
       }}
     >
       {children}

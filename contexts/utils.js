@@ -54,17 +54,23 @@ export function createDataURL(blob) {
 }
 
 export function generatePromptID() {
-  return generateRandomID(2)
+  return generateRandomID(24)
 }
 
 export function generateImageID() {
-  return generateRandomID(3)
+  return generateRandomID(16)
 }
 
 /* Generates a random ID based on i random ints */
 function generateRandomID(i) {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
   const buffer = crypto.getRandomValues(new Uint8Array(i))
-  return buffer.toString("base64").replace(/,/g, "")
+  let randomID = ""
+  for (let j = 0; j < i; j++) {
+    randomID += characters[buffer[j] % characters.length]
+  }
+  return randomID
 }
 
 export async function constructChatHistory(variantHistory) {
