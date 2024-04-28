@@ -19,7 +19,7 @@ export default function App() {
     setIsSidebar(!isSidebar)
   }
 
-  let { apiKey, setApiKey } = useData()
+  let { apiKey, setApiKey, setPromptNames } = useData()
 
   /* SETTING PROPER SCREEN HEIGHT FOR MOBILE DEVICES */
   const setHeight = () => {
@@ -35,11 +35,11 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    async function fetchKey() {
+    async function fetchKeyAndPromptNames() {
       if (user && apiKey === "") {
-        const url = new URL("/api/getApiKey", window.location.origin)
-        url.searchParams.append("username", user.uid)
-        const response = await fetch(url.toString(), {
+        let url = new URL("/api/getApiKey", window.location.origin)
+        url.searchParams.append("userID", user.uid)
+        let response = await fetch(url.toString(), {
           method: "GET"
         })
         if (response.status === 404) {
@@ -50,9 +50,17 @@ export default function App() {
           console.log("Key found for user", user.uid)
           setApiKey(data.apiKey)
         }
+
+        url = new URL("/api/getPromptNames", window.location.origin)
+        url.searchParams.append("userID", user.uid)
+        response = await fetch(url.toString(), {
+          method: "GET"
+        })
+        const data = await response.json()
+        setPromptNames(data)
       }
     }
-    fetchKey()
+    fetchKeyAndPromptNames()
   }, [user, apiKey])
 
   const [promptMetadata, setPromptMetadata] = useState(() => ({

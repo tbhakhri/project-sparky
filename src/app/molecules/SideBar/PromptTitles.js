@@ -1,80 +1,94 @@
-import { Kumbh_Sans } from "next/font/google"
 import "./PromptTitles.css"
-import Image from "next/image"
-import { useData } from "%/DataContext";
-import { useState, useRef, useEffect } from "react"
+import { useData } from "%/DataContext"
+import AuthContext from "%/authContext"
 
-const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
+import { useState, useRef, useEffect, useContext } from "react"
 
-export default function PromptTitles({ initialTitle, index, isEditing, setEditing, selectPrompt, toggleSidebar }) {
-    const { updateTitle } = useData()
+export default function PromptTitles({
+  promptID,
+  initialTitle,
+  index,
+  isEditing,
+  setEditing,
+  selectPrompt,
+  toggleSidebar
+}) {
+  const { user } = useContext(AuthContext)
+  const { setPromptNames, promptNames } = useData()
 
-    const [title, setTitle] = useState(initialTitle) 
+  /* stores the updated name in the promptNames db. updates promptNames state */
+  async function updateName(newPromptName) {
+    try {
+      const response = await fetch("/api/storePromptName", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          promptID,
+          userID: user.uid,
+          promptName: newPromptName
+        })
+      })
 
-    useEffect(() => {
-        setTitle(initialTitle)
-      }, [initialTitle])
-    
-   
-    const commitEdit = () => {
-      updateTitle(index, title); 
-      setEditing(-1); 
-  };
-
-    const handleEdit = (e) => {
-        setTitle(e.target.value)
+      if (!response.ok) {
+        console.error(`Failed to update prompt name for prompt ${promptID}.`)
+      } else {
+        const updatedPromptNames = promptNames.map((item) => {
+          if (item.promptID === promptID) {
+            return { ...item, promptName: newPromptName }
+          }
+          return item
+        })
+        setPromptNames(updatedPromptNames)
       }
-    
-      const handleTitleClick = () => {
-        if (!isEditing) {
-            selectPrompt(index);
-            toggleSidebar();
-        }
-    };
+    } catch (error) {
+      console.error("Error updated prompt name:", error)
+    }
+  }
 
-    const inputRef = useRef(null)
-    
-    // useEffect(() => {
-    //   const textarea = inputRef.current
-    //   textarea.style.height = "0.65rem"
-    //   textarea.style.height = textarea.scrollHeight + "px"
-    // }, [title])
-    
-    useEffect(() => {
-      if (inputRef.current && isEditing) {
-          inputRef.current.focus();
-      }
-  }, [isEditing]);
+  const [title, setTitle] = useState(initialTitle)
 
+  useEffect(() => {
+    setTitle(initialTitle)
+  }, [initialTitle])
 
-    return(
-        // <input
-        // ref={inputRef}
-        // value={title}
-        // onChange={handleEdit}
-        // onBlur={commitEdit}
-        // //onKeyDown={handleKeyDown}
-        // // className="pastPromptContainer" 
-        // className="promptItem" 
-        // />
-        isEditing ? (
-          <input
-              ref={inputRef}
-              value={title}
-              onChange={handleEdit}
-              onBlur={commitEdit}
-              className="promptItem"
-              autoFocus
-          />
-      ) : (
-        <div onClick={handleTitleClick} className="promptItem">
-          {title}
-        </div>
-          // <div onClick={() => setEditing(index)} className="promptItem">
-          //     {title}
-          // </div>
-    )
-    );
-    
-    
+  async function commitEdit() {
+    await updateName(title)
+    setEditing(-1)
+  }
+
+  const handleEdit = (e) => {
+    setTitle(e.target.value)
+  }
+
+  const handleTitleClick = () => {
+    if (!isEditing) {
+      selectPrompt(promptID, title)
+      toggleSidebar()
+    }
+  }
+
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    if (inputRef.current && isEditing) {
+      inputRef.current.focus()
+    }
+  }, [isEditing])
+
+  return isEditing ? (
+    <input
+      ref={inputRef}
+      value={title}
+      onChange={handleEdit}
+      onBlur={commitEdit}
+      className="promptItem"
+      autoFocus
+    />
+  ) : (
+    <div onClick={handleTitleClick} className="promptItem">
+      {title}
+    </div>
+  )
 }

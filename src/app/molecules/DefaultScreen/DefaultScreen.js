@@ -11,7 +11,7 @@ export default function DefaultScreen() {
             id="0"
             text="Write a story about a magic backpack"
             pathToSvg="/textbox.svg"
-            alt="hi"
+            alt="ideaBoxWriteStory"
           />
         </div>
         <div className="ideaBoxItem">
@@ -19,7 +19,7 @@ export default function DefaultScreen() {
             id="1"
             text="Take a photo of your food and ask me for the recipe"
             pathToSvg="/camerafordefaultscreen.svg"
-            alt="bye"
+            alt="ideaBoxFoodPhoto"
           />
         </div>
         <div className="ideaBoxItem">
@@ -27,6 +27,7 @@ export default function DefaultScreen() {
             id="2"
             text="Hum a tune and ask me to identify the song"
             pathToSvg="/audio.svg"
+            alt="ideaBoxIdentifySong"
           />
         </div>
         <div className="ideaBoxItem">
@@ -34,7 +35,7 @@ export default function DefaultScreen() {
             id="3"
             text="Insert an image and ask me anything about it"
             pathToSvg="/landscape.svg"
-            alt="hi"
+            alt="ideaBoxPhotoAskMe"
           />
         </div>
       </div>

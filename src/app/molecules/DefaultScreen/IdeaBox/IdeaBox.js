@@ -1,6 +1,6 @@
 import "./IdeaBox.css"
 import Image from "next/image"
-import { useData } from "%/DataContext";
+import { useData } from "%/DataContext"
 
 export default function IdeaBox({ id, text, pathToSvg, alt }) {
   const { pushUserText } = useData()
@@ -8,11 +8,11 @@ export default function IdeaBox({ id, text, pathToSvg, alt }) {
   const handleClick = () => {
     if (id === "0") {
       pushUserText(text)
-    } 
+    }
 
     if (id === "1") {
       pushUserText("What is the recipe for this dish?")
-      const imageInput = document.getElementById('imageInput')
+      const imageInput = document.getElementById("imageInput")
       imageInput.click()
     }
 
@@ -21,7 +21,7 @@ export default function IdeaBox({ id, text, pathToSvg, alt }) {
     }
 
     if (id === "3") {
-      const imageInput = document.getElementById('imageInput')
+      const imageInput = document.getElementById("imageInput")
       imageInput.click()
     }
   }

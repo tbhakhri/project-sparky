@@ -13,10 +13,58 @@ export default function BottomBar() {
     addResponse,
     setErrorMessage,
     clearResponses,
-    updateVariantHistory
+    updateVariantHistory,
+    promptNames,
+    setPromptNames
   } = useData()
 
   const { user } = useContext(AuthContext)
+
+  async function savePrompt() {
+    try {
+      let response = await fetch("/api/storePromptName", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userID: user.uid,
+          promptName: currentPrompt.promptName,
+          promptID: currentPrompt.promptID
+        })
+      })
+
+      if (!response.ok) {
+        console.error("Failed to store promptName.")
+      }
+
+      response = await fetch("/api/storePromptData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          variants: currentPrompt.variants,
+          promptID: currentPrompt.promptID,
+          hasGeneratedName: currentPrompt.hasGeneratedName
+        })
+      })
+
+      if (!response.ok) {
+        console.error("Failed to store promptData.")
+      }
+
+      const updatedPromptNames = promptNames.map((item) => {
+        if (item.promptID === currentPrompt.promptID) {
+          return { ...item, promptName: currentPrompt.promptName }
+        }
+        return item
+      })
+      setPromptNames(updatedPromptNames)
+    } catch (error) {
+      console.error("Error saving prompt:", error)
+    }
+  }
 
   // returns true if a put was successful, else returns false
   const handlePut = async (followByRun) => {
@@ -54,6 +102,7 @@ export default function BottomBar() {
     if (queuePut !== "") {
       put(queuePut)
       setQueuePut("")
+      setQueueSave(true)
     }
   }, [queuePut])
 
@@ -73,8 +122,17 @@ export default function BottomBar() {
       clearResponses()
       run()
       setQueueRun(false)
+      setQueueSave(true)
     }
   }, [queueRun])
+
+  const [queueSave, setQueueSave] = useState(false)
+  useEffect(() => {
+    if (queueSave) {
+      savePrompt()
+      setQueueSave(false)
+    }
+  }, [queueSave])
 
   const isInputEmpty = () => {
     return (
