@@ -1,6 +1,6 @@
 import "./SideBar.css"
 import Image from "next/image"
-import { useState, useContext, useEffect } from "react"
+import { useState, useContext } from "react"
 import { useData } from "%/DataContext"
 import AuthContext from "%/authContext"
 import PromptTitles from "@/molecules/SideBar/PromptTitles"
@@ -19,43 +19,10 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
 
   //TODO: ADD LOADING SPINNER THAT SHOWS WHEN WE TRY TO DELETE A PROMPT
 
-  console.log("Prompt Names", promptNames)
   const pastPrompts = promptNames.filter(
     (item) => item.promptID !== currentPrompt.promptID
   )
-  // console.log("pastPrompts", pastPrompts)
   const [editingIndex, setEditingIndex] = useState(-1)
-  const [queuePromptNames, setQueuePromptNames] = useState([false, null])
-  const [queueLoadPrompt, setQueueLoadPrompt] = useState(null)
-
-  useEffect(() => {
-    console.log("queuePromptNames", queuePromptNames)
-    if (queuePromptNames[1] !== null) {
-      if (queuePromptNames[0]) {
-        setPromptNames([
-          ...promptNames,
-          {
-            promptID: currentPrompt.promptID,
-            promptName: currentPrompt.promptName
-          }
-        ])
-      }
-      setQueueLoadPrompt(queuePromptNames[1])
-    }
-  }, [queuePromptNames])
-
-  useEffect(() => {
-    console.log("queueLoadPrompt", queueLoadPrompt)
-    if (queueLoadPrompt === "newPrompt") {
-      initializeNewPrompt()
-      toggleSidebar()
-    } else if (queueLoadPrompt !== null) {
-      setCurrentPrompt(queueLoadPrompt)
-      toggleSidebar()
-    }
-    setQueuePromptNames([false, null])
-    setQueueLoadPrompt(null)
-  }, [queueLoadPrompt])
 
   /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptNames. Open a new prompt. */
   async function openNewPrompt() {
@@ -66,15 +33,18 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
       )
 
       if (existingIndex === -1) {
-        setQueuePromptNames([true, "newPrompt"])
-      } else {
-        setQueuePromptNames([false, "newPrompt"])
+        setPromptNames([
+          ...promptNames,
+          {
+            promptID: currentPrompt.promptID,
+            promptName: currentPrompt.promptName
+          }
+        ])
       }
     } else {
       console.log("Current Prompt is empty, no need to save")
-      setQueuePromptNames([false, "newPrompt"])
     }
-    // initializeNewPrompt()
+    initializeNewPrompt()
   }
 
   /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptNames.
@@ -92,7 +62,6 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
     } else {
       data = await response.json()
     }
-    console.log("The data is, ", data)
     if (!isCurrentPromptEmpty()) {
       await savePrompt()
       const existingIndex = promptNames.findIndex(
@@ -107,14 +76,11 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
             promptName: currentPrompt.promptName
           }
         ])
-        setCurrentPrompt({ ...data, promptName: promptName })
-      } else {
-        setCurrentPrompt({ ...data, promptName: promptName })
       }
     } else {
       console.log("Current Prompt is empty, no need to save")
-      setCurrentPrompt({ ...data, promptName: promptName })
     }
+    setCurrentPrompt({ ...data, promptName: promptName })
   }
 
   /* Deletes the prompt from promptNames state, the firebase db, and firebase storage */
@@ -178,7 +144,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
           className="newPromptButton"
           onClick={() => {
             openNewPrompt()
-            // toggleSidebar()
+            toggleSidebar()
           }}
         >
           New Prompt
