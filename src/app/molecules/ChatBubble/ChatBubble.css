@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans&display=swap");
+
 .bubble-container {
   width: 100%;
   display: flex;
@@ -21,9 +23,10 @@
 
 .chatBubble {
   box-sizing: border-box;
-  background-color: #d9d9d9;
+  background-color: #e8e8e8;
   border: none;
   color: black;
+  font-family: Kumbh Sans;
   padding: 0.5rem 0.5rem;
   border-radius: 0.75rem;
   font-size: 0.65rem;

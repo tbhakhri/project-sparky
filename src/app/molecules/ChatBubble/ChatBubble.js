@@ -84,7 +84,7 @@ export default function ChatBubble({ isCurrent, initialText, index, variant }) {
         onKeyDown={handleKeyDown}
         disabled={!isEditable}
         className="chatBubble"
-        style={{ backgroundColor: isEditable ? "#a5bcf6" : "#d9d9d9" }}
+        style={{ backgroundColor: isEditable ? "#a5bcf6" : "#e8e8e8" }}
       />
     </div>
   )
