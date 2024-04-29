@@ -178,6 +178,14 @@ export default function BottomBar() {
     }
   }
 
+  const handleAudioSelect = (e) => {
+    // const files = e.target.files
+    // if (files && files.length > 0) {
+    //   const latestFile = files[files.length - 1]
+    //   setImages((prev) => [...prev, latestFile])
+    // }
+  }
+
   const handleDeleteImage = (index) => {
     setImages((prev) => prev.filter((_, currIndex) => currIndex !== index))
   }
@@ -252,12 +260,21 @@ export default function BottomBar() {
             />
           </div>
           <div className="bottom_icon_positioning">
-            <Image
-              src="/microphone.svg"
-              alt="microphone"
-              className="icon"
-              width={10}
-              height={10}
+            <label htmlFor="audioInput">
+              <Image
+                src="/microphone.svg"
+                alt="microphone"
+                className="icon"
+                width={10}
+                height={10}
+              />
+            </label>
+            <input
+              type="file"
+              id="audioInput"
+              accept="audio/*"
+              style={{ display: "none" }}
+              onChange={handleAudioSelect}
             />
           </div>
         </div>
