@@ -23,6 +23,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
     (item) => item.promptID !== currentPrompt.promptID
   )
   const [editingIndex, setEditingIndex] = useState(-1)
+  const [isLoading, setIsLoading] = useState(false)
 
   /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptNames. Open a new prompt. */
   async function openNewPrompt() {
@@ -86,6 +87,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
   /* Deletes the prompt from promptNames state, the firebase db, and firebase storage */
   async function deletePrompt(promptID) {
     try {
+      setIsLoading(true)
       const response = await fetch("/api/deletePrompt", {
         method: "POST",
         headers: {
@@ -106,6 +108,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
       setPromptNames((prev) =>
         prev.filter((item, _) => item.promptID !== promptID)
       )
+      setIsLoading(false)
     } catch (error) {
       console.error("Error calling deletePrompt API:", error)
     }
@@ -156,6 +159,11 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
       </div>
       <div className="pastPromptContainer">
         <div className="promptHeaderText">Past Prompts</div>
+        <div
+          className="loader"
+          style={{ display: isLoading ? "block" : "none" }}
+        ></div>
+
         {pastPrompts.map((item, index) => (
           <div key={item.promptID} className="promptItemContainer">
             <PromptTitles
@@ -182,6 +190,8 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
 
             <button
               onClick={() => {
+                document.getElementById(item.promptID).style.color =
+                  "rgba(255,255,255,0.7)"
                 deletePrompt(item.promptID)
               }}
               className="deletePromptButton"

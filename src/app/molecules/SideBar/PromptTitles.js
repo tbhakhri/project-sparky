@@ -86,6 +86,7 @@ export default function PromptTitles({
     <input
       ref={inputRef}
       value={title}
+      id={promptID}
       onChange={handleEdit}
       onKeyDown={handleKeyDown}
       onBlur={commitEdit}
@@ -94,7 +95,7 @@ export default function PromptTitles({
       autoFocus
     />
   ) : (
-    <div onClick={handleTitleClick} className="promptItem">
+    <div onClick={handleTitleClick} className="promptItem" id={promptID}>
       {title}
     </div>
   )
