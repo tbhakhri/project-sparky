@@ -3,8 +3,8 @@ import { ref, getBlob } from "firebase/storage"
 
 /* Given the filePath to the image that's stored on the cloud, return a part */
 export async function filePathToPart(filePath) {
-  const imgRef = ref(storage, filePath)
-  const blob = await getBlob(imgRef)
+  const fileRef = ref(storage, filePath)
+  const blob = await getBlob(fileRef)
   const dataURL = await blobToDataURL(blob)
   return dataURLToPart(dataURL)
 }
@@ -57,7 +57,7 @@ export function generatePromptID() {
   return generateRandomID(24)
 }
 
-export function generateImageID() {
+export function generateFileID() {
   return generateRandomID(16)
 }
 
@@ -117,5 +117,15 @@ async function appendToParts(type, data, parts) {
       console.log("IMAGE!!!")
       parts.push(await filePathToPart(data))
       return
+  }
+}
+
+export function determineFileType(typeString) {
+  if (typeString.startsWith("image/")) {
+    return "image"
+  } else if (typeString.startsWith("audio/")) {
+    return "audio"
+  } else {
+    return "unknown"
   }
 }

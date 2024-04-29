@@ -4,8 +4,8 @@ import React, { createContext, useState, useContext } from "react"
 import {
   filePathToPart,
   generatePromptID,
-  generateImageID,
-  constructChatHistory
+  constructChatHistory,
+  generateFileID
 } from "%/utils"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { storage } from "%/config"
@@ -98,34 +98,36 @@ export const DataProvider = ({ children }) => {
     })
   }
 
-  /* For the currentVariant, pushes an array of images to the requestChain. */
-  async function pushImages(userID, images) {
+  /* For the currentVariant, pushes an array of files to currentRequest. */
+  async function pushFiles(userID, files) {
     try {
       const newVariants = [...currentPrompt.variants]
       const targetVariant = { ...newVariants[currentPrompt.currentVariant] }
 
-      const convertedImages = await Promise.all(
-        images.map(async (image) => {
-          const filePath = `${userID}/${currentPrompt.promptID}/${generateImageID()}`
-          const imageRef = ref(storage, filePath)
+      const convertedFiles = await Promise.all(
+        files.map(async ([fileType, file]) => {
+          console.log("this is the file " + file)
+          console.log("this is the file type " + fileType)
+          const filePath = `${userID}/${currentPrompt.promptID}/${generateFileID()}`
+          const fileRef = ref(storage, filePath)
           try {
-            await uploadBytes(imageRef, image)
-            return new Node("image", filePath)
+            await uploadBytes(fileRef, file)
+            return new Node(fileType, filePath)
           } catch (error) {
-            console.error("Error uploading image:", error)
+            console.error("Error uploading file:", error)
           }
         })
       )
 
       targetVariant.currentRequests = [
         ...targetVariant.currentRequests,
-        ...convertedImages
+        ...convertedFiles
       ]
       newVariants[currentPrompt.currentVariant] = targetVariant
 
       setCurrentPrompt({ ...currentPrompt, variants: newVariants })
     } catch (error) {
-      console.error("Error processing images:", error)
+      console.error("Error processing files:", error)
     }
   }
 
@@ -204,7 +206,17 @@ export const DataProvider = ({ children }) => {
         }
       })
     )
-    const msg = textParts.concat(imageParts)
+    const audioNodes = nodeList.filter((node) => node.type === "audio")
+    const audioParts = await Promise.all(
+      audioNodes.map(async (node) => {
+        try {
+          return await filePathToPart(node.data)
+        } catch (error) {
+          console.error("Error downloading audio:", error)
+        }
+      })
+    )
+    const msg = textParts.concat(imageParts).concat(audioParts)
     console.log("msg: ", msg)
 
     let generatedName = ""
@@ -389,7 +401,7 @@ export const DataProvider = ({ children }) => {
         setErrorMessage,
         closeErrorBox,
         pushUserText,
-        pushImages,
+        pushFiles,
         deleteRequest,
         editRequestText,
         addResponse,

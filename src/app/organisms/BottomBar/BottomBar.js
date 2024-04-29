@@ -4,12 +4,13 @@ import Image from "next/image"
 import { useState, useEffect, useContext } from "react"
 import { useData } from "%/DataContext"
 import AuthContext from "%/authContext"
+import { determineFileType } from "%/utils"
 
 export default function BottomBar() {
   const {
     currentPrompt,
     pushUserText,
-    pushImages,
+    pushFiles,
     addResponse,
     setErrorMessage,
     clearResponses,
@@ -80,7 +81,7 @@ export default function BottomBar() {
   async function put(followByRun) {
     let didPut = false
     if (!isImagesEmpty()) {
-      await pushImages(user.uid, images)
+      await pushFiles(user.uid, files)
       didPut = true
     }
     if (!isTextEmpty()) {
@@ -143,13 +144,13 @@ export default function BottomBar() {
 
   /* BOTTOMINPUTBAR STATE */
   const [text, setText] = useState("")
-  const [images, setImages] = useState([])
+  const [files, setFiles] = useState([])
 
   const isTextEmpty = () => {
     return text.length === 0
   }
   const isImagesEmpty = () => {
-    return images.length === 0
+    return files.length === 0
   }
 
   useEffect(() => {
@@ -158,36 +159,33 @@ export default function BottomBar() {
     if (mainContainer) {
       mainContainer.style.height = `auto`
     }
-  }, [images, text])
+  }, [files, text])
 
   const clearInputs = () => {
     setText("")
     document.querySelector(".text_container_text").value = ""
-    setImages([])
+    setFiles([])
   }
 
   const handleInputChange = (e) => {
     setText(e.target.value)
   }
 
-  const handleImageSelect = (e) => {
+  const handleFileSelect = (e) => {
     const files = e.target.files
     if (files && files.length > 0) {
       const latestFile = files[files.length - 1]
-      setImages((prev) => [...prev, latestFile])
+      const fileType = determineFileType(latestFile.type)
+      if (fileType === "unknown") {
+        setErrorMessage(
+          "File Type is not allowed. Note that for audio inputs you cannot upload video"
+        )
+      } else [setFiles((prev) => [...prev, [fileType, latestFile]])]
     }
   }
 
-  const handleAudioSelect = (e) => {
-    // const files = e.target.files
-    // if (files && files.length > 0) {
-    //   const latestFile = files[files.length - 1]
-    //   setImages((prev) => [...prev, latestFile])
-    // }
-  }
-
-  const handleDeleteImage = (index) => {
-    setImages((prev) => prev.filter((_, currIndex) => currIndex !== index))
+  const handleDeleteFile = (index) => {
+    setFiles((prev) => prev.filter((_, currIndex) => currIndex !== index))
   }
 
   return (
@@ -215,19 +213,23 @@ export default function BottomBar() {
           </button>
         </div>
         <div className="image_preview_container">
-          {images.map((imageFile, index) => (
+          {files.map(([fileType, file], index) => (
             <div key={index} className="image_preview">
               <Image
                 className="image_preview_img"
-                src={URL.createObjectURL(imageFile)}
-                alt={`Uploaded image ${index + 1}`}
+                src={
+                  fileType === "image"
+                    ? URL.createObjectURL(file)
+                    : "/audio-waves.svg"
+                }
+                alt={`Uploaded file ${index + 1}`}
                 width={50}
                 height={50}
                 objectFit="cover"
               />
               <button
-                onClick={() => handleDeleteImage(index)}
-                className="delete_image_button"
+                onClick={() => handleDeleteFile(index)}
+                className="delete_file_button"
               >
                 <Image
                   src="/x-button.svg"
@@ -256,7 +258,7 @@ export default function BottomBar() {
               id="imageInput"
               accept="image/*"
               style={{ display: "none" }}
-              onChange={handleImageSelect}
+              onChange={handleFileSelect}
             />
           </div>
           <div className="bottom_icon_positioning">
@@ -274,7 +276,7 @@ export default function BottomBar() {
               id="audioInput"
               accept="audio/*"
               style={{ display: "none" }}
-              onChange={handleAudioSelect}
+              onChange={handleFileSelect}
             />
           </div>
         </div>

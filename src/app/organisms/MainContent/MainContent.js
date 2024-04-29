@@ -2,6 +2,7 @@ import "./MainContent.css"
 import ChatBubble from "@/molecules/ChatBubble/ChatBubble"
 import ModelBubble from "@/molecules/ChatBubble/ModelBubble"
 import ImageBubble from "@/molecules/ChatBubble/ImageBubble"
+import AudioBubble from "@/molecules/ChatBubble/AudioBubble"
 import { useData } from "%/DataContext"
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 
@@ -13,6 +14,8 @@ export default function MainContent() {
     copyVariant,
     isCurrentPromptEmpty
   } = useData()
+
+  console.log("currentPrompt", currentPrompt)
 
   const renderBubble = (isCurrent, item, requestIndex, variantIndex) => {
     switch (item.type) {
@@ -36,6 +39,15 @@ export default function MainContent() {
             variant={variantIndex}
           />
         )
+      case "audio":
+        return (
+          <AudioBubble
+            key={requestIndex}
+            isCurrent={isCurrent}
+            index={requestIndex}
+            variant={variantIndex}
+          />
+        )
       case "modelText":
         return (
           <div key={requestIndex} className="modelContainer">
@@ -46,7 +58,6 @@ export default function MainContent() {
         return null
     }
   }
-  // console.log('test2:', currentPrompt)
   return (
     <div className="mainContentContainer">
       {isCurrentPromptEmpty() ? (
