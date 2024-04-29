@@ -106,8 +106,6 @@ export const DataProvider = ({ children }) => {
 
       const convertedFiles = await Promise.all(
         files.map(async ([fileType, file]) => {
-          console.log("this is the file " + file)
-          console.log("this is the file type " + fileType)
           const filePath = `${userID}/${currentPrompt.promptID}/${generateFileID()}`
           const fileRef = ref(storage, filePath)
           try {

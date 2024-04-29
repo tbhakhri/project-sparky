@@ -114,7 +114,6 @@ async function appendToParts(type, data, parts) {
       parts.push({ text: data })
       return
     case "image":
-      console.log("IMAGE!!!")
       parts.push(await filePathToPart(data))
       return
   }

@@ -15,8 +15,6 @@ export default function MainContent() {
     isCurrentPromptEmpty
   } = useData()
 
-  console.log("currentPrompt", currentPrompt)
-
   const renderBubble = (isCurrent, item, requestIndex, variantIndex) => {
     switch (item.type) {
       case "text":

@@ -21,11 +21,10 @@ export async function GET(request) {
       })
     }
 
-    const result = snapshot.data().variants
     return new Response(
       JSON.stringify({
         promptID: promptID,
-        variants: result,
+        ...snapshot.data(),
         currentVariant: 0
       }),
       {
