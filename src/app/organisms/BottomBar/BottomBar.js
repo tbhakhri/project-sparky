@@ -154,11 +154,10 @@ export default function BottomBar() {
             <span>Put</span>
           </button>
         </div>
-        <div className="image_preview_container">
+        <div className="file_preview_container">
           {files.map(([fileType, file], index) => (
-            <div key={index} className="image_preview">
+            <div key={index} className="file_preview">
               <Image
-                className="image_preview_img"
                 src={
                   fileType === "image"
                     ? URL.createObjectURL(file)

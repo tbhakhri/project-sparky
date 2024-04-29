@@ -95,7 +95,7 @@
   margin-bottom: 5%;
 }
 
-.promptItem2 {
+.promptItemCurrent {
   flex: 1;
   padding: 3%;
   padding-left: 5%;
@@ -117,16 +117,16 @@
   border: none;
   background-color: transparent;
   width: 100%;
-  height: auto; /* Set a fixed height for one line */
+  height: auto;
   overflow: hidden;
   padding: none;
   margin: none;
 }
 
 .promptTextArea:focus {
-  outline: none; /* Remove the default focus outline */
-  border-color: transparent; /* Highlight border on focus, change the color as needed */
-  background-color: transparent; /* Change background to white on focus */
+  outline: none;
+  border-color: transparent;
+  background-color: transparent;
 }
 
 .icon {

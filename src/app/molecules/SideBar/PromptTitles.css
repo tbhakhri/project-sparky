@@ -3,58 +3,57 @@
   flex-direction: horizontal;
   width: 100%;
   height: auto;
-  border-bottom: 1px solid #DCDCDC;
+  border-bottom: 1px solid #dcdcdc;
 }
 
-
 .promptItem {
-    flex: 0.875;
-    padding: 5%;
-    padding-left: 4%;
-    padding-right: 2%;
-    border: none;
-    border-radius: 0px;
-    background-color: transparent;
-    color: white;
-    font-family: 'Kumbh Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 100 !important; 
-    height: auto;
-    resize: none;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }  
+  flex: 0.875;
+  padding: 5%;
+  padding-left: 4%;
+  padding-right: 2%;
+  border: none;
+  border-radius: 0px;
+  background-color: transparent;
+  color: white;
+  font-family: "Kumbh Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 100 !important;
+  height: auto;
+  resize: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  .promptItem:focus {
-    outline: none; /* Remove the default focus outline */
-    border-color: transparent; /* Highlight border on focus, change the color as needed */
-    background-color: transparent; /* Change background to white on focus */
-  }
-  
-  .promptTextArea{
-    color: white;
-    font-family: 'Kumbh Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 100 !important; 
-    resize: none;
-    border: none;
-    background-color: transparent;
-    width: 100%;
-    height: auto; /* Set a fixed height for one line */
-    overflow: hidden;
-    padding: none;
-    margin: none;
-  }
-  
-  .promptTextArea:focus {
-    outline: none; /* Remove the default focus outline */
-    border-color: transparent; /* Highlight border on focus, change the color as needed */
-    background-color: transparent; /* Change background to white on focus */
-  }
+.promptItem:focus {
+  outline: none;
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.promptTextArea {
+  color: white;
+  font-family: "Kumbh Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 100 !important;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  padding: none;
+  margin: none;
+}
+
+.promptTextArea:focus {
+  outline: none;
+  border-color: transparent;
+  background-color: transparent;
+}
 
 .editPromptButton {
-  flex: 0.1 ;
+  flex: 0.1;
   position: center;
   background: transparent;
   border: none;
@@ -66,18 +65,17 @@
 }
 
 .deletePromptButton {
-    flex: 0.1;
-    position: center;
-    height: auto;
-    width: auto;
-    top: 2px;
-    right: 2px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
+  flex: 0.1;
+  position: center;
+  height: auto;
+  width: auto;
+  top: 2px;
+  right: 2px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
-

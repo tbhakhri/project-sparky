@@ -159,7 +159,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
       </div>
       <div className="currentPromptContainer">
         <div className="promptHeaderText">Current Prompt</div>
-        <div className="promptItem2">{currentPrompt.promptName}</div>
+        <div className="promptItemCurrent">{currentPrompt.promptName}</div>
       </div>
       <div className="pastPromptContainer">
         <div className="promptHeaderText">Past Prompts</div>
