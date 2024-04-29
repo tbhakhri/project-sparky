@@ -52,7 +52,10 @@ export const DataProvider = ({ children }) => {
     setErrorMessage("")
   }
 
+  /* When true, triggers current prompt to be saved in firestore. */
   const [queueSave, setQueueSave] = useState(false)
+  /* When true, means that data is currently being retrieved from firestore, to be stored in currentPrompt. */
+  const [isCurrentPromptLoading, setIsCurrentPromptLoading] = useState(false)
 
   const [currentPrompt, setCurrentPrompt] = useState({
     promptID: generatePromptID(),
@@ -65,6 +68,7 @@ export const DataProvider = ({ children }) => {
 
   /** FUNCTIONS **/
 
+  /* Uses the Gemini API to generate a short prompt name based on the specified input msg */
   async function generateTitle(msg) {
     try {
       const prompt = [
@@ -400,11 +404,13 @@ export const DataProvider = ({ children }) => {
         isResponseLoading,
         errorMessage,
         queueSave,
+        isCurrentPromptLoading,
         setCurrentPrompt,
         setPromptNames,
         setApiKey,
         setErrorMessage,
         setQueueSave,
+        setIsCurrentPromptLoading,
         closeErrorBox,
         pushUserText,
         pushFiles,

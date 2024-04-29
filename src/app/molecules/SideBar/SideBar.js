@@ -1,4 +1,5 @@
 import "./SideBar.css"
+import styles from "@/page.module.css"
 import Image from "next/image"
 import { useState, useContext } from "react"
 import { useData } from "%/DataContext"
@@ -14,10 +15,9 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
     promptNames,
     setPromptNames,
     isCurrentPromptEmpty,
-    initializeNewPrompt
+    initializeNewPrompt,
+    setIsCurrentPromptLoading
   } = useData()
-
-  //TODO: ADD LOADING SPINNER THAT SHOWS WHEN WE TRY TO DELETE A PROMPT
 
   const pastPrompts = promptNames.filter(
     (item) => item.promptID !== currentPrompt.promptID
@@ -27,6 +27,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
 
   /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptNames. Open a new prompt. */
   async function openNewPrompt() {
+    setIsCurrentPromptLoading(true)
     if (!isCurrentPromptEmpty()) {
       await savePrompt()
       const existingIndex = promptNames.findIndex(
@@ -46,11 +47,13 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
       console.log("Current Prompt is empty, no need to save")
     }
     initializeNewPrompt()
+    setIsCurrentPromptLoading(false)
   }
 
   /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptNames.
    Loads the selected prompt into currentPrompt. */
   async function selectPrompt(promptID, promptName) {
+    setIsCurrentPromptLoading(true)
     // fetch prompt data and set it
     let data = null
     const url = new URL("/api/getPromptData", window.location.origin)
@@ -82,6 +85,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
       console.log("Current Prompt is empty, no need to save")
     }
     setCurrentPrompt({ ...data, promptName: promptName })
+    setIsCurrentPromptLoading(false)
   }
 
   /* Deletes the prompt from promptNames state, the firebase db, and firebase storage */
@@ -160,7 +164,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
       <div className="pastPromptContainer">
         <div className="promptHeaderText">Past Prompts</div>
         <div
-          className="loader"
+          className={styles.loader}
           style={{ display: isLoading ? "block" : "none" }}
         ></div>
 

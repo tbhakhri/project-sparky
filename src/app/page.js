@@ -141,8 +141,8 @@ export default function App() {
                     />
                   )}
                   <TopBar toggleSidebar={toggleSidebar} />
-                  <MainContent savePrompt={savePrompt} />
-                  <BottomBar savePrompt={savePrompt} />
+                  <MainContent />
+                  <BottomBar />
                 </div>
               ) : (
                 <div>Loading...</div>

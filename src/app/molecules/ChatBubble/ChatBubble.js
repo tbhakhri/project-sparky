@@ -3,20 +3,9 @@ import Image from "next/image"
 import { useData } from "%/DataContext"
 import { useState, useRef, useEffect } from "react"
 
-export default function ChatBubble({
-  isCurrent,
-  initialText,
-  index,
-  variant,
-  savePrompt
-}) {
-  const {
-    editRequestText,
-    deleteRequest,
-    clearResponses,
-    queueSave,
-    setQueueSave
-  } = useData()
+export default function ChatBubble({ isCurrent, initialText, index, variant }) {
+  const { editRequestText, deleteRequest, clearResponses, setQueueSave } =
+    useData()
 
   const [text, setText] = useState(initialText)
   const [isEditable, setIsEditable] = useState(false)

@@ -1,4 +1,5 @@
 import "./MainContent.css"
+import styles from "@/page.module.css"
 import ChatBubble from "@/molecules/ChatBubble/ChatBubble"
 import ModelBubble from "@/molecules/ChatBubble/ModelBubble"
 import ImageBubble from "@/molecules/ChatBubble/ImageBubble"
@@ -6,13 +7,14 @@ import AudioBubble from "@/molecules/ChatBubble/AudioBubble"
 import { useData } from "%/DataContext"
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 
-export default function MainContent({ savePrompt }) {
+export default function MainContent() {
   const {
     isResponseLoading,
     currentPrompt,
     setCurrentVariant,
     copyVariant,
-    isCurrentPromptEmpty
+    isCurrentPromptEmpty,
+    isCurrentPromptLoading
   } = useData()
 
   const renderBubble = (isCurrent, item, requestIndex, variantIndex) => {
@@ -25,7 +27,6 @@ export default function MainContent({ savePrompt }) {
             initialText={item.data}
             index={requestIndex}
             variant={variantIndex}
-            savePrompt={savePrompt}
           />
         )
       case "image":
@@ -36,7 +37,6 @@ export default function MainContent({ savePrompt }) {
             imageURL={item.data}
             index={requestIndex}
             variant={variantIndex}
-            savePrompt={savePrompt}
           />
         )
       case "audio":
@@ -46,7 +46,6 @@ export default function MainContent({ savePrompt }) {
             isCurrent={isCurrent}
             index={requestIndex}
             variant={variantIndex}
-            savePrompt={savePrompt}
           />
         )
       case "modelText":
@@ -59,6 +58,7 @@ export default function MainContent({ savePrompt }) {
         return null
     }
   }
+  console.log("isCurrentPromptLoading", isCurrentPromptLoading)
   return (
     <div className="mainContentContainer">
       {isCurrentPromptEmpty() ? (
@@ -67,6 +67,10 @@ export default function MainContent({ savePrompt }) {
             <DefaultScreen />
           </div>
         </>
+      ) : isCurrentPromptLoading ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div className={styles.loader}></div>
+        </div>
       ) : (
         <>
           {currentPrompt.variants.map((variant, variantIndex) => (

@@ -6,7 +6,7 @@ import { useData } from "%/DataContext"
 import AuthContext from "%/authContext"
 import { determineFileType } from "%/utils"
 
-export default function BottomBar({ savePrompt }) {
+export default function BottomBar() {
   const {
     currentPrompt,
     pushUserText,
