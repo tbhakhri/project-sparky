@@ -1,14 +1,23 @@
 import "./ChatBubble.css"
 import Image from "next/image"
 import { useData } from "%/DataContext"
+import { useState } from "react"
 
-export default function AudioBubble({ isCurrent, index, variant }) {
+export default function AudioBubble({ isCurrent, index, variant, savePrompt }) {
   const { deleteRequest, clearResponses } = useData()
 
   const handleDelete = (e) => {
     deleteRequest(variant, index)
     clearResponses()
+    setQueueSave(true)
   }
+  const [queueSave, setQueueSave] = useState(false)
+  useEffect(() => {
+    if (queueSave) {
+      savePrompt()
+      setQueueSave(false)
+    }
+  }, [queueSave])
 
   return (
     <div className="bubble-container">

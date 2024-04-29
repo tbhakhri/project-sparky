@@ -5,12 +5,19 @@ import { storage } from "%/config"
 import { useState, useEffect } from "react"
 import { ref, getDownloadURL } from "firebase/storage"
 
-export default function ImageBubble({ isCurrent, imageURL, index, variant }) {
+export default function ImageBubble({
+  isCurrent,
+  imageURL,
+  index,
+  variant,
+  savePrompt
+}) {
   const { deleteRequest, clearResponses } = useData()
 
   const handleDelete = (e) => {
     deleteRequest(variant, index)
     clearResponses()
+    setQueueSave(true)
   }
 
   const [imageDataUrl, setImageDataUrl] = useState("")
@@ -31,6 +38,14 @@ export default function ImageBubble({ isCurrent, imageURL, index, variant }) {
 
     return () => {}
   }, [imageURL])
+
+  const [queueSave, setQueueSave] = useState(false)
+  useEffect(() => {
+    if (queueSave) {
+      savePrompt()
+      setQueueSave(false)
+    }
+  }, [queueSave])
 
   return (
     <>

@@ -52,6 +52,8 @@ export const DataProvider = ({ children }) => {
     setErrorMessage("")
   }
 
+  const [queueSave, setQueueSave] = useState(false)
+
   const [currentPrompt, setCurrentPrompt] = useState({
     promptID: generatePromptID(),
     promptName: "New Prompt",
@@ -80,6 +82,7 @@ export const DataProvider = ({ children }) => {
 
   /* For the currentVariant, pushes text to the requestChain. */
   async function pushUserText(text) {
+    setQueueSave(true)
     setCurrentPrompt((prevData) => {
       const newVariants = [...prevData.variants]
 
@@ -123,6 +126,7 @@ export const DataProvider = ({ children }) => {
       ]
       newVariants[currentPrompt.currentVariant] = targetVariant
 
+      setQueueSave(true)
       setCurrentPrompt({ ...currentPrompt, variants: newVariants })
     } catch (error) {
       console.error("Error processing files:", error)
@@ -131,6 +135,7 @@ export const DataProvider = ({ children }) => {
 
   /* For the specified variant, deletes a request node/bubble at the specified index. */
   function deleteRequest(variant, index) {
+    setQueueSave(true)
     setCurrentPrompt((prevData) => {
       const newVariants = [...prevData.variants]
 
@@ -151,6 +156,7 @@ export const DataProvider = ({ children }) => {
 
   /* For the specified variant, deletes a request node/bubble at the specified index. */
   function editRequestText(variant, index, newText) {
+    setQueueSave(true)
     setCurrentPrompt((prevData) => {
       const newVariants = [...prevData.variants]
 
@@ -225,6 +231,7 @@ export const DataProvider = ({ children }) => {
     try {
       const result = await chat.sendMessage(msg)
       console.log(result)
+      setQueueSave(true)
       setCurrentPrompt((prevData) => {
         const newVariants = [...prevData.variants]
 
@@ -382,7 +389,6 @@ export const DataProvider = ({ children }) => {
       hasGeneratedName: false
     })
   }
-
   /** END FUNCTIONS **/
 
   return (
@@ -393,10 +399,12 @@ export const DataProvider = ({ children }) => {
         apiKey,
         isResponseLoading,
         errorMessage,
+        queueSave,
         setCurrentPrompt,
         setPromptNames,
         setApiKey,
         setErrorMessage,
+        setQueueSave,
         closeErrorBox,
         pushUserText,
         pushFiles,

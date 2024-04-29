@@ -1,13 +1,22 @@
-import { Kumbh_Sans } from "next/font/google"
 import "./ChatBubble.css"
 import Image from "next/image"
 import { useData } from "%/DataContext"
 import { useState, useRef, useEffect } from "react"
 
-const kumbh_sans = Kumbh_Sans({ subsets: ["latin"] })
-
-export default function ChatBubble({ isCurrent, initialText, index, variant }) {
-  const { editRequestText, deleteRequest, clearResponses } = useData()
+export default function ChatBubble({
+  isCurrent,
+  initialText,
+  index,
+  variant,
+  savePrompt
+}) {
+  const {
+    editRequestText,
+    deleteRequest,
+    clearResponses,
+    queueSave,
+    setQueueSave
+  } = useData()
 
   const [text, setText] = useState(initialText)
   const [isEditable, setIsEditable] = useState(false)
@@ -39,6 +48,7 @@ export default function ChatBubble({ isCurrent, initialText, index, variant }) {
     editRequestText(variant, index, inputRef.current.value)
     setIsEditable(false)
     clearResponses()
+    setQueueSave(true)
   }
 
   const inputRef = useRef(null)

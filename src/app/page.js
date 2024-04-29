@@ -19,7 +19,15 @@ export default function App() {
     setIsSidebar(!isSidebar)
   }
 
-  let { apiKey, setApiKey, setPromptNames } = useData()
+  const {
+    currentPrompt,
+    apiKey,
+    setApiKey,
+    promptNames,
+    setPromptNames,
+    queueSave,
+    setQueueSave
+  } = useData()
 
   /* SETTING PROPER SCREEN HEIGHT FOR MOBILE DEVICES */
   const setHeight = () => {
@@ -33,6 +41,53 @@ export default function App() {
       setHeight()
     }
   }, [])
+
+  async function savePrompt() {
+    console.log("calling savePrompt")
+    try {
+      let response = await fetch("/api/storePromptName", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userID: user.uid,
+          promptName: currentPrompt.promptName,
+          promptID: currentPrompt.promptID
+        })
+      })
+
+      if (!response.ok) {
+        console.error("Failed to store promptName.")
+      }
+
+      response = await fetch("/api/storePromptData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          variants: currentPrompt.variants,
+          promptID: currentPrompt.promptID,
+          hasGeneratedName: currentPrompt.hasGeneratedName
+        })
+      })
+
+      if (!response.ok) {
+        console.error("Failed to store promptData.")
+      }
+
+      const updatedPromptNames = promptNames.map((item) => {
+        if (item.promptID === currentPrompt.promptID) {
+          return { ...item, promptName: currentPrompt.promptName }
+        }
+        return item
+      })
+      setPromptNames(updatedPromptNames)
+    } catch (error) {
+      console.error("Error saving prompt:", error)
+    }
+  }
 
   useEffect(() => {
     async function fetchKeyAndPromptNames() {
@@ -63,18 +118,13 @@ export default function App() {
     fetchKeyAndPromptNames()
   }, [user, apiKey])
 
-  const [promptMetadata, setPromptMetadata] = useState(() => ({
-    id: generateUUID(),
-    name: "My Prompt",
-    lastModified: new Date(),
-    requestChain: [],
-    responses: []
-  }))
-
-  function generateUUID() {
-    const buffer = crypto.getRandomValues(new Uint8Array(4))
-    return buffer.toString("base64").replace(/,/g, "")
-  }
+  useEffect(() => {
+    if (queueSave) {
+      console.log("QueueSave is true")
+      savePrompt()
+      setQueueSave(false)
+    }
+  }, [queueSave])
 
   return (
     <div className={styles.pageContainer}>
@@ -84,10 +134,15 @@ export default function App() {
             <>
               {apiKey !== "" ? (
                 <div className={styles.pageContainer}>
-                  {isSidebar && <SideBar toggleSidebar={toggleSidebar} />}
+                  {isSidebar && (
+                    <SideBar
+                      toggleSidebar={toggleSidebar}
+                      savePrompt={savePrompt}
+                    />
+                  )}
                   <TopBar toggleSidebar={toggleSidebar} />
-                  <MainContent />
-                  <BottomBar />
+                  <MainContent savePrompt={savePrompt} />
+                  <BottomBar savePrompt={savePrompt} />
                 </div>
               ) : (
                 <div>Loading...</div>

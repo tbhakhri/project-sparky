@@ -6,7 +6,7 @@ import AudioBubble from "@/molecules/ChatBubble/AudioBubble"
 import { useData } from "%/DataContext"
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 
-export default function MainContent() {
+export default function MainContent({ savePrompt }) {
   const {
     isResponseLoading,
     currentPrompt,
@@ -25,6 +25,7 @@ export default function MainContent() {
             initialText={item.data}
             index={requestIndex}
             variant={variantIndex}
+            savePrompt={savePrompt}
           />
         )
       case "image":
@@ -35,6 +36,7 @@ export default function MainContent() {
             imageURL={item.data}
             index={requestIndex}
             variant={variantIndex}
+            savePrompt={savePrompt}
           />
         )
       case "audio":
@@ -44,6 +46,7 @@ export default function MainContent() {
             isCurrent={isCurrent}
             index={requestIndex}
             variant={variantIndex}
+            savePrompt={savePrompt}
           />
         )
       case "modelText":

@@ -1,12 +1,11 @@
 import "./SideBar.css"
 import Image from "next/image"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { useData } from "%/DataContext"
 import AuthContext from "%/authContext"
-
 import PromptTitles from "@/molecules/SideBar/PromptTitles"
 
-export default function SideBar({ toggleSidebar }) {
+export default function SideBar({ toggleSidebar, savePrompt }) {
   const { user } = useContext(AuthContext)
 
   const {
@@ -20,58 +19,19 @@ export default function SideBar({ toggleSidebar }) {
 
   //TODO: ADD LOADING SPINNER THAT SHOWS WHEN WE TRY TO DELETE A PROMPT
 
+  console.log("Prompt Names", promptNames)
   const pastPrompts = promptNames.filter(
     (item) => item.promptID !== currentPrompt.promptID
   )
+  // console.log("pastPrompts", pastPrompts)
   const [editingIndex, setEditingIndex] = useState(-1)
+  const [queuePromptNames, setQueuePromptNames] = useState([false, null])
+  const [queueLoadPrompt, setQueueLoadPrompt] = useState(null)
 
-  async function savePrompt() {
-    try {
-      let response = await fetch("/api/storePromptName", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          userID: user.uid,
-          promptName: currentPrompt.promptName,
-          promptID: currentPrompt.promptID
-        })
-      })
-
-      if (!response.ok) {
-        console.error("Failed to store promptName.")
-      }
-
-      response = await fetch("/api/storePromptData", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          variants: currentPrompt.variants,
-          hasGeneratedName: currentPrompt.hasGeneratedName,
-          promptID: currentPrompt.promptID
-        })
-      })
-
-      if (!response.ok) {
-        console.error("Failed to store promptData.")
-      }
-    } catch (error) {
-      console.error("Error saving prompt:", error)
-    }
-  }
-
-  /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptNames. Open a new prompt. */
-  async function openNewPrompt() {
-    if (!isCurrentPromptEmpty()) {
-      savePrompt()
-      const existingIndex = promptNames.findIndex(
-        (item) => item.promptID === currentPrompt.promptID
-      )
-
-      if (existingIndex === -1) {
+  useEffect(() => {
+    console.log("queuePromptNames", queuePromptNames)
+    if (queuePromptNames[1] !== null) {
+      if (queuePromptNames[0]) {
         setPromptNames([
           ...promptNames,
           {
@@ -80,35 +40,48 @@ export default function SideBar({ toggleSidebar }) {
           }
         ])
       }
+      setQueueLoadPrompt(queuePromptNames[1])
+    }
+  }, [queuePromptNames])
+
+  useEffect(() => {
+    console.log("queueLoadPrompt", queueLoadPrompt)
+    if (queueLoadPrompt === "newPrompt") {
+      initializeNewPrompt()
+      toggleSidebar()
+    } else if (queueLoadPrompt !== null) {
+      setCurrentPrompt(queueLoadPrompt)
+      toggleSidebar()
+    }
+    setQueuePromptNames([false, null])
+    setQueueLoadPrompt(null)
+  }, [queueLoadPrompt])
+
+  /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptNames. Open a new prompt. */
+  async function openNewPrompt() {
+    if (!isCurrentPromptEmpty()) {
+      await savePrompt()
+      const existingIndex = promptNames.findIndex(
+        (item) => item.promptID === currentPrompt.promptID
+      )
+
+      if (existingIndex === -1) {
+        setQueuePromptNames([true, "newPrompt"])
+      } else {
+        setQueuePromptNames([false, "newPrompt"])
+      }
     } else {
       console.log("Current Prompt is empty, no need to save")
+      setQueuePromptNames([false, "newPrompt"])
     }
-    initializeNewPrompt()
+    // initializeNewPrompt()
   }
 
   /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptNames.
    Loads the selected prompt into currentPrompt. */
   async function selectPrompt(promptID, promptName) {
-    if (!isCurrentPromptEmpty()) {
-      savePrompt()
-      const existingIndex = promptNames.findIndex(
-        (item) => item.promptID === currentPrompt.promptID
-      )
-
-      if (existingIndex === -1) {
-        setPromptNames([
-          ...promptNames,
-          {
-            promptID: currentPrompt.promptID,
-            promptName: currentPrompt.promptName
-          }
-        ])
-      }
-    } else {
-      console.log("Current Prompt is empty, no need to save")
-    }
-
     // fetch prompt data and set it
+    let data = null
     const url = new URL("/api/getPromptData", window.location.origin)
     url.searchParams.append("promptID", promptID)
     const response = await fetch(url.toString(), {
@@ -117,7 +90,29 @@ export default function SideBar({ toggleSidebar }) {
     if (response.status === 404) {
       console.error("No prompt found for prompt", promptID)
     } else {
-      const data = await response.json()
+      data = await response.json()
+    }
+    console.log("The data is, ", data)
+    if (!isCurrentPromptEmpty()) {
+      await savePrompt()
+      const existingIndex = promptNames.findIndex(
+        (item) => item.promptID === currentPrompt.promptID
+      )
+
+      if (existingIndex === -1) {
+        setPromptNames([
+          ...promptNames,
+          {
+            promptID: currentPrompt.promptID,
+            promptName: currentPrompt.promptName
+          }
+        ])
+        setCurrentPrompt({ ...data, promptName: promptName })
+      } else {
+        setCurrentPrompt({ ...data, promptName: promptName })
+      }
+    } else {
+      console.log("Current Prompt is empty, no need to save")
       setCurrentPrompt({ ...data, promptName: promptName })
     }
   }
@@ -142,7 +137,6 @@ export default function SideBar({ toggleSidebar }) {
       }
 
       console.log("Prompt deleted successfully")
-      // You can potentially update local state here (if needed)
       setPromptNames((prev) =>
         prev.filter((item, _) => item.promptID !== promptID)
       )
@@ -184,7 +178,7 @@ export default function SideBar({ toggleSidebar }) {
           className="newPromptButton"
           onClick={() => {
             openNewPrompt()
-            toggleSidebar()
+            // toggleSidebar()
           }}
         >
           New Prompt
