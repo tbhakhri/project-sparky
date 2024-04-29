@@ -75,16 +75,22 @@ export default function ChatBubble({ isCurrent, initialText, index, variant }) {
         </>
       )}
 
-      <textarea
-        ref={inputRef}
-        value={text}
-        onChange={handleEdit}
-        onBlur={commitEdit}
-        onKeyDown={handleKeyDown}
-        disabled={!isEditable}
+      <div
         className="chatBubble"
-        style={{ backgroundColor: isEditable ? "#a5bcf6" : "#e8e8e8" }}
-      />
+        style={{
+          backgroundColor: isEditable ? "#a5bcf6" : "#e8e8e8"
+        }}
+      >
+        <textarea
+          ref={inputRef}
+          value={text}
+          onChange={handleEdit}
+          onBlur={commitEdit}
+          onKeyDown={handleKeyDown}
+          disabled={!isEditable}
+          className="chatBubbleTextArea"
+        />
+      </div>
     </div>
   )
 }
