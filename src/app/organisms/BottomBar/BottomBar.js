@@ -6,7 +6,12 @@ import { useData } from "%/DataContext"
 import AuthContext from "%/authContext"
 import { determineFileType } from "%/utils"
 
-export default function BottomBar() {
+export default function BottomBar({
+  openVoiceRecorder,
+  blob,
+  setBlob,
+  closeVoiceRecorder
+}) {
   const {
     currentPrompt,
     pushUserText,
@@ -87,6 +92,7 @@ export default function BottomBar() {
   /* BOTTOMINPUTBAR STATE */
   const [text, setText] = useState("")
   const [files, setFiles] = useState([])
+  console.log("files", files)
 
   const isTextEmpty = () => {
     return text.length === 0
@@ -122,13 +128,23 @@ export default function BottomBar() {
         setErrorMessage(
           "File Type is not allowed. Note that for audio inputs you cannot upload video"
         )
-      } else [setFiles((prev) => [...prev, [fileType, latestFile]])]
+      } else {
+        setFiles((prev) => [...prev, [fileType, latestFile]])
+      }
     }
   }
 
   const handleDeleteFile = (index) => {
     setFiles((prev) => prev.filter((_, currIndex) => currIndex !== index))
   }
+
+  useEffect(() => {
+    if (blob !== null) {
+      setFiles((prev) => [...prev, ["audio", blob]])
+      setBlob(null)
+      closeVoiceRecorder()
+    }
+  }, [blob])
 
   return (
     <div className="bottom_bar_container">
@@ -203,7 +219,14 @@ export default function BottomBar() {
             />
           </div>
           <div className="bottom_icon_positioning">
-            <label htmlFor="audioInput">
+            <button
+              onClick={openVoiceRecorder}
+              style={{
+                border: "none",
+                cursor: "pointer",
+                background: "transparent"
+              }}
+            >
               <Image
                 src="/microphone.svg"
                 alt="microphone"
@@ -211,14 +234,7 @@ export default function BottomBar() {
                 width={10}
                 height={10}
               />
-            </label>
-            <input
-              type="file"
-              id="audioInput"
-              accept="audio/*"
-              style={{ display: "none" }}
-              onChange={handleFileSelect}
-            />
+            </button>
           </div>
         </div>
       </div>

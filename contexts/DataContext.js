@@ -81,6 +81,7 @@ export const DataProvider = ({ children }) => {
       return text
     } catch (error) {
       console.error("Error creating title for prompt: ", error)
+      throw new Error(error)
     }
   }
 
@@ -227,15 +228,20 @@ export const DataProvider = ({ children }) => {
     )
     const msg = textParts.concat(imageParts).concat(audioParts)
     console.log("msg: ", msg)
-
     let generatedName = ""
-    if (!currentPrompt.hasGeneratedName) {
-      generatedName = await generateTitle(msg)
+    try {
+      if (!currentPrompt.hasGeneratedName) {
+        generatedName = await generateTitle(msg)
+      }
+    } catch (error) {
+      console.error(error)
+      generatedName = "New Prompt"
     }
 
     try {
       const result = await chat.sendMessage(msg)
       console.log(result)
+      const responseText = result.response.text()
       setQueueSave(true)
       setCurrentPrompt((prevData) => {
         const newVariants = [...prevData.variants]
@@ -243,7 +249,7 @@ export const DataProvider = ({ children }) => {
         const targetVariant = { ...newVariants[variantIndex] }
         targetVariant.currentResponses = [
           ...targetVariant.currentResponses,
-          new Node("modelText", result.response.text())
+          new Node("modelText", responseText)
         ]
 
         newVariants[variantIndex] = targetVariant
