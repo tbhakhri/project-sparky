@@ -11,7 +11,8 @@
 }
 
 .input_container {
-  padding: 3%;
+  padding: 2%;
+  height: 100%;
   width: 83%;
  
   display: flex;
@@ -20,7 +21,6 @@
   align-items: center;
   background-color: #e8e8e8;
   border-radius: 10px;
-  padding: 5px;
 }
 
 .text_put_container {
@@ -38,7 +38,7 @@
   line-height: normal;
   background-color: rgba(0, 0, 0, 0);
   vertical-align: top;
-  margin: 5px 8px;
+  margin: 6px;
   word-wrap: break-word;
   resize: none;
   border: none;
@@ -64,8 +64,8 @@
 }
 
 .icon {
-  width: 16px !important;
-  height: 16px !important;
+  width: 20px !important;
+  height: 20px !important;
   display: inline-block;
   background-size: cover;
   fill: rgb(216, 216, 216);
@@ -77,12 +77,13 @@
   width: 100%;
   justify-content: flex-end;
   align-items: flex-end;
+  margin: 3px;
 }
 
 .bottom_icon_positioning {
   /* flex: 1; */
   text-align: center;
-  padding: 0px 5px;
+  padding: 0px 8px;
 }
 
 .file_preview_container {
@@ -131,12 +132,31 @@
 /* RUN BUTTON AREA STYLES */
 
 .runButtonContainer {
-  width: 17%;
+  width: 15%;
   display: flex;
-  margin-left: 5px;
-  justify-content: space-between;
+  flex-direction: column;
+  margin-left: 7px;
+  justify-content: center;
   align-items: center;
   background-color: #282828;
-  font-size: 0.4rem;
+  /* font-size: 0.4rem; */
   /* width: 100%; */
+}
+
+.runSparkyLogo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 0.5;
+  align-items: center;
+}
+
+.runText {
+  font-size: 0.8rem;
+  display: flex;
+  flex: 0.5;
+  flex-direction: column;
+  margin-top: 5px;
+  justify-content: center;
+  align-items: center;
 }

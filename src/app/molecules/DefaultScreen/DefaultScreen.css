@@ -21,7 +21,7 @@
   font-size: 18px;
   margin: 5px;
   font-weight: 900;
-  padding-bottom: 40%;
+  padding-bottom: 45%;
 }
 
 .introText {
@@ -30,7 +30,7 @@
   font-family: Kumbh Sans;
   align-items: center;
   /* shifts the text upwards; may need to adjust this padding-bottom */
-  padding-bottom: 40%;
+  padding-bottom: 60%;
 }
 
 .ideaBoxContainer {

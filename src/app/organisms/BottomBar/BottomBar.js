@@ -156,15 +156,15 @@ export default function BottomBar({
             placeholder="Start typing..."
           />
           <button
-            className={styles.putruniconButton}
+            className={styles.puticonButton}
             onClick={handlePut}
             style={{ flex: "0.2" }}
           >
             <Image
               src="/put.svg"
               alt="Put"
-              width={10}
-              height={10}
+              width={12}
+              height={12}
               style={{ marginRight: "5px" }}
             />
             <span>Put</span>
@@ -206,8 +206,8 @@ export default function BottomBar({
                 src="/imageLibrary.svg"
                 alt="upload image"
                 className="icon"
-                width={10}
-                height={10}
+                width={15}
+                height={15}
               />
             </label>
             <input
@@ -231,30 +231,30 @@ export default function BottomBar({
                 src="/microphone.svg"
                 alt="microphone"
                 className="icon"
-                width={10}
-                height={10}
+                width={15}
+                height={15}
               />
             </button>
           </div>
         </div>
       </div>
-
-      <div className="runButtonContainer">
-        <button
-          className={styles.putruniconButton}
-          onClick={handleRun}
-          style={{ width: "100%" }}
-        >
-          <Image
+        <div className="runButtonContainer"> 
+          <button
+            className={styles.runiconButton}
+            onClick={handleRun}
+            style={{ width: "100%" }}
+          >
+          <div className="runSparkyLogo">
+            <Image
             src="/run.svg"
             alt="Run"
-            width={10}
-            height={10}
-            style={{ marginRight: "7px" }}
+            width={15}
+            height={15}
           />
-          <span>Run</span>
+          </div>
+          <div className="runText">Run</div>
         </button>
-      </div>
+        </div>
     </div>
   )
 }

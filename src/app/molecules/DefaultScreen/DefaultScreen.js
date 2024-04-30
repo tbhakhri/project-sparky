@@ -5,7 +5,7 @@ export default function DefaultScreen() {
   return (
     <div className="defaultScreenContainer">
       <div className="experimentPrototypeCreate">
-        Experiment. Prototype. Create.
+        Experiment. Prototype. Create
       </div>
       <div className="ideaBoxContainer">
         <div className="ideaBoxItem">

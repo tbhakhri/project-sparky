@@ -98,7 +98,11 @@ export default function MainContent() {
 
               {isResponseLoading[variantIndex] && (
                 <>
-                  <div className="loading-dots"></div>
+                  <div className="gradient-background">
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                  </div>
                 </>
               )}
               {variant.currentResponses.length > 0 && (

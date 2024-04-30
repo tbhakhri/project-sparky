@@ -154,7 +154,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
             toggleSidebar()
           }}
         >
-          New Prompt
+        New Prompt
         </button>
       </div>
       <div className="currentPromptContainer">
