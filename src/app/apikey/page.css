@@ -87,3 +87,14 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #4c2e56;
 }
+
+.homeButton {
+  position: absolute;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  /* right: 10px; */
+  top: 720px; 
+  font-family: 'Kumbh Sans';
+  width: 60px;
+}

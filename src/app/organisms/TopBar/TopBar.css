@@ -36,3 +36,15 @@
   font-size: 0.5rem;
   background-color: rgba(163, 0, 0, 0.33);
 }
+
+.apiKeyButton {
+  position: absolute;
+  border: none;
+  color: #D9D9D9;
+  background-color: transparent;
+  cursor: pointer;
+  /* right: 10px; */
+  left: 60px;
+  font-family: 'Kumbh Sans';
+  width: 60px;
+}

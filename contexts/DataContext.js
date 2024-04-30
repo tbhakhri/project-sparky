@@ -89,6 +89,8 @@ export const DataProvider = ({ children }) => {
   async function pushUserText(text) {
     text = text.trim()
     setQueueSave(true)
+    text = text.trim();
+  
     setCurrentPrompt((prevData) => {
       const newVariants = [...prevData.variants]
 
@@ -206,6 +208,7 @@ export const DataProvider = ({ children }) => {
     const textParts = nodeList
       .filter((node) => node.type === "text")
       .map((node) => node.data)
+    
     const imageNodes = nodeList.filter((node) => node.type === "image")
     const imageParts = await Promise.all(
       imageNodes.map(async (node) => {
@@ -293,6 +296,7 @@ export const DataProvider = ({ children }) => {
       const targetVariant = { ...newVariants[prevData.currentVariant] }
       const acceptedResponse =
         targetVariant.currentResponses[targetVariant.currentResponseIndex]
+      
 
       targetVariant.variantHistory = [
         ...targetVariant.variantHistory,
