@@ -86,6 +86,7 @@ export const DataProvider = ({ children }) => {
 
   /* For the currentVariant, pushes text to the requestChain. */
   async function pushUserText(text) {
+    text = text.trim()
     setQueueSave(true)
     setCurrentPrompt((prevData) => {
       const newVariants = [...prevData.variants]
