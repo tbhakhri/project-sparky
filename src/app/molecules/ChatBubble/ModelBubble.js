@@ -2,6 +2,7 @@ import Image from "next/image"
 import "./ChatBubble.css"
 import { useData } from "%/DataContext"
 import Arrow from "@/molecules/Arrow/Arrow"
+import Markdown from 'react-markdown'; // Import react-markdown
 
 export default function ModelBubble({ variant }) {
   const { currentPrompt, addResponse, setCurrentResponseIndex } = useData()
@@ -53,7 +54,7 @@ export default function ModelBubble({ variant }) {
         )}
       </div>
 
-      <p className="modelBubble">{responses[curIndex].data}</p>
+      <Markdown className="modelBubble">{responses[curIndex].data}</Markdown>
       <button
         className="regenerateButton"
         onClick={handleRegenerate}
