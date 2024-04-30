@@ -17,7 +17,7 @@ export default function IdeaBox({ id, text, pathToSvg, alt }) {
     }
 
     if (id === "2") {
-      pushUserText(text)
+      pushUserText("What is this song?")
     }
 
     if (id === "3") {
