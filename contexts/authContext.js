@@ -25,6 +25,7 @@ export const AuthContextProvider = ({ children }) => {
   }
 
   const logout = async () => {
+    console.log("trying to logout")
     await auth.signOut()
   }
 
