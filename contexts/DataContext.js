@@ -81,6 +81,7 @@ export const DataProvider = ({ children }) => {
       return text
     } catch (error) {
       console.error("Error creating title for prompt: ", error)
+      throw new Error(error)
     }
   }
 
@@ -226,12 +227,16 @@ export const DataProvider = ({ children }) => {
     )
     const msg = textParts.concat(imageParts).concat(audioParts)
     console.log("msg: ", msg)
-
     let generatedName = ""
-    if (!currentPrompt.hasGeneratedName) {
-      generatedName = await generateTitle(msg)
+    try {
+      if (!currentPrompt.hasGeneratedName) {
+        generatedName = await generateTitle(msg)
+      }
+    } catch (error) {
+      console.error(error)
+      generatedName = "New Prompt"
     }
-
+  
     try {
       const result = await chat.sendMessage(msg)
       console.log(result)
@@ -263,7 +268,7 @@ export const DataProvider = ({ children }) => {
       })
     } catch (error) {
       setErrorMessage(error.message)
-      throw new Error("Error in addResponse function: " + error.message)
+      // throw new Error("Error in addResponse function: " + error.message)
     } finally {
       setIsResponseLoading([
         ...isResponseLoading.slice(0, variantIndex),

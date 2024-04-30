@@ -9,6 +9,7 @@ import TopBar from "@/organisms/TopBar/TopBar"
 import MainContent from "@/organisms/MainContent/MainContent"
 import BottomBar from "@/organisms/BottomBar/BottomBar"
 import SideBar from "@/molecules/SideBar/SideBar"
+import { VoiceRecorder } from "react-voice-recorder-player"
 
 export default function App() {
   const router = useRouter()
@@ -17,6 +18,18 @@ export default function App() {
 
   const toggleSidebar = () => {
     setIsSidebar(!isSidebar)
+  }
+
+  const [isVoiceRecordingOpen, setIsVoiceRecordingOpen] = useState(false)
+  const voiceRecorderStyles = {
+    mainContainerStyle: {
+      margin: "0",
+    }
+  }
+
+  const [blob, setBlob] = useState(null)
+  function handleVoiceRecording(blob) {
+    setBlob(blob)
   }
 
   const {
@@ -141,8 +154,18 @@ export default function App() {
                     />
                   )}
                   <TopBar toggleSidebar={toggleSidebar} />
+                  { isVoiceRecordingOpen && <div>
+                    <VoiceRecorder 
+                      mainContainerStyle={voiceRecorderStyles.mainContainerStyle} 
+                      downloadable={false} 
+                      onAudioDownload={handleVoiceRecording}/>
+                    <button onClick={()=> setIsVoiceRecordingOpen(false)}>Close Voice Recorder</button>
+                    </div>}
                   <MainContent />
-                  <BottomBar />
+                  <BottomBar 
+                  openVoiceRecorder={()=> setIsVoiceRecordingOpen(true)} 
+                  blob={blob} setBlob={setBlob} 
+                  closeVoiceRecorder={()=> setIsVoiceRecordingOpen(false)}/>
                 </div>
               ) : (
                 <div>Loading...</div>
