@@ -269,7 +269,7 @@ export const DataProvider = ({ children }) => {
       })
     } catch (error) {
       setErrorMessage(error.message)
-      // throw new Error("Error in addResponse function: " + error.message)
+      throw new Error("Error in addResponse function: " + error.message)
     } finally {
       setIsResponseLoading([
         ...isResponseLoading.slice(0, variantIndex),
