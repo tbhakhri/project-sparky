@@ -40,6 +40,7 @@ export default function ImageBubble({ isCurrent, imageURL, index, variant }) {
           <div
             style={{
               width: "100px",
+              paddingBottom: "8px",
               position: "relative",
               display: "inline-flex"
             }}

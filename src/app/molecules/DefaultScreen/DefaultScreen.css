@@ -6,9 +6,27 @@
   justify-content: center;
 }
 
+.experimentPrototypeCreate {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  flex-shrink: 1;
+  border-radius: 1px;
+  background: linear-gradient(to right, #4285f4, #db4437);
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+  font-family: Kumbh Sans;
+  display: block;
+  font-size: 18px;
+  margin: 5px;
+  font-weight: 900;
+  padding-bottom: 40%;
+}
+
 .introText {
   color: #ffffff;
-  font-size: 15px;
+  font-size: 18px;
   font-family: Kumbh Sans;
   align-items: center;
   /* shifts the text upwards; may need to adjust this padding-bottom */
