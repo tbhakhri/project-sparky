@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import AuthContext from "%/authContext"
 import { useData } from "%/DataContext"
 import "./page.css"
@@ -12,6 +12,7 @@ export default function Enter_API_Key() {
   const router = useRouter()
   const { user, authReady } = useContext(AuthContext)
   const { setApiKey } = useData()
+  const [redirectHome, setRedirectHome] = useState(false)
 
   const setHeight = () => {
     let vh = window.innerHeight * 0.01
@@ -19,7 +20,7 @@ export default function Enter_API_Key() {
   }
 
   const goToHome = () => {
-    router.push('/');
+    setRedirectHome(true)
   }
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function Enter_API_Key() {
         console.error("Failed to store API key.")
       } else {
         setApiKey(apiKey)
-        router.push("/")
+        goToHome()
       }
     } catch (error) {
       console.error("Error storing API key:", error)
@@ -54,55 +55,66 @@ export default function Enter_API_Key() {
   }
 
   return (
-    <div className={styles.pageContainer}>
-      <Image src="/sparkyLogo.svg" alt="sparky logo" width={115} height={50} />
-      <div className="instructions-container">
-        <div className="instructions">
-          Step 1:{" "}
-          <a href="https://aistudio.google.com/app/apikey" target="_blank">
-            Get API key (Desktop only)
-          </a>
-        </div>
-        <div className="instructions">
-          Step 2: Transfer key to your mobile phone
-        </div>
-        <div className="instructions">
-          Step 3: From your phone, paste the key below
-        </div>
-        <div className="instructions">
-          Step 4: Click "Submit" and start experimenting!
-        </div>
-      </div>
-      <button className="homeButton">
-        <Image
-            src="/home.svg"
-            alt="homeKeyButton"
-            width={20}
-            height={20}
-            onClick={goToHome}
+    <>
+      {redirectHome ? (
+        redirect("/")
+      ) : (
+        <div className={styles.pageContainer}>
+          <Image
+            src="/sparkyLogo.svg"
+            alt="sparky logo"
+            width={115}
+            height={50}
           />
-      </button>
-      {authReady ? (
-        <div>
-          {user !== null ? (
-            <div className="outerContainer">
-              <form onSubmit={handleSubmit}>
-                <input
-                  type="text"
-                  name="apiKeyInput"
-                  placeholder="Enter API Key"
-                  autoComplete="off"
-                />
-                <button type="submit">Submit</button>
-              </form>
+          <div className="instructions-container">
+            <div className="instructions">
+              Step 1:{" "}
+              <a href="https://aistudio.google.com/app/apikey" target="_blank">
+                Get API key (Desktop only)
+              </a>
+            </div>
+            <div className="instructions">
+              Step 2: Transfer key to your mobile phone
+            </div>
+            <div className="instructions">
+              Step 3: From your phone, paste the key below
+            </div>
+            <div className="instructions">
+              Step 4: Click "Submit" and start experimenting!
+            </div>
+          </div>
+          <button className="homeButton">
+            <Image
+              src="/home.svg"
+              alt="homeKeyButton"
+              width={20}
+              height={20}
+              onClick={goToHome}
+            />
+          </button>
+          {authReady ? (
+            <div>
+              {user !== null ? (
+                <div className="outerContainer">
+                  <form onSubmit={handleSubmit}>
+                    <input
+                      type="text"
+                      name="apiKeyInput"
+                      placeholder="Enter API Key"
+                      autoComplete="off"
+                    />
+                    <button type="submit">Submit</button>
+                  </form>
+                </div>
+              ) : (
+                redirect("/login")
+              )}
             </div>
           ) : (
-            redirect("/login")
+            <div>Loading...</div>
           )}
         </div>
-      ) : (
-        <div>Loading...</div>
       )}
-    </div>
+    </>
   )
 }
