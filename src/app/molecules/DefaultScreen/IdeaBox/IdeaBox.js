@@ -18,6 +18,9 @@ export default function IdeaBox({ id, text, pathToSvg, alt }) {
 
     if (id === "2") {
       pushUserText("What is this song?")
+      const audioInput = document.getElementById("audioInput")
+      audioInput.click()
+
     }
 
     if (id === "3") {

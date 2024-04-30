@@ -227,6 +227,14 @@ export default function BottomBar({
                 background: "transparent"
               }}
             >
+              {/* <Image
+                src="/microphone.svg"
+                alt="microphone"
+                className="icon"
+                width={10}
+                height={10}
+              /> */}
+              <label htmlFor="audioInput">
               <Image
                 src="/microphone.svg"
                 alt="microphone"
@@ -234,6 +242,14 @@ export default function BottomBar({
                 width={15}
                 height={15}
               />
+            </label>
+            <input
+              type="file"
+              id="audioInput"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleFileSelect}
+            />
             </button>
           </div>
         </div>

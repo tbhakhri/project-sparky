@@ -26,7 +26,9 @@
   padding: 0.5rem 0.5rem;
   border-radius: 0.75rem;
   font-size: 0.70rem;
-  margin-bottom: 0.25rem;
+  /* margin-bottom: 0.25rem; */
+  margin-top: 1%;
+  margin-bottom: 3%;
   width: 60%;
 }
 
@@ -57,6 +59,7 @@
   max-width: 18rem;
   text-align: left;
   font-family: Kumbh Sans;
+  margin-bottom: 3%;
 }
 
 .editDeleteButton {
