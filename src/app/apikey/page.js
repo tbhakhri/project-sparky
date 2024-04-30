@@ -18,6 +18,10 @@ export default function Enter_API_Key() {
     document.documentElement.style.setProperty("--vh", `${vh}px`)
   }
 
+  const goToHome = () => {
+    router.push('/');
+  }
+
   useEffect(() => {
     if (window.matchMedia("(max-width: 768px)").matches) {
       window.addEventListener("resize", setHeight)
@@ -69,6 +73,15 @@ export default function Enter_API_Key() {
           Step 4: Click "Submit" and start experimenting!
         </div>
       </div>
+      <button className="homeButton">
+        <Image
+            src="/home.svg"
+            alt="homeKeyButton"
+            width={20}
+            height={20}
+            onClick={goToHome}
+          />
+      </button>
       {authReady ? (
         <div>
           {user !== null ? (
