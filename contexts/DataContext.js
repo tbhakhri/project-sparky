@@ -1,5 +1,5 @@
 "use client"
-
+import Markdown from 'react-markdown'; // Import react-markdown
 import React, { createContext, useState, useContext } from "react"
 import {
   filePathToPart,
