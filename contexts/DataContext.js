@@ -1,5 +1,5 @@
 "use client"
-
+import Markdown from 'react-markdown'; // Import react-markdown
 import React, { createContext, useState, useContext } from "react"
 import {
   filePathToPart,
@@ -239,7 +239,9 @@ export const DataProvider = ({ children }) => {
   
     try {
       const result = await chat.sendMessage(msg)
-      console.log(result)
+      console.log("HI" + result.response.text())
+      var rawText = result.response.text()
+      var markedDown = <Markdown>{rawText}</Markdown>
       setQueueSave(true)
       setCurrentPrompt((prevData) => {
         const newVariants = [...prevData.variants]

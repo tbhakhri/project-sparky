@@ -7,6 +7,7 @@ import AudioBubble from "@/molecules/ChatBubble/AudioBubble"
 import { useData } from "%/DataContext"
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
 import { useState } from "react"
+import Markdown from 'react-markdown';
 
 export default function MainContent() {
   const {
@@ -52,7 +53,7 @@ export default function MainContent() {
       case "modelText":
         return (
           <div key={requestIndex} className="modelContainer">
-            <p className="modelBubble">{item.data}</p>
+            <Markdown className="modelBubble">{item.data}</Markdown>
           </div>
         )
       default:
