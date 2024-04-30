@@ -9,6 +9,7 @@ import TopBar from "@/organisms/TopBar/TopBar"
 import MainContent from "@/organisms/MainContent/MainContent"
 import BottomBar from "@/organisms/BottomBar/BottomBar"
 import SideBar from "@/molecules/SideBar/SideBar"
+import { VoiceRecorder } from "react-voice-recorder-player"
 
 export default function App() {
   const router = useRouter()
@@ -17,6 +18,21 @@ export default function App() {
 
   const toggleSidebar = () => {
     setIsSidebar(!isSidebar)
+  }
+
+  const [isVoiceRecordingOpen, setIsVoiceRecordingOpen] = useState(false)
+  const voiceRecorderStyles = {
+    mainContainerStyle: {
+      margin: "0",
+      width: "100%",
+      padding: "0px 10px",
+      boxShadow: "none"
+    }
+  }
+
+  const [blob, setBlob] = useState(null)
+  function handleVoiceRecording(blob) {
+    setBlob(blob)
   }
 
   const {
@@ -141,8 +157,43 @@ export default function App() {
                     />
                   )}
                   <TopBar toggleSidebar={toggleSidebar} />
+                  {isVoiceRecordingOpen && (
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center"
+                      }}
+                    >
+                      <VoiceRecorder
+                        mainContainerStyle={
+                          voiceRecorderStyles.mainContainerStyle
+                        }
+                        downloadable={false}
+                        onAudioDownload={handleVoiceRecording}
+                      />
+                      <button
+                        onClick={() => setIsVoiceRecordingOpen(false)}
+                        className={styles.putruniconButton}
+                        style={{
+                          width: "70px",
+                          marginTop: "15px",
+                          cursor: "pointer",
+                          fontSize: "0.8rem"
+                        }}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  )}
                   <MainContent />
-                  <BottomBar />
+                  <BottomBar
+                    openVoiceRecorder={() => setIsVoiceRecordingOpen(true)}
+                    blob={blob}
+                    setBlob={setBlob}
+                    closeVoiceRecorder={() => setIsVoiceRecordingOpen(false)}
+                  />
                 </div>
               ) : (
                 <div>Loading...</div>

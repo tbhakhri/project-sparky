@@ -6,6 +6,7 @@ import ImageBubble from "@/molecules/ChatBubble/ImageBubble"
 import AudioBubble from "@/molecules/ChatBubble/AudioBubble"
 import { useData } from "%/DataContext"
 import DefaultScreen from "@/molecules/DefaultScreen/DefaultScreen"
+import { useState } from "react"
 
 export default function MainContent() {
   const {
@@ -58,7 +59,7 @@ export default function MainContent() {
         return null
     }
   }
-  console.log("isCurrentPromptLoading", isCurrentPromptLoading)
+
   return (
     <div className="mainContentContainer">
       {isCurrentPromptEmpty() ? (
