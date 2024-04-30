@@ -227,50 +227,31 @@ export default function BottomBar({
                 background: "transparent"
               }}
             >
-              {/* <Image
-                src="/microphone.svg"
-                alt="microphone"
-                className="icon"
-                width={10}
-                height={10}
-              /> */}
               <label htmlFor="audioInput">
-              <Image
-                src="/microphone.svg"
-                alt="microphone"
-                className="icon"
-                width={15}
-                height={15}
-              />
-            </label>
-            <input
-              type="file"
-              id="audioInput"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handleFileSelect}
-            />
+                <Image
+                  src="/microphone.svg"
+                  alt="microphone"
+                  className="icon"
+                  width={15}
+                  height={15}
+                />
+              </label>
             </button>
           </div>
         </div>
       </div>
-        <div className="runButtonContainer"> 
-          <button
-            className={styles.runiconButton}
-            onClick={handleRun}
-            style={{ width: "100%" }}
-          >
+      <div className="runButtonContainer">
+        <button
+          className={styles.runiconButton}
+          onClick={handleRun}
+          style={{ width: "100%" }}
+        >
           <div className="runSparkyLogo">
-            <Image
-            src="/run.svg"
-            alt="Run"
-            width={15}
-            height={15}
-          />
+            <Image src="/run.svg" alt="Run" width={15} height={15} />
           </div>
           <div className="runText">Run</div>
         </button>
-        </div>
+      </div>
     </div>
   )
 }
