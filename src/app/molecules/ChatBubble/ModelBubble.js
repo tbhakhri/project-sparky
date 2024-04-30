@@ -2,7 +2,7 @@ import Image from "next/image"
 import "./ChatBubble.css"
 import { useData } from "%/DataContext"
 import Arrow from "@/molecules/Arrow/Arrow"
-import Markdown from 'react-markdown'; // Import react-markdown
+import Markdown from "react-markdown" // Import react-markdown
 
 export default function ModelBubble({ variant }) {
   const { currentPrompt, addResponse, setCurrentResponseIndex } = useData()
@@ -60,7 +60,7 @@ export default function ModelBubble({ variant }) {
         onClick={handleRegenerate}
         style={{ marginTop: "0.1rem" }}
       >
-        <Image src="/regenerate.svg" alt="Regenerate" width={10} height={10} />
+        <Image src="/regenerate.svg" alt="Regenerate" width={12} height={12} />
       </button>
     </div>
   )

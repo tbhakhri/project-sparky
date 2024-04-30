@@ -3,7 +3,6 @@ import Image from "next/image"
 import { useData } from "%/DataContext"
 import { useState, useRef, useEffect } from "react"
 
-
 export default function ChatBubble({ isCurrent, initialText, index, variant }) {
   const { editRequestText, deleteRequest, clearResponses, setQueueSave } =
     useData()
@@ -59,7 +58,7 @@ export default function ChatBubble({ isCurrent, initialText, index, variant }) {
               marginRight: "0.35rem"
             }}
           >
-            <Image src="/edit.svg" alt="Edit text" width={10} height={10} />
+            <Image src="/edit.svg" alt="Edit text" width={12} height={12} />
           </button>
           <button
             className="editDeleteButton"
@@ -69,8 +68,8 @@ export default function ChatBubble({ isCurrent, initialText, index, variant }) {
             <Image
               src="/x-button-white.svg"
               alt="Delete text at index ${index}"
-              width={9}
-              height={9}
+              width={12}
+              height={12}
             />
           </button>
         </>
@@ -93,5 +92,5 @@ export default function ChatBubble({ isCurrent, initialText, index, variant }) {
         />
       </div>
     </div>
-  ) 
+  )
 }

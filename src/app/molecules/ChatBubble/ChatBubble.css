@@ -25,10 +25,10 @@
   color: black;
   padding: 0.5rem 0.5rem;
   border-radius: 0.75rem;
-  font-size: 0.70rem;
+  font-size: 0.7rem;
   /* margin-bottom: 0.25rem; */
   margin-top: 1%;
-  margin-bottom: 3%;
+  margin-bottom: 1%;
   width: 60%;
 }
 
@@ -55,7 +55,7 @@
   color: white;
   padding: 0.5rem 0.5rem;
   border-radius: 0.75rem;
-  font-size: 0.70rem;
+  font-size: 0.7rem;
   max-width: 18rem;
   text-align: left;
   font-family: Kumbh Sans;
@@ -65,7 +65,7 @@
 .editDeleteButton {
   background-color: rgba(0, 0, 0, 0);
   border: none;
-  margin-right: 10px;
+  margin-right: 13px !important;
   cursor: pointer;
 }
 
