@@ -58,7 +58,7 @@ export default function MainContent() {
         return null
     }
   }
-  console.log("isCurrentPromptLoading", isCurrentPromptLoading)
+  // console.log("isCurrentPromptLoading", isCurrentPromptLoading)
   return (
     <div className="mainContentContainer">
       {isCurrentPromptEmpty() ? (
