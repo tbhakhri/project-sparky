@@ -236,10 +236,11 @@ export const DataProvider = ({ children }) => {
       console.error(error)
       generatedName = "New Prompt"
     }
-  
+
     try {
       const result = await chat.sendMessage(msg)
       console.log(result)
+      const responseText = result.response.text()
       setQueueSave(true)
       setCurrentPrompt((prevData) => {
         const newVariants = [...prevData.variants]
@@ -247,7 +248,7 @@ export const DataProvider = ({ children }) => {
         const targetVariant = { ...newVariants[variantIndex] }
         targetVariant.currentResponses = [
           ...targetVariant.currentResponses,
-          new Node("modelText", result.response.text())
+          new Node("modelText", responseText)
         ]
 
         newVariants[variantIndex] = targetVariant
