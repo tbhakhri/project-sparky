@@ -4,7 +4,9 @@ import "./DefaultScreen.css"
 export default function DefaultScreen() {
   return (
     <div className="defaultScreenContainer">
-      <div className="introText">Experiment. Prototype. Create.</div>
+      <div className="experimentPrototypeCreate">
+        Experiment. Prototype. Create.
+      </div>
       <div className="ideaBoxContainer">
         <div className="ideaBoxItem">
           <IdeaBox

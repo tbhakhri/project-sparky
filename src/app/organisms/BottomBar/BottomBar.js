@@ -6,7 +6,12 @@ import { useData } from "%/DataContext"
 import AuthContext from "%/authContext"
 import { determineFileType } from "%/utils"
 
-export default function BottomBar({openVoiceRecorder, blob, setBlob, closeVoiceRecorder}) {
+export default function BottomBar({
+  openVoiceRecorder,
+  blob,
+  setBlob,
+  closeVoiceRecorder
+}) {
   const {
     currentPrompt,
     pushUserText,
@@ -123,7 +128,9 @@ export default function BottomBar({openVoiceRecorder, blob, setBlob, closeVoiceR
         setErrorMessage(
           "File Type is not allowed. Note that for audio inputs you cannot upload video"
         )
-      } else {setFiles((prev) => [...prev, [fileType, latestFile]])}
+      } else {
+        setFiles((prev) => [...prev, [fileType, latestFile]])
+      }
     }
   }
 
@@ -212,7 +219,14 @@ export default function BottomBar({openVoiceRecorder, blob, setBlob, closeVoiceR
             />
           </div>
           <div className="bottom_icon_positioning">
-            <button onClick={openVoiceRecorder}>
+            <button
+              onClick={openVoiceRecorder}
+              style={{
+                border: "none",
+                cursor: "pointer",
+                background: "transparent"
+              }}
+            >
               <Image
                 src="/microphone.svg"
                 alt="microphone"
@@ -221,13 +235,6 @@ export default function BottomBar({openVoiceRecorder, blob, setBlob, closeVoiceR
                 height={10}
               />
             </button>
-            {/* <input
-              type="file"
-              id="audioInput"
-              accept="audio/*"
-              style={{ display: "none" }}
-              onChange={handleFileSelect}
-            /> */}
           </div>
         </div>
       </div>

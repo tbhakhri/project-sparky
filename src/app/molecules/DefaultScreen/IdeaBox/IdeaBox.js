@@ -27,7 +27,7 @@ export default function IdeaBox({ id, text, pathToSvg, alt }) {
   }
   return (
     <div className="box" onClick={handleClick}>
-      <Image src={pathToSvg} className="img" alt={alt} width={15} height={15} />
+      <Image src={pathToSvg} className="img" alt={alt} width={20} height={20} />
       <br /> <div className="text">{text}</div>
     </div>
   )

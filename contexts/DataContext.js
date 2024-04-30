@@ -87,6 +87,7 @@ export const DataProvider = ({ children }) => {
 
   /* For the currentVariant, pushes text to the requestChain. */
   async function pushUserText(text) {
+    text = text.trim()
     setQueueSave(true)
     setCurrentPrompt((prevData) => {
       const newVariants = [...prevData.variants]
@@ -236,12 +237,11 @@ export const DataProvider = ({ children }) => {
       console.error(error)
       generatedName = "New Prompt"
     }
-  
+
     try {
       const result = await chat.sendMessage(msg)
-      console.log("HI" + result.response.text())
-      var rawText = result.response.text()
-      var markedDown = <Markdown>{rawText}</Markdown>
+      console.log(result)
+      const responseText = result.response.text()
       setQueueSave(true)
       setCurrentPrompt((prevData) => {
         const newVariants = [...prevData.variants]
@@ -249,7 +249,7 @@ export const DataProvider = ({ children }) => {
         const targetVariant = { ...newVariants[variantIndex] }
         targetVariant.currentResponses = [
           ...targetVariant.currentResponses,
-          new Node("modelText", result.response.text())
+          new Node("modelText", responseText)
         ]
 
         newVariants[variantIndex] = targetVariant
@@ -270,7 +270,7 @@ export const DataProvider = ({ children }) => {
       })
     } catch (error) {
       setErrorMessage(error.message)
-      // throw new Error("Error in addResponse function: " + error.message)
+      throw new Error("Error in addResponse function: " + error.message)
     } finally {
       setIsResponseLoading([
         ...isResponseLoading.slice(0, variantIndex),
