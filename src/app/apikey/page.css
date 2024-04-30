@@ -94,7 +94,7 @@ button[type="submit"]:hover {
   background-color: transparent;
   cursor: pointer;
   /* right: 10px; */
-  top: 720px; 
+  top: 89%; 
   font-family: 'Kumbh Sans';
   width: 60px;
 }
