@@ -24,6 +24,9 @@ export default function App() {
   const voiceRecorderStyles = {
     mainContainerStyle: {
       margin: "0",
+      width: "100%",
+      padding: "0px 10px",
+      boxShadow: "none"
     }
   }
 
@@ -154,18 +157,43 @@ export default function App() {
                     />
                   )}
                   <TopBar toggleSidebar={toggleSidebar} />
-                  { isVoiceRecordingOpen && <div>
-                    <VoiceRecorder 
-                      mainContainerStyle={voiceRecorderStyles.mainContainerStyle} 
-                      downloadable={false} 
-                      onAudioDownload={handleVoiceRecording}/>
-                    <button onClick={()=> setIsVoiceRecordingOpen(false)}>Close Voice Recorder</button>
-                    </div>}
+                  {isVoiceRecordingOpen && (
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center"
+                      }}
+                    >
+                      <VoiceRecorder
+                        mainContainerStyle={
+                          voiceRecorderStyles.mainContainerStyle
+                        }
+                        downloadable={false}
+                        onAudioDownload={handleVoiceRecording}
+                      />
+                      <button
+                        onClick={() => setIsVoiceRecordingOpen(false)}
+                        className={styles.putruniconButton}
+                        style={{
+                          width: "70px",
+                          marginTop: "15px",
+                          cursor: "pointer",
+                          fontSize: "0.8rem"
+                        }}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  )}
                   <MainContent />
-                  <BottomBar 
-                  openVoiceRecorder={()=> setIsVoiceRecordingOpen(true)} 
-                  blob={blob} setBlob={setBlob} 
-                  closeVoiceRecorder={()=> setIsVoiceRecordingOpen(false)}/>
+                  <BottomBar
+                    openVoiceRecorder={() => setIsVoiceRecordingOpen(true)}
+                    blob={blob}
+                    setBlob={setBlob}
+                    closeVoiceRecorder={() => setIsVoiceRecordingOpen(false)}
+                  />
                 </div>
               ) : (
                 <div>Loading...</div>
