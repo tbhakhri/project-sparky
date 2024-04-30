@@ -2,7 +2,7 @@
 
 import { createContext, useState, useEffect } from "react"
 import { auth, provider } from "./config"
-import { signInWithPopup, signInWithRedirect } from "firebase/auth"
+import { signInWithPopup } from "firebase/auth"
 
 const AuthContext = createContext({
   user: null,
@@ -25,7 +25,6 @@ export const AuthContextProvider = ({ children }) => {
   }
 
   const logout = async () => {
-    console.log("trying to logout")
     await auth.signOut()
   }
 
