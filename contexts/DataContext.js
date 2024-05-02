@@ -29,9 +29,6 @@ export const DataProvider = ({ children }) => {
       this.currentResponseIndex = 0
     }
   }
-
-  const [apiKey, setApiKey] = useState("")
-
   let model = null
   if (apiKey !== "") {
     const genAI = new GoogleGenerativeAI(apiKey)
@@ -40,21 +37,9 @@ export const DataProvider = ({ children }) => {
     })
   }
 
-  // NOTE: This is hard-coded for up to 3 variants
-  const [isResponseLoading, setIsResponseLoading] = useState([
-    false,
-    false,
-    false
-  ])
-  const [errorMessage, setErrorMessage] = useState("")
-  function closeErrorBox() {
-    setErrorMessage("")
-  }
+  /** STATE **/
 
-  /* When true, triggers current prompt to be saved in firestore. */
-  const [queueSave, setQueueSave] = useState(false)
-  /* When true, means that data is currently being retrieved from firestore, to be stored in currentPrompt. */
-  const [isCurrentPromptLoading, setIsCurrentPromptLoading] = useState(false)
+  const [apiKey, setApiKey] = useState("")
 
   const [currentPrompt, setCurrentPrompt] = useState({
     promptID: generatePromptID(),
@@ -64,6 +49,26 @@ export const DataProvider = ({ children }) => {
     hasGeneratedName: false
   })
   const [promptNames, setPromptNames] = useState([])
+
+  /* When true, means that data is currently being retrieved from firestore, to be stored in currentPrompt. */
+  const [isCurrentPromptLoading, setIsCurrentPromptLoading] = useState(false)
+
+  // NOTE: This is hard-coded for up to 3 variants
+  const [isResponseLoading, setIsResponseLoading] = useState([
+    false,
+    false,
+    false
+  ])
+
+  /* When true, triggers current prompt to be saved in firestore. */
+  const [queueSave, setQueueSave] = useState(false)
+
+  const [errorMessage, setErrorMessage] = useState("")
+  function closeErrorBox() {
+    setErrorMessage("")
+  }
+
+  /** END STATE **/
 
   /** FUNCTIONS **/
 
@@ -337,7 +342,7 @@ export const DataProvider = ({ children }) => {
     })
   }
 
-  /* Creates a new variant, copying the specified variant's requestChain to the new variant. */
+  /* Creates a new variant, copying the specified variant's currentRequests to the new variant. */
   function copyVariant(index) {
     setCurrentPrompt((prevData) => {
       const variantToCopy = { ...prevData.variants[index] }
@@ -385,6 +390,7 @@ export const DataProvider = ({ children }) => {
     })
   }
 
+  /* True when the state of currentPrompt is equivalent to a newly initialized prompt (i.e. no requests at all). */
   function isCurrentPromptEmpty() {
     return (
       currentPrompt.variants.length === 1 &&
@@ -393,6 +399,7 @@ export const DataProvider = ({ children }) => {
     )
   }
 
+  /* Sets currentPrompt to reflect a newly initialized prompt. */
   function initializeNewPrompt() {
     setCurrentPrompt({
       promptID: generatePromptID(),
@@ -408,26 +415,26 @@ export const DataProvider = ({ children }) => {
     <DataContext.Provider
       value={{
         currentPrompt,
+        setCurrentPrompt,
         promptNames,
+        setPromptNames,
         apiKey,
+        setApiKey,
         isResponseLoading,
         errorMessage,
-        queueSave,
-        isCurrentPromptLoading,
-        setCurrentPrompt,
-        setPromptNames,
-        setApiKey,
         setErrorMessage,
-        setQueueSave,
-        setIsCurrentPromptLoading,
         closeErrorBox,
+        queueSave,
+        setQueueSave,
+        isCurrentPromptLoading,
+        setIsCurrentPromptLoading,
         pushUserText,
         pushFiles,
         deleteRequest,
         editRequestText,
         addResponse,
-        updateVariantHistory,
         clearResponses,
+        updateVariantHistory,
         copyVariant,
         setCurrentVariant,
         setCurrentResponseIndex,
