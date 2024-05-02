@@ -29,13 +29,6 @@ export const DataProvider = ({ children }) => {
       this.currentResponseIndex = 0
     }
   }
-  let model = null
-  if (apiKey !== "") {
-    const genAI = new GoogleGenerativeAI(apiKey)
-    model = genAI.getGenerativeModel({
-      model: "gemini-1.5-pro-latest"
-    })
-  }
 
   /** STATE **/
 
@@ -69,6 +62,14 @@ export const DataProvider = ({ children }) => {
   }
 
   /** END STATE **/
+
+  let model = null
+  if (apiKey !== "") {
+    const genAI = new GoogleGenerativeAI(apiKey)
+    model = genAI.getGenerativeModel({
+      model: "gemini-1.5-pro-latest"
+    })
+  }
 
   /** FUNCTIONS **/
 
