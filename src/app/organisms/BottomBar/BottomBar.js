@@ -34,7 +34,7 @@ export default function BottomBar({
     setQueuePut(followByRun === true ? "putAndRun" : "putOnly")
   }
 
-  // returns true if a put was successful, else returns false
+  // Returns true if a put was successful, else returns false
   async function put(followByRun) {
     let didPut = false
     if (!isImagesEmpty()) {
@@ -89,10 +89,8 @@ export default function BottomBar({
     )
   }
 
-  /* BOTTOMINPUTBAR STATE */
   const [text, setText] = useState("")
   const [files, setFiles] = useState([])
-  console.log("files", files)
 
   const isTextEmpty = () => {
     return text.length === 0

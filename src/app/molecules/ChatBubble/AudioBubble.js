@@ -1,7 +1,6 @@
 import "./ChatBubble.css"
 import Image from "next/image"
 import { useData } from "%/DataContext"
-import { useState } from "react"
 
 export default function AudioBubble({ isCurrent, index, variant }) {
   const { deleteRequest, clearResponses, setQueueSave } = useData()

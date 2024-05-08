@@ -14,7 +14,7 @@ export default function ChatBubble({ isCurrent, initialText, index, variant }) {
     setText(initialText)
   }, [initialText])
 
-  const handleDelete = (e) => {
+  const handleDelete = () => {
     deleteRequest(variant, index)
     clearResponses()
   }

@@ -12,49 +12,48 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
   const {
     currentPrompt,
     setCurrentPrompt,
-    promptNames,
-    setPromptNames,
+    promptTitles,
+    setPromptTitles,
     isCurrentPromptEmpty,
     initializeNewPrompt,
     setIsCurrentPromptLoading
   } = useData()
 
-  const pastPrompts = promptNames.filter(
+  const pastPrompts = promptTitles.filter(
     (item) => item.promptID !== currentPrompt.promptID
   )
   const [editingIndex, setEditingIndex] = useState(-1)
   const [isLoading, setIsLoading] = useState(false)
 
-  /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptNames. Open a new prompt. */
+  /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptTitles. Open a new prompt. */
   async function openNewPrompt() {
     setIsCurrentPromptLoading(true)
     if (!isCurrentPromptEmpty()) {
       await savePrompt()
-      const existingIndex = promptNames.findIndex(
+      const existingIndex = promptTitles.findIndex(
         (item) => item.promptID === currentPrompt.promptID
       )
 
       if (existingIndex === -1) {
-        setPromptNames([
-          ...promptNames,
+        setPromptTitles([
+          ...promptTitles,
           {
             promptID: currentPrompt.promptID,
-            promptName: currentPrompt.promptName
+            promptTitle: currentPrompt.promptTitle
           }
         ])
       }
     } else {
-      console.log("Current Prompt is empty, no need to save")
+      
     }
     initializeNewPrompt()
     setIsCurrentPromptLoading(false)
   }
 
-  /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptNames.
+  /* If currentPrompt is not empty, save the currentPrompt and add currentPrompt to promptTitles.
    Loads the selected prompt into currentPrompt. */
-  async function selectPrompt(promptID, promptName) {
+  async function selectPrompt(promptID, promptTitle) {
     setIsCurrentPromptLoading(true)
-    // fetch prompt data and set it
     let data = null
     const url = new URL("/api/getPromptData", window.location.origin)
     url.searchParams.append("promptID", promptID)
@@ -68,27 +67,25 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
     }
     if (!isCurrentPromptEmpty()) {
       await savePrompt()
-      const existingIndex = promptNames.findIndex(
+      const existingIndex = promptTitles.findIndex(
         (item) => item.promptID === currentPrompt.promptID
       )
 
       if (existingIndex === -1) {
-        setPromptNames([
-          ...promptNames,
+        setPromptTitles([
+          ...promptTitles,
           {
             promptID: currentPrompt.promptID,
-            promptName: currentPrompt.promptName
+            promptTitle: currentPrompt.promptTitle
           }
         ])
       }
-    } else {
-      console.log("Current Prompt is empty, no need to save")
-    }
-    setCurrentPrompt({ ...data, promptName: promptName })
+    } 
+    setCurrentPrompt({ ...data, promptTitle: promptTitle })
     setIsCurrentPromptLoading(false)
   }
 
-  /* Deletes the prompt from promptNames state, the firebase db, and firebase storage */
+  /* Deletes the prompt from promptTitles state, the firebase db, and firebase storage */
   async function deletePrompt(promptID) {
     try {
       setIsLoading(true)
@@ -108,8 +105,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
         return
       }
 
-      console.log("Prompt deleted successfully")
-      setPromptNames((prev) =>
+      setPromptTitles((prev) =>
         prev.filter((item, _) => item.promptID !== promptID)
       )
       setIsLoading(false)
@@ -159,7 +155,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
       </div>
       <div className="currentPromptContainer">
         <div className="promptHeaderText">Current Prompt</div>
-        <div className="promptItemCurrent">{currentPrompt.promptName}</div>
+        <div className="promptItemCurrent">{currentPrompt.promptTitle}</div>
       </div>
       <div className="pastPromptContainer">
         <div className="promptHeaderText">Past Prompts</div>
@@ -171,7 +167,7 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
         {pastPrompts.map((item, index) => (
           <div key={item.promptID} className="promptItemContainer">
             <PromptTitles
-              initialTitle={item.promptName}
+              initialTitle={item.promptTitle}
               promptID={item.promptID}
               index={index}
               isEditing={editingIndex === index}

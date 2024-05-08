@@ -36,12 +36,12 @@ export const DataProvider = ({ children }) => {
 
   const [currentPrompt, setCurrentPrompt] = useState({
     promptID: generatePromptID(),
-    promptName: "New Prompt",
+    promptTitle: "New Prompt",
     variants: [new Variant()],
     currentVariant: 0,
     hasGeneratedName: false
   })
-  const [promptNames, setPromptNames] = useState([])
+  const [promptTitles, setPromptTitles] = useState([])
 
   /* When true, means that data is currently being retrieved from firestore, to be stored in currentPrompt. */
   const [isCurrentPromptLoading, setIsCurrentPromptLoading] = useState(false)
@@ -82,7 +82,6 @@ export const DataProvider = ({ children }) => {
       const result = await model.generateContent(prompt)
       const response = await result.response
       const text = response.text()
-      console.log("generated title: ", text)
       return text
     } catch (error) {
       console.error("Error creating title for prompt: ", error)
@@ -186,20 +185,13 @@ export const DataProvider = ({ children }) => {
   }
 
   /* For the specified variant, adds a response node/bubble.
-  If a promptName has not been generated yet, do so. */
+  If a promptTitle has not been generated yet, do so. */
   async function addResponse(variantIndex) {
-    console.log("CALLING ADD RESPONSE")
     setIsResponseLoading([
       ...isResponseLoading.slice(0, variantIndex),
       true,
       ...isResponseLoading.slice(variantIndex + 1)
     ])
-    console.log(
-      "formatted history",
-      await constructChatHistory(
-        currentPrompt.variants[variantIndex].variantHistory
-      )
-    )
     const chat = model.startChat({
       history: await constructChatHistory(
         currentPrompt.variants[variantIndex].variantHistory
@@ -235,7 +227,6 @@ export const DataProvider = ({ children }) => {
       })
     )
     const msg = textParts.concat(imageParts).concat(audioParts)
-    console.log("msg: ", msg)
     let generatedName = ""
     try {
       if (!currentPrompt.hasGeneratedName) {
@@ -248,7 +239,6 @@ export const DataProvider = ({ children }) => {
 
     try {
       const result = await chat.sendMessage(msg)
-      console.log(result)
       const responseText = result.response.text()
       setQueueSave(true)
       setCurrentPrompt((prevData) => {
@@ -272,7 +262,7 @@ export const DataProvider = ({ children }) => {
             ...prevData,
             variants: newVariants,
             hasGeneratedName: true,
-            promptName: generatedName
+            promptTitle: generatedName
           }
         }
       })
@@ -404,7 +394,7 @@ export const DataProvider = ({ children }) => {
   function initializeNewPrompt() {
     setCurrentPrompt({
       promptID: generatePromptID(),
-      promptName: "New Prompt",
+      promptTitle: "New Prompt",
       variants: [new Variant()],
       currentVariant: 0,
       hasGeneratedName: false
@@ -417,8 +407,8 @@ export const DataProvider = ({ children }) => {
       value={{
         currentPrompt,
         setCurrentPrompt,
-        promptNames,
-        setPromptNames,
+        promptTitles,
+        setPromptTitles,
         apiKey,
         setApiKey,
         isResponseLoading,

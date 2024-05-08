@@ -39,8 +39,8 @@ export default function App() {
     currentPrompt,
     apiKey,
     setApiKey,
-    promptNames,
-    setPromptNames,
+    promptTitles,
+    setPromptTitles,
     queueSave,
     setQueueSave
   } = useData()
@@ -59,22 +59,21 @@ export default function App() {
   }, [])
 
   async function savePrompt() {
-    console.log("calling savePrompt")
     try {
-      let response = await fetch("/api/storePromptName", {
+      let response = await fetch("/api/storePromptTitle", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           userID: user.uid,
-          promptName: currentPrompt.promptName,
+          promptTitle: currentPrompt.promptTitle,
           promptID: currentPrompt.promptID
         })
       })
 
       if (!response.ok) {
-        console.error("Failed to store promptName.")
+        console.error("Failed to store promptTitle.")
       }
 
       response = await fetch("/api/storePromptData", {
@@ -93,20 +92,20 @@ export default function App() {
         console.error("Failed to store promptData.")
       }
 
-      const updatedPromptNames = promptNames.map((item) => {
+      const updatedPromptTitles = promptTitles.map((item) => {
         if (item.promptID === currentPrompt.promptID) {
-          return { ...item, promptName: currentPrompt.promptName }
+          return { ...item, promptTitle: currentPrompt.promptTitle }
         }
         return item
       })
-      setPromptNames(updatedPromptNames)
+      setPromptTitles(updatedPromptTitles)
     } catch (error) {
       console.error("Error saving prompt:", error)
     }
   }
 
   useEffect(() => {
-    async function fetchKeyAndPromptNames() {
+    async function fetchKeyAndPromptTitles() {
       if (user && apiKey === "") {
         let url = new URL("/api/getApiKey", window.location.origin)
         url.searchParams.append("userID", user.uid)
@@ -114,29 +113,26 @@ export default function App() {
           method: "GET"
         })
         if (response.status === 404) {
-          console.log("No key found for user", user.uid)
           router.push("/apikey")
         } else {
           const data = await response.json()
-          console.log("Key found for user", user.uid)
           setApiKey(data.apiKey)
         }
 
-        url = new URL("/api/getPromptNames", window.location.origin)
+        url = new URL("/api/getPromptTitles", window.location.origin)
         url.searchParams.append("userID", user.uid)
         response = await fetch(url.toString(), {
           method: "GET"
         })
         const data = await response.json()
-        setPromptNames(data)
+        setPromptTitles(data)
       }
     }
-    fetchKeyAndPromptNames()
+    fetchKeyAndPromptTitles()
   }, [user, apiKey])
 
   useEffect(() => {
     if (queueSave) {
-      console.log("QueueSave is true")
       savePrompt()
       setQueueSave(false)
     }
