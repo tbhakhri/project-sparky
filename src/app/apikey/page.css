@@ -59,7 +59,7 @@ input[type="text"]:focus {
 }
 
 a {
-  display: inline-block; /* or use display: inline; */
+  display: inline-block; 
 }
 
 a:hover {
@@ -93,7 +93,6 @@ button[type="submit"]:hover {
   border: none;
   background-color: transparent;
   cursor: pointer;
-  /* right: 10px; */
   top: 89%; 
   font-family: 'Kumbh Sans';
   width: 60px;

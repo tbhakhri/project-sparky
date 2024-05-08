@@ -6,7 +6,7 @@ export async function POST(request) {
   const { promptID, userID } = await request.json()
   try {
     const promptDataRef = doc(db, "promptData", promptID)
-    const promptNameRef = doc(db, "promptNames", promptID)
+    const promptTitleRef = doc(db, "promptTitles", promptID)
 
     const folderPath = `${userID}/${promptID}`
     const folderRef = ref(storage, folderPath)
@@ -18,7 +18,7 @@ export async function POST(request) {
       )
     }
     await deleteDoc(promptDataRef)
-    await deleteDoc(promptNameRef)
+    await deleteDoc(promptTitleRef)
     return new Response("Successfully deleted prompt", {
       status: 200,
       statusText: `Successfully deleted prompt ${promptID}`

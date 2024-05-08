@@ -26,7 +26,6 @@
   padding: 0.5rem 0.5rem;
   border-radius: 0.75rem;
   font-size: 0.7rem;
-  /* margin-bottom: 0.25rem; */
   margin-top: 1%;
   margin-bottom: 1%;
   width: 60%;
@@ -83,7 +82,6 @@
   cursor: pointer;
 }
 
-/* ModelBubble */
 .modelText {
   color: #a5bcf6;
   text-align: left;
@@ -104,7 +102,6 @@
   font-family: Kumbh Sans;
 }
 
-/* ImageBubble */
 .deleteImageButton {
   position: absolute;
   height: 10px;

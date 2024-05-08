@@ -8,7 +8,7 @@ import { ref, getDownloadURL } from "firebase/storage"
 export default function ImageBubble({ isCurrent, imageURL, index, variant }) {
   const { deleteRequest, clearResponses, setQueueSave } = useData()
 
-  const handleDelete = (e) => {
+  const handleDelete = () => {
     deleteRequest(variant, index)
     clearResponses()
     setQueueSave(true)

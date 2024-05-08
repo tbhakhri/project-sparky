@@ -81,7 +81,6 @@
 }
 
 .bottom_icon_positioning {
-  /* flex: 1; */
   text-align: center;
   padding: 0px 8px;
 }
@@ -95,7 +94,7 @@
 .file_preview {
   position: relative;
   margin: 4px;
-  overflow: hidden; /* Ensures the image doesn't overflow its container */
+  overflow: hidden; 
   width: 50px;
   height: 50px;
   border: 1px solid #d9d9d9;
@@ -129,8 +128,6 @@
   border-radius: 4px;
 }
 
-/* RUN BUTTON AREA STYLES */
-
 .runButtonContainer {
   width: 15%;
   display: flex;
@@ -139,8 +136,6 @@
   justify-content: center;
   align-items: center;
   background-color: #282828;
-  /* font-size: 0.4rem; */
-  /* width: 100%; */
 }
 
 .runSparkyLogo {

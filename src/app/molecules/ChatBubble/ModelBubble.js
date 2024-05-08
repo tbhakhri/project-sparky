@@ -2,7 +2,7 @@ import Image from "next/image"
 import "./ChatBubble.css"
 import { useData } from "%/DataContext"
 import Arrow from "@/molecules/Arrow/Arrow"
-import Markdown from "react-markdown" // Import react-markdown
+import Markdown from "react-markdown" 
 
 export default function ModelBubble({ variant }) {
   const { currentPrompt, addResponse, setCurrentResponseIndex } = useData()
@@ -11,7 +11,7 @@ export default function ModelBubble({ variant }) {
   const responses = currentPrompt.variants[variant].currentResponses
   const numResponses = responses.length
 
-  const handleRegenerate = async (e) => {
+  const handleRegenerate = async () => {
     try {
       await addResponse(variant)
       setCurrentResponseIndex(variant, numResponses)

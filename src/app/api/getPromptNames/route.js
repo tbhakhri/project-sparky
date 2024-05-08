@@ -12,17 +12,17 @@ export async function GET(request) {
       })
     }
 
-    const promptNamesCollection = collection(db, "promptNames")
-    const q = query(promptNamesCollection, where("userID", "==", userID))
+    const promptTitlesCollection = collection(db, "promptTitles")
+    const q = query(promptTitlesCollection, where("userID", "==", userID))
 
     const querySnapshot = await getDocs(q)
 
     const res = []
 
     querySnapshot.forEach((doc) => {
-      const promptName = doc.data().promptName
+      const promptTitle = doc.data().promptTitle
       const docID = doc.id
-      res.push({ promptID: docID, promptName })
+      res.push({ promptID: docID, promptTitle })
     })
 
     return new Response(JSON.stringify(res), {

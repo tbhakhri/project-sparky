@@ -11,14 +11,14 @@ export default function PromptTitles({
   setEditing,
   selectPrompt,
   toggleSidebar
-}) {
+  }) {
   const { user } = useContext(AuthContext)
-  const { setPromptNames, promptNames } = useData()
+  const { setPromptTitles, promptTitles } = useData()
 
-  /* stores the updated name in the promptNames db. updates promptNames state */
-  async function updateName(newPromptName) {
+  
+  async function updateName(newPromptTitle) {
     try {
-      const response = await fetch("/api/storePromptName", {
+      const response = await fetch("/api/storePromptTitle", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -26,23 +26,23 @@ export default function PromptTitles({
         body: JSON.stringify({
           promptID,
           userID: user.uid,
-          promptName: newPromptName
+          promptTitle: newPromptTitle
         })
       })
 
       if (!response.ok) {
         console.error(`Failed to update prompt name for prompt ${promptID}.`)
       } else {
-        const updatedPromptNames = promptNames.map((item) => {
+        const updatedPromptTitles = promptTitles.map((item) => {
           if (item.promptID === promptID) {
-            return { ...item, promptName: newPromptName }
+            return { ...item, promptTitle: newPromptTitle }
           }
           return item
         })
-        setPromptNames(updatedPromptNames)
+        setPromptTitles(updatedPromptTitles)
       }
     } catch (error) {
-      console.error("Error updated prompt name:", error)
+      console.error("Error updated prompt title:", error)
     }
   }
 
