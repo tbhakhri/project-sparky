@@ -118,13 +118,6 @@ export default function SideBar({ toggleSidebar, savePrompt }) {
     <div className="sideBarContainer">
       <div className="menuBarContainer">
         <div className="menuBarItem">
-          <Image
-            src="/help-button.svg"
-            alt="help"
-            width={25}
-            height={25}
-            style={{ margin: "-2px" }}
-          />
         </div>
         <div className="menuBarItem">
           <div className="menuBarText">Menu</div>
